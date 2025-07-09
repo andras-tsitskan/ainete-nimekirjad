@@ -2,24 +2,23 @@ name: Daily Scrape
 
 on:
   schedule:
-    - cron: '0 3 * * *'
-  workflow_dispatch:
+    - cron: '0 3 * * *'  # every day at 03:00 UTC
+  workflow_dispatch:      # allow manual trigger
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: true
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: pip install requests beautifulsoup4
 
       - name: Run scraper
@@ -30,35 +29,20 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gh
 
-      - name: Commit database
+      - name: Commit updated database
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add data/narcotics.db
           git diff --staged --quiet || (git commit -m "Update narcotics db on $(date +'%Y-%m-%d')" && git push)
 
-      - name: Check GitHub CLI Auth
-        run: gh auth status
+      - name: Create GitHub Issue if narcotics list changed
+        run: |
+          # If narcotics.db changed in the last commit, create issue
+          git diff --quiet HEAD^ HEAD data/narcotics.db || \
+          gh issue create \
+            --title "⚠️ Narcotics list changed on $(date +'%Y-%m-%d')" \
+            --body "The narcotics list has been updated and committed." \
+            --repo "$GITHUB_REPOSITORY"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create issue if DB changed
-        run: |
-          if git remote | grep origin; then
-            git fetch origin
-            git diff --quiet origin/main -- data/narcotics.db || \
-            gh issue create \
-              --title "⚠️ Narcotics list changed on $(date +'%Y-%m-%d')" \
-              --body "The narcotics list has been updated and committed." \
-              --repo "$GITHUB_REPOSITORY"
-          else
-            echo "No 'origin' remote found. Skipping issue creation."
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Debug git state
-        run: |
-          git status
-          git log --oneline -n 5
-          git remote -v
-          git branch -a
