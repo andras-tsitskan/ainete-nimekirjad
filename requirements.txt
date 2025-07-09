@@ -2,4 +2,3 @@ requests
 beautifulsoup4
 streamlit
 pandas
-sqlite3
