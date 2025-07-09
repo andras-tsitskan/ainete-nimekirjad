@@ -40,7 +40,7 @@ jobs:
           git fetch origin
           git diff --quiet origin/main -- data/narcotics.db || \
           gh issue create \
-            --title "⚠️ Narcotics list changed on $(date +'%Y‑%m‑%d')" \
+            --title "⚠️ Narcotics list changed on $(date +'%Y.%m.%d')" \
             --body "The narcotics list has been updated and committed." \
             --repo $GITHUB_REPOSITORY
         env:
