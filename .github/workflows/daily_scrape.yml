@@ -56,3 +56,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Debug git state
+        run: |
+          git status
+          git log --oneline -n 5
+          git remote -v
+          git branch -a
