@@ -23,8 +23,10 @@ jobs:
       - name: Run scraper
         run: python scrape_narcotics.py
 
-      - name: Setup GitHub CLI
-        uses: cli/cli-action@v1
+      - name: Install GitHub CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gh
 
       - name: Commit database
         run: |
