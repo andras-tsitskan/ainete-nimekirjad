@@ -1,0 +1,45 @@
+name: Daily Scrape
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+
+      - name: Run scraper
+        run: python scrape_narcotics.py
+
+      - name: Setup GitHub CLI
+        uses: cli/cli-action@v1
+
+      - name: Commit database
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add data/narcotics.db
+          git diff --staged --quiet || (git commit -m "Update narcotics db on $(date +'%Y-%m-%d')" && git push)
+
+      - name: Create issue if DB changed
+        run: |
+          git fetch origin
+          git diff --quiet origin/main -- data/narcotics.db || \
+          gh issue create \
+            --title "⚠️ Narcotics list changed on $(date +'%Y‑%m‑%d')" \
+            --body "The narcotics list has been updated and committed." \
+            --repo $GITHUB_REPOSITORY
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
