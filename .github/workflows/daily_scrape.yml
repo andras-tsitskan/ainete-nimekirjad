@@ -37,11 +37,16 @@ jobs:
 
       - name: Create issue if DB changed
         run: |
-          git fetch origin
-          git diff --quiet origin/main -- data/narcotics.db || \
-          gh issue create \
-            --title "⚠️ Narcotics list changed on $(date +'%Y.%m.%d')" \
-            --body "The narcotics list has been updated and committed." \
-            --repo $GITHUB_REPOSITORY
+          if git remote | grep origin; then
+            git fetch origin
+            git diff --quiet origin/main -- data/narcotics.db || \
+            gh issue create \
+              --title "⚠️ Narcotics list changed on $(date +'%Y-%m-%d')" \
+              --body "The narcotics list has been updated and committed." \
+              --repo "$GITHUB_REPOSITORY"
+          else
+            echo "No 'origin' remote found. Skipping issue creation."
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
