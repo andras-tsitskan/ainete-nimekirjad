@@ -53,7 +53,6 @@ jobs:
               --repo "$GITHUB_REPOSITORY"
           else
             echo "No 'origin' remote found. Skipping issue creation."
-          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
