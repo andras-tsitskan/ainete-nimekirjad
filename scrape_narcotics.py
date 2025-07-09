@@ -5,22 +5,22 @@ import sqlite3
 import os
 import re
 
-# Constants
+# Setup
 url = "https://www.riigiteataja.ee/akt/128122024049"
-db_path = "data/narcotics.db"
 os.makedirs("data", exist_ok=True)
+db_path = "data/narcotics.db"
 
-# Valid categories
-valid_lists = [
-    "I nimekiri", "II nimekiri", "III nimekiri",
-    "IV nimekiri", "V nimekiri", "VI nimekiri"
-]
+valid_categories = {
+    "I NIMEKIRI", "II NIMEKIRI", "III NIMEKIRI",
+    "IV NIMEKIRI", "V NIMEKIRI", "VI NIMEKIRI"
+}
 
-# Download page
-response = requests.get(url)
-soup = BeautifulSoup(response.text, "html.parser")
+# Download and parse
+res = requests.get(url)
+soup = BeautifulSoup(res.text, "html.parser")
+elements = soup.find_all(['p', 'table'])
 
-# DB setup
+# Prepare DB
 conn = sqlite3.connect(db_path)
 cur = conn.cursor()
 cur.execute("""
@@ -32,30 +32,28 @@ CREATE TABLE IF NOT EXISTS narcotics (
 )
 """)
 
-# Processing
-elements = soup.find_all(['h2', 'h3', 'table'])
-current_category = None
 today = datetime.now().strftime("%Y-%m-%d")
+current_category = None
 
-for elem in elements:
-    if elem.name in ['h2', 'h3']:
-        heading = elem.get_text(strip=True)
-        match = re.search(r'([IVX]+) nimekiri', heading)
-        if match:
-            current_category = match.group(0)  # e.g., 'I nimekiri'
-        else:
-            current_category = None
-    elif elem.name == 'table' and current_category in valid_lists:
-        rows = elem.find_all("tr")[1:]  # Skip table header
+for i, elem in enumerate(elements):
+    if elem.name == "p":
+        b = elem.find("b")
+        if b:
+            cat_text = b.get_text(strip=True).upper()
+            if cat_text in valid_categories:
+                current_category = cat_text.capitalize()  # normalize: "I nimekiri"
+    elif elem.name == "table" and current_category:
+        rows = elem.find_all("tr")[1:]  # skip header
         for row in rows:
             cols = row.find_all("td")
             if cols:
-                name = cols[0].get_text(strip=True)
-                if name:
+                estonian_name = cols[0].get_text(strip=True)
+                if estonian_name:
                     cur.execute("""
                         INSERT INTO narcotics (category, drug_name, collected_on)
                         VALUES (?, ?, ?)
-                    """, (current_category, name, today))
+                    """, (current_category, estonian_name, today))
 
 conn.commit()
 conn.close()
+print("✅ Scrape complete and database updated.")
