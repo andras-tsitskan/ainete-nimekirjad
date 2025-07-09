@@ -11,6 +11,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -34,6 +36,11 @@ jobs:
           git config user.email "actions@github.com"
           git add data/narcotics.db
           git diff --staged --quiet || (git commit -m "Update narcotics db on $(date +'%Y-%m-%d')" && git push)
+
+      - name: Check GitHub CLI Auth
+        run: gh auth status
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create issue if DB changed
         run: |
