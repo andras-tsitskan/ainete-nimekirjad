@@ -10,7 +10,7 @@ df = pd.read_sql_query("SELECT * FROM narcotics", conn)
 df = df.drop(columns=["id"], errors="ignore")
 df = df.drop(columns=["collected_on"], errors="ignore")
 # df = df.rename(columns={"category": "nimekiri"})
-df = df.rename(columns={"drug_name": "eestikeelne nimetus"})
+df = df.rename(columns={"drug_name": "eestikeelne_nimetus"})
 df = df.rename(columns={"english_name": "ingliskeelne nimetus"})
 
 # Page layout
@@ -26,7 +26,7 @@ filtered = df[
     (df['category'] == cate) | (cate == "Kõik")
 ]
 if q:
-    filtered = filtered[filtered['eestikeelne nimetus'].str.contains(q, case=False)]
+    filtered = filtered[filtered['eestikeelne_nimetus'].str.contains(q, case=False)]
 
 st.markdown(f"**Results:** {len(filtered)} rows")
 st.dataframe(filtered)
