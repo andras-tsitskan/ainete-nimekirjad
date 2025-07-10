@@ -7,13 +7,13 @@ conn = sqlite3.connect("data/narcotics.db")
 df = pd.read_sql_query("SELECT * FROM narcotics", conn)
 
 # Page layout
-st.set_page_config(page_title="Narcotics List Viewer", layout="wide")
-st.title("💊 Estonian Narcotics List")
-st.caption("Source: Riigi Teataja")
+st.set_page_config(page_title="Narkootilised ja psühhotroopsed ained", layout="wide")
+st.title("💊 Narkootiliste ja psühhotroopsete ainete ja ainerühmade nimekirjad")
+st.caption("Allikas: Narkootiliste ja psühhotroopsete ainete nimekirjad ning nende ainete meditsiinilisel ja teaduslikul eesmärgil käitlemine")
 
 # Filters
-cate = st.selectbox("Category", ["All"] + sorted(df['category'].unique()))
-q = st.text_input("Search Drug")
+cate = st.selectbox("Kategooria", ["All"] + sorted(df['category'].unique()))
+q = st.text_input("Otsi ainet")
 
 filtered = df[
     (df['category'] == cate) | (cate == "All")
