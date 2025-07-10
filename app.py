@@ -12,11 +12,11 @@ st.title("💊 Narkootiliste ja psühhotroopsete ainete ja ainerühmade nimekirj
 st.caption("Allikas: https://www.riigiteataja.ee/akt/128122024049")
 
 # Filters
-cate = st.selectbox("Kategooria", ["All"] + sorted(df['category'].unique()))
+cate = st.selectbox("Kategooria", ["Kõik"] + sorted(df['category'].unique()))
 q = st.text_input("Otsi ainet")
 
 filtered = df[
-    (df['category'] == cate) | (cate == "All")
+    (df['category'] == cate) | (cate == "Kõik")
 ]
 if q:
     filtered = filtered[filtered['drug_name'].str.contains(q, case=False)]
