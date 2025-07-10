@@ -31,8 +31,8 @@ def setup_db(cur):
         CREATE TABLE IF NOT EXISTS {TABLE_NAME} (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             category TEXT,
-            drug_name TEXT,
-            english_name TEXT,
+            eestikeelne_nimetus TEXT,
+            ingliskeelne_nimetus TEXT,
             collected_on TEXT
         )
     """)
@@ -67,7 +67,7 @@ def parse_and_insert(soup, cur, today):
                     if estonian:
                         try:
                             cur.execute(f"""
-                                INSERT INTO {TABLE_NAME} (category, drug_name, english_name, collected_on)
+                                INSERT INTO {TABLE_NAME} (category, eestikeelne_nimetus, ingliskeelne_nimetus, collected_on)
                                 VALUES (?, ?, ?, ?)
                             """, (current_category, estonian, english, today))
                             insert_count += 1
