@@ -25,8 +25,8 @@ q = st.text_input("Otsi ainet või ainerühma")
 filtered = df[
     (df['category'] == cate) | (cate == "Kõik")
 ]
-# if q:
-#     filtered = filtered[filtered['eestikeelne nimetus'].str.contains(q, case=False)]
+if q:
+    filtered = filtered[filtered['eestikeelne nimetus'].str.contains(q, case=False)]
 
 st.markdown(f"**Results:** {len(filtered)} rows")
 st.dataframe(filtered)
