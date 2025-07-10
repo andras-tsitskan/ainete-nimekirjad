@@ -8,7 +8,7 @@ df = pd.read_sql_query("SELECT * FROM narcotics", conn)
 
 # Remove 'id' column and rename 'drug_name' to 'eestikeelne nimetus'
 df = df.drop(columns=["id"], errors="ignore")
-# df = df.rename(columns={"drug_name": "eestikeelne nimetus"})
+df = df.rename(columns={"drug_name": "eestikeelne nimetus"})
 
 # Page layout
 st.set_page_config(page_title="Narkootilised ja psühhotroopsed ained", layout="wide")
