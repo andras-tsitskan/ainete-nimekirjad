@@ -13,7 +13,7 @@ st.caption("Allikas: https://www.riigiteataja.ee/akt/128122024049")
 
 # Filters
 cate = st.selectbox("Kategooria", ["Kõik"] + sorted(df['category'].unique()))
-q = st.text_input("Otsi ainet")
+q = st.text_input("Otsi ainet või ainerühma")
 
 filtered = df[
     (df['category'] == cate) | (cate == "Kõik")
@@ -23,5 +23,3 @@ if q:
 
 st.markdown(f"**Results:** {len(filtered)} rows")
 st.dataframe(filtered)
-
-st.download_button("Download CSV", filtered.to_csv(index=False), "narcotics.csv", "text/csv")
