@@ -1,5 +1,5 @@
 import requests
-from bs4 import BeautifulSoup, Tag, NavigableString
+from bs4 import BeautifulSoup, Tag
 from datetime import datetime
 import sqlite3
 import os
@@ -44,31 +44,37 @@ def setup_db(db_path):
     return conn, cur
 
 def parse_and_insert(soup, cur, today):
-    current_category = None
-    elements = soup.body.descendants
     insert_count = 0
-    for elem in elements:
-        if isinstance(elem, NavigableString):
-            text = elem.strip()
-            if text in CATEGORIES:
-                current_category = text
-        elif isinstance(elem, Tag) and elem.name == "table" and current_category:
-            rows = elem.find_all("tr")[1:]
-            for row in rows:
-                cols = row.find_all("td")
-                if len(cols) >= 2:
-                    estonian = cols[0].get_text(strip=True)
-                    english = cols[1].get_text(strip=True)
-                    if estonian:
-                        try:
-                            cur.execute(f"""
-                                INSERT INTO {TABLE_NAME} (category, drug_name, english_name, collected_on)
-                                VALUES (?, ?, ?, ?)
-                            """, (current_category, estonian, english, today))
-                            insert_count += 1
-                        except sqlite3.DatabaseError as db_err:
-                            logging.error(f"DB insert error: {db_err}")
-            current_category = None
+    # Find all tags that contain category names (even inside tags)
+    for tag in soup.find_all(string=True):
+        text = tag.strip()
+        if text in CATEGORIES:
+            category = text
+            # Find the next table after the category header
+            table = None
+            next_elem = tag.parent
+            # Move forward in the document to find the next table
+            while next_elem:
+                next_elem = next_elem.find_next()
+                if next_elem and isinstance(next_elem, Tag) and next_elem.name == "table":
+                    table = next_elem
+                    break
+            if table:
+                rows = table.find_all("tr")[1:]  # Skip header
+                for row in rows:
+                    cols = row.find_all("td")
+                    if len(cols) >= 2:
+                        estonian = cols[0].get_text(strip=True)
+                        english = cols[1].get_text(strip=True)
+                        if estonian:
+                            try:
+                                cur.execute(f"""
+                                    INSERT INTO {TABLE_NAME} (category, drug_name, english_name, collected_on)
+                                    VALUES (?, ?, ?, ?)
+                                """, (category, estonian, english, today))
+                                insert_count += 1
+                            except sqlite3.DatabaseError as db_err:
+                                logging.error(f"DB insert error: {db_err}")
     logging.info(f"Inserted {insert_count} rows into '{TABLE_NAME}'.")
 
 def main():
