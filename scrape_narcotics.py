@@ -38,11 +38,15 @@ def setup_db(db_path):
             collected_on TEXT
         )
     """)
+    # Clear the table before inserting new data
+    cur.execute(f"DELETE FROM {TABLE_NAME}")
+    logging.info(f"Table '{TABLE_NAME}' cleared before new insertions.")
     return conn, cur
 
 def parse_and_insert(soup, cur, today):
     current_category = None
     elements = soup.body.descendants
+    insert_count = 0
     for elem in elements:
         if isinstance(elem, NavigableString):
             text = elem.strip()
@@ -61,9 +65,11 @@ def parse_and_insert(soup, cur, today):
                                 INSERT INTO {TABLE_NAME} (category, drug_name, english_name, collected_on)
                                 VALUES (?, ?, ?, ?)
                             """, (current_category, estonian, english, today))
+                            insert_count += 1
                         except sqlite3.DatabaseError as db_err:
                             logging.error(f"DB insert error: {db_err}")
             current_category = None
+    logging.info(f"Inserted {insert_count} rows into '{TABLE_NAME}'.")
 
 def main():
     html = fetch_html(URL)
@@ -71,7 +77,7 @@ def main():
     today = datetime.now().strftime("%Y-%m-%d")
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
-        setup_db(DB_PATH)  # Ensures table exists
+        setup_db(DB_PATH)  # Ensures table exists and clears it
         parse_and_insert(soup, cur, today)
         conn.commit()
     logging.info("✅ Scraping complete: all 6 categories handled properly.")
