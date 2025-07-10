@@ -6,6 +6,10 @@ import pandas as pd
 conn = sqlite3.connect("data/narcotics.db")
 df = pd.read_sql_query("SELECT * FROM narcotics", conn)
 
+# Remove 'id' column and rename 'drug_name' to 'eestikeelne nimetus'
+df = df.drop(columns=["id"], errors="ignore")
+df = df.rename(columns={"drug_name": "eestikeelne nimetus"})
+
 # Page layout
 st.set_page_config(page_title="Narkootilised ja psühhotroopsed ained", layout="wide")
 st.title("💊 Narkootiliste ja psühhotroopsete ainete ja ainerühmade nimekirjad")
@@ -19,7 +23,7 @@ filtered = df[
     (df['category'] == cate) | (cate == "Kõik")
 ]
 if q:
-    filtered = filtered[filtered['drug_name'].str.contains(q, case=False)]
+    filtered = filtered[filtered['eestikeelne nimetus'].str.contains(q, case=False)]
 
 st.markdown(f"**Results:** {len(filtered)} rows")
 st.dataframe(filtered)
