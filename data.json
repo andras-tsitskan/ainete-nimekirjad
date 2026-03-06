@@ -1,0 +1,1812 @@
+{
+  "meta": {
+    "source": "https://www.riigiteataja.ee/aktilisa/1300/7202/5008/SOM_m31_lisa1.pdf",
+    "generated": "2026-03-06T11:46:00"
+  },
+  "lists": [
+    {
+      "id": 1,
+      "title": "I nimekiri",
+      "description": "Kõige rangemalt piiritletud ained, meditsiiniline kasutus puudub",
+      "isGroups": false,
+      "substances": [
+        {
+          "et": "1-(1-bensofuraan-5-üül)-N-etüülpropaan-2-amiin (5-EAPB)",
+          "en": "1-(1-benzofuran-5-yl)-N-ethylpropan-2-amine (5-EAPB)"
+        },
+        {
+          "et": "1-(4-bromo-2,5-dimetoksüfenüül)-2-aminoetaan (2C-B; Nexus; BDMPEA)",
+          "en": "1-(4-bromo-2,5-dimethoxyphenethylamine; (2C-B; Nexus; BDMPEA)"
+        },
+        {
+          "et": "1-(bensofuraan-5-üül)-N-metüülpropaan-2-amiin (5-MAPB)",
+          "en": "1-(benzofuran-5-yl)-N-methylpropan-2-amine (5-MAPB)"
+        },
+        {
+          "et": "1-fenüületüülamiin (1-PEA); 1- fenüületaanamiin;α-metüülbensüülamiin",
+          "en": "1-phenylethylamine (1-PEA);1- phenylethanamine; α-methylbenzylamine"
+        },
+        {
+          "et": "1-naftalenüül(1-pentüül-1H-indasool-3-üül)- metanoon; THJ-018",
+          "en": "1-naphthalenyl(1-pentyl-1H-indazol-3-yl)- methanone; THJ-018"
+        },
+        {
+          "et": "1-propionüül-lüsergiinhappe dietüülamiid; N,N- dietüül-7-metüül-4-propanoüül-6,6a,8,9- tetrahüdroindool[4,3-fg]kinoliin-9-karboksamiid (1P-LSD; 1p-LSD)",
+          "en": "1-propionyl-lysergic acid diethylamide; N,N- diethyl-7-methyl-4-propanoyl-6,6a,8,9- tetrahydroindolo[4,3-fg]quinoline-9- carboxamide (1P-LSD; 1p-LSD)"
+        },
+        {
+          "et": "10-OH-HHC (10- hüdroksüheksahüdrokannabinool; 6,6,9- trimetüül-3-pentüül-6a,7,8,9,10,10a-heksahüdro- 6H-dibenso[b,d]püraan-1,10-diool)",
+          "en": "10-OH-HHC (10-hydroxyhexahydrocannabinol; 6,6,9-trimethyl-3-pentyl-6a,7,8,9,10,10a- hexahydro-6H-dibenzo[b,d]pyran-1,10-diol)"
+        },
+        {
+          "et": "10-OH-HHCP (10- hüdroksüheksahüdrokannabiforool; 3-heptüül- 6,6,9-trimetüül-6a,7,8,9,10,10a-heksahüdro-6H- dibenso[b,d]püraan-1,10-diool)",
+          "en": "10-OH-HHCP (10- hydroxyhexahydrocannabipforol; 3-heptyl- 6,6,9-trimethyl-6a,7,8,9,10,10a-hexahydro-6H- dibenzo[b,d]pyran-1,10-diol)"
+        },
+        {
+          "et": "1B-LSD (4-butürüül-N,N-dietüül-7-metüül 4,6,6a,7,8,9-heksahüdroindolo[4,3-fg]kinoliin-9- karboksamiid)",
+          "en": "1B-LSD (4-butyryl-N,N-diethyl-7-methyl- 4,6,6a,7,8,9-hexahydroindolo[4,3-fg]quinoline- 9 carboxamide)"
+        },
+        {
+          "et": "1cP-AL-LAD (1-tsüklopropaankarbonüül‐6-allüül- 6-desmetüül-lüsergiinhappe dietüülamiid)",
+          "en": "1cP-AL-LAD (1-cyclopropanecarbonyl‐6-allyl- 6-desmethyl-lysergic acid diethylamide)"
+        },
+        {
+          "et": "1cP-LSD (Curie Acid; Curie); 1- tsüklopropionüüllüsergiinhappe dietüülamiid; 1- (tsüklopropaankarbonüül)-lüsergiinhappe dietüülamiid; 4-(tsüklopropaan¬karbonüül)- N,Ndietüül-7-metüül-4,6,6a,7,8,9- heksahüdroindool[4,3-fg]kinoliin-9-karboksamiid",
+          "en": "1cP-LSD (Curie Acid; Curie); 1- cyclopropionyllysergic acid diethylamide; 1- (cyclopropanecarbonyl)-lysergic aciddiethylamide; 4-(cyclopropanecarbonyl)- N,Ndiethyl-7-methyl-4,6,6a,7,8,9- hexahydroindolo[4,3-fg]quinoline-9- carboxamide"
+        },
+        {
+          "et": "1V-LSD (N,N-dietüül-7-metüül-4-pentanoüül- 4,6,6a,7,8,9-heksahüdroindolo[4,3-fg]kinoliin-9- karboksamiid)",
+          "en": "1V-LSD (N,N-diethyl-7-methyl-4-pentanoyl- 4,6,6a,7,8,9-hexahydroindolo[4,3 fg]quinoline- 9-carboxamide)"
+        },
+        {
+          "et": "2,4,5-trimetoksüamfetamiin (TMA-2)",
+          "en": "2,4,5-trimethoxyamphetamine (TMA-2)"
+        },
+        {
+          "et": "2,5-dimetoksü-4-(n)-propüültiofenetüülamiin (2C- T-7)",
+          "en": "2,5-dimethoxy-4-(n)-propylthiophenethylamine (2C-T-7)"
+        },
+        {
+          "et": "2,5-dimetoksü-4-etüülfenetüülamiin (2C-E); 1- (2,5-dimetoksü-4-etüülfenüül)-2-aminoetaan",
+          "en": "2,5-dimethoxy-4-ethyl-phenethylamine (2C-E); 1-(2,5-dimethoxy-4-ethylphenyl)-2- aminoethane"
+        },
+        {
+          "et": "2,5-dimetoksü-4-etüültiofenetüülamiin (2C-T-2)",
+          "en": "2,5-dimethoxy-4-ethylthiophenethylamine (2C- T-2)"
+        },
+        {
+          "et": "2,5-dimetoksü-4-jodofenetüülamiin (2C-I)",
+          "en": "2,5-dimethoxy-4-iodophenethylamine (2C-I)"
+        },
+        {
+          "et": "2,5-dimetoksü-4-kloroamfetamiin (DOC); 1-(4- kloro-2,5-dimetoksüfenüül)propaan-2-amiin",
+          "en": "2,5-dimethoxy-4-chloroamphetamine (DOC); 1- (4-chloro-2,5-dimethoxyphenyl)propan-2-amine"
+        },
+        {
+          "et": "2,5-dimetoksü-4-propüülfenetüülamiin (2C-P); 2- (2,5-dimetoksü-4-propüülfenüül)etaanamiin",
+          "en": "2,5-dimethoxy-4-propylphenethylamine; (2C- P); 2-(2,5-dimethoxy-4- propylphenyl)ethanamine"
+        },
+        {
+          "et": "2-(4-bromo-2,5-dimetoksüfenüül)-N-[(2- metoksüfenüül)metüül]etaanamiin (25B-NBOMe; 2C-B-NBOMe; NBOMe-2C-B)",
+          "en": "2-(4-bromo-2,5-dimethoxyphenyl)-N-[(2- methoxyphenyl)methyl]ethanamine (25B- NBOMe; 2C-B-NBOMe; NBOMe-2C-B)"
+        },
+        {
+          "et": "2-(4-jodo-2,5-dimetoksüfenüül)-N-[(2- metoksüfenüül)metüül]etaanamiin (25I-NBOMe; 2C-I-NBOMe; NBOMe-2C-I)",
+          "en": "2-(4-iodo-2,5-dimethoxyphenyl)-N-[(2- methoxyphenyl)methyl]¬ethanamine (25I- NBOMe; 2C-I-NBOMe; NBOMe-2C-I)"
+        },
+        {
+          "et": "2-(4-kloro-2,5-dimetoksüfenüül)-N-[(2- metoksüfenüül)metüül]etaanamiin (25C-NBOMe; 2C-C-NBOMe; NBOMe-2C-C)",
+          "en": "2-(4-chloro-2,5-dimethoxyphenyl)-N-[(2- methoxyphenyl)methyl]¬ethanamine (25C- NBOMe; 2C-C-NBOMe; NBOMe-2C-C)"
+        },
+        {
+          "et": "2-amino-1-(4-bromo-2,5-dimetoksüfenüül)etaan- 1-oon (bk-2C-B)",
+          "en": "2-amino-1-(4-bromo-2,5- dimethoxyphenyl)ethan-1-one (bk-2C-B)"
+        },
+        {
+          "et": "2-aminoindaan (2-AI); 2,3-dihüdro-1H-indeen-2- amiin",
+          "en": "2-aminoindane (2-AI); 2,3-dihydro-1H-inden-2- amine"
+        },
+        {
+          "et": "2-fluoroketamiin;2-fluorodeskloroketamiin (2-FK; 2-Fl-2'-Oxo- PCM; 2-FDCK; 2F- DK; 2-FDK);2- (2- fluorofenüül)-2-metüülamino-tsükloheksanoon",
+          "en": "2-fluoroketamine (2-FK; 2-Fl-2'-Oxo- PCM; 2- FDCK; 2F- DK; 2-FDK);2- fluorodeschloroketamine;2-(2- fluorophenyl)-2- methylamino- cyclohexanone"
+        },
+        {
+          "et": "2-metüül-AP-237; 2-metüülbutsinnasiin; 1-[2- metüül-4-(3-fenüülprop-2-een-1-üül)piperasiin-1- üül]butaan-1-oon; 1-[2-metüül-4-(3-fenüül-2- propeen-1-üül)-1-piperasinüül]-1-butanoon",
+          "en": "2-methyl-AP-237; 2-methylbucinnazine; 1-[2- methyl-4-(3-phenylprop-2-en-1-yl)piperazin1- yl]butan-1-one; 1-[2-methyl-4-(3-phenyl-2- propen-1-yl)-1-piperazinyl]-1-butanone"
+        },
+        {
+          "et": "3,4-dikloro-N-[(1- dimetüülamino)tsükloheksüülmetüül]bensamiid (AH-7921)",
+          "en": "3,4-dichloro-N-[(1- dimethylamino)cyclohexylmethyl]benzamide (AH-7921)"
+        },
+        {
+          "et": "3,4-dikloro-N-[2-(dimetüülamino)tsükloheksüül]- N-metüülbensamiid (U-47700)",
+          "en": "3,4-dichloro-N-[2-(dimethylamino)cyclohexyl]- N-methylbenzamide (U-47700)"
+        },
+        {
+          "et": "3,4-metüleendioksümetkatinoon (metüloon, bk- MDMA);",
+          "en": "3,4-methylenedioxymethcathinone (methylone, bk-MDMA"
+        },
+        {
+          "et": "3-fluorofenmetrasiin (3-FPM); 3F-fenmetrasiin; 2- (3-fluorofenüül)-3-metüülmorfoliin",
+          "en": "3-fluorophenmetrazine (3-FPM); 3F- phenmetrazine; 2-(3-fluorophenyl)-3- methylmorpholine"
+        },
+        {
+          "et": "3-fluorometkatinoon (3-FMC); (RS)-1-(3- fluorofenüül)-2-metüülaminopropaan-1-oon",
+          "en": "3-fluoromethcathinone (3-FMC); (RS)-1-(3- fluorophenyl)-2-methylaminopropan-1-one"
+        },
+        {
+          "et": "3-metoksüfentsüklidiin (3-MeO-PCP); 1-[1-(3- metoksüfenüül)tsükloheksüül]-piperidiin",
+          "en": "3-methoxyphencyclidine (3-MeO-PCP); 1-[1- (3-methoxyphenyl)cyclohexyl]piperidine"
+        },
+        {
+          "et": "3-metüülmetkatinoon (3-MMC); 1-(3- metüülfenüül)-2-(metüülamino)propaan-1-oon",
+          "en": "3-methylmethcathinone (3-MMC); 1-(3- methylphenyl)-2-(methylamino)propane-1-one"
+        },
+        {
+          "et": "3-oktüül-delta-8-THC (delta-8-THC-C8; JWH- 138; Δ8-THC-octyl); Δ8-tetrahüdrokannabinool- C8; 3-oktüül-6a,7,10,10a-tetrahüdro-6,6,9- trimetüül-6H dibenso[b,d]püraan-1-ool; 3-oktüül- 6,6,9-trimetüül-6a,7,10,10a- tetrahüdrobenso[c]kromeen-1-ool",
+          "en": "3-octyl-delta-8-THC; Δ8-tetrahydrocannabinol- C8; 3-octyl-6a,7,10,10a-tetrahydro-6,6,9- trimethyl-6H-dibenzo[b,d]pyran-1-ol;3-octyl- 6,6,9-trimethyl-6a,7,10,10a- tetrahydrobenzo[c]chromen-1-ol"
+        },
+        {
+          "et": "3-trifluorometüülfenüülpiperasiin (TFMPP); 1-[3- (trifluorometüül)fenüül]piperasiin",
+          "en": "3-trifluoromethylphenylpiperazine (TFMPP); 1- [3-(trifluoromethyl)phenyl]piperazine"
+        },
+        {
+          "et": "4,4’-DMAR; para-metüül-4 -metüülaminoreks; 4,4’-dimetüülaminoreks",
+          "en": "4,4’-DMAR; para-methyl-4-methylaminorex; 4,4’-dimethylaminorex"
+        },
+        {
+          "et": "4-atsetoksü-N,N-dimetüültrüptamiin (4-AcO-DMT; 4-atsetoksü-DMT); O-atsetüülpsilotsiin; psilatsetiin; 3-[2-(dimetüülamino)etüül]-1H-indool- 4-üülatsetaat",
+          "en": "4-acetoxy-N,N-dimethyltryptamine (4-AcO- DMT; 4-acetoxy-DMT); O-acetylpsilocin; psilacetin; 3-[2-(dimethylamino)ethyl]-1H-indol- 4-yl acetate"
+        },
+        {
+          "et": "4-fluoroamfetamiin (4-FA; 4-FMP); 1-(4- fluorofenüül)propaan-2-amiin",
+          "en": "4-fluoroamphetamine (4-FA; 4-FMP); 1-(4- fluorophenyl)propan-2-amine"
+        },
+        {
+          "et": "4-fluoroetüülfenidaat; p-fluoroetüülfenidaat; etüül- (4-fluorofenüül)(piperidiin-2-üül)atsetaat (4F- EPH)",
+          "en": "4-fluoroethylphenidate; p-fluoroethyl- phenidate; ethyl 2-(4-fluorophenyl)-2-(piperidin- 2-yl)acetate (4F-EPH)"
+        },
+        {
+          "et": "4-fluorometamfetamiin (4-FMA); (RS)-1-(4- fluorofenüül)-N-metüülpropaan-2-amiin",
+          "en": "4-fluoromethamphetamine (4-FMA); (RS)-1-(4- fluorophenyl)-N-methylpropan-2-amine"
+        },
+        {
+          "et": "4-fluorometüülfenidaat (4F-MPH); metüül-2-(4- fluorofenüül)-2-(2-piperidüül)atsetaat",
+          "en": "4-fluoromethylphenidate (4F-MPH); methyl-2- (4-fluorophenyl)-2-(2-piperidyl)acetate"
+        },
+        {
+          "et": "4-metamfetamiin (4-metüülamfetamiin; 4-MA)",
+          "en": "4-methylamphetamine (4-MA)"
+        },
+        {
+          "et": "4-metoksümetkatinoon (metedroon, bk-PMMA, PMMC);",
+          "en": "4-methoxymethcathinone (methedrone, bk- PMMA, PMMC)"
+        },
+        {
+          "et": "4-metüülaminoreks",
+          "en": "4-methylaminorex; (+–)-cis-2-amino-4-methyl- 5-phenyl-2-oxazoline"
+        },
+        {
+          "et": "4-metüületkatinoon (4-MEC)",
+          "en": "4-Methylethcathinone (4-MEC)"
+        },
+        {
+          "et": "4-metüülmetkatinoon (mefedroon, 4-MMC)",
+          "en": "4-methylmethcathinone (mephedrone, 4-MMC)"
+        },
+        {
+          "et": "4-metüültioamfetamiin (4-MTA)",
+          "en": "4-methyltioamfetamine (4-MTA)"
+        },
+        {
+          "et": "4F-MDMB-BICA(4-fluoro-MDMB-BICA,4- fluoroMDMB-BUTICA); metüül-2-({[1-(4- fluorobutüül)- 1H-indool-3-üül]karbonüül}amino)- 3,3- dimetüülbutanoaat; metüül-N-[1-(4- fluorobutüül)- 1H-indool-3-karbonüül]-3- methüülvalinaat",
+          "en": "4F-MDMB-BICA,(4-fluoro-MDMB-BICA;4- fluoro-MDMB-BUTICA); methyl 2-({[1-(4- fluorobutyl)-1H-indol-3-yl]carbonyl}amino)-3,3- dimethylbutanoate; methyl N-[1-(4-fluorobutyl)- 1H-indole-3-carbonyl]-3-methylvalinate"
+        },
+        {
+          "et": "4F-MDMB-BINACA (4F-MDMB-BUTINACA); metüül-2-(1-(4-fluorobutüül)-1H-indasool-3- karboksamido)-3,3-dimetüülbutanoaat",
+          "en": "4F-MDMB-BINACA (4F-MDMB-BUTINACA); methyl 2-(1-(4-fluorobutyl)-1H-indazole-3- carboxamido)-3,3-dimethylbutanoate"
+        },
+        {
+          "et": "5,6-metüleenedioksü-2-aminoindaan (MDAI); 6,7-dihüdro-5H-tsüklopenta[f][1,3]bensodioksool- 6-amiin",
+          "en": "5,6-methylenedioxy-2-aminoindane (MDAI); 6,7-dihydro-5H-cyclopenta[f][1,3]benzodioxol- 6-amine"
+        },
+        {
+          "et": "5-(2-aminopropüül)indool (5-API, 5-IT)",
+          "en": "5-(2-aminopropyl)indole (5-API, 5-IT)"
+        },
+        {
+          "et": "5-metoksü-N,N-dimetüültrüptamiin (5-MeO- DMT); 2-(5-metoksü-1H-indool-3-üül)-N,N- dimetüületaanamiin",
+          "en": "5-methoxy-N,N-dimethyltryptamine (5-MeO- DMT); 2-(5-methoxy-1H-indol-3-yl)-N,N- dimethylethanamine"
+        },
+        {
+          "et": "5F-AKB48 (AKB-48F; 5-fluoro-AKB-48); N-(1- adamantüül)-1-(5-fluoropentüül)-1H-indasool-3- karboksamiid",
+          "en": "5F-AKB48 (AKB-48F; 5-Fluoro-AKB-48); N-(1- adamantyl)-1-(5-fluoropentyl)-1H-indazole-3- carboxamide"
+        },
+        {
+          "et": "5F-AMB; 5F-AMB-PINACA; metüül-2-({[1-(5- fluoropentüül)-1H-indasool-3- üül]karbonüül}amino)-3-metüülbutanoaat",
+          "en": "5F-AMB; 5F-AMB-PINACA; methyl 2-({[1-(5- fluoropentyl)-1H-indazol-3-yl]carbonyl}amino)- 3-methylbutanoate"
+        },
+        {
+          "et": "5F-MDMB-PICA(5F-MDMB-2201,5-fluoroMDMB- PICA); metüül-2-[[1-(5-fluoropentüül)indool-3- karbonüül]amino]-3,3-dimethüülbutanoaat; metüül-N-{[1-(5-fluoropentüül)-1H-indool-3- üül]karbonüül}-3-metüülvalinaat",
+          "en": "5F-MDMB-PICA(5F-MDMB-2201,5- fluoroMDMB-PICA); methyl 2-[[1-(5- fluoropentyl)indole-3-carbonyl]amino]-3,3- dimethyl-butanoate; methyl N-{[1-(5- fluoropentyl)-1H-indol-3-yl]carbonyl}-3- methylvalinate"
+        },
+        {
+          "et": "5F-MDMB-PINACA (5F-metüül-AMB, 5-fluoro- MAMB; 5-fluoro ADB); metüül-[2-(1-(5- fluoropentüül)-1H-indasool-3-karboksamido)-3,3- dimetüülbutanoaat]",
+          "en": "5F-MDMB-PINACA (5F-methyl-AMB, 5-fluoro- MAMB; 5-fluoro ADB); methyl-[2-(1-(5- fluoropentyl)-1H-indazole-3-carboxamido)-3,3- dimethylbutanoate]"
+        },
+        {
+          "et": "5F-PB-22; 1-(5-fluoropentüül)-1H-indool-3- karboksüülhappe 8-kinolinüülester",
+          "en": "5F-PB-22; 1-(5-fluoropentyl)-1H-indole-3- carboxylic acid 8-quinolinyl ester"
+        },
+        {
+          "et": "5F-UR-144 (XLR-11); (1-(5-fluoropentüül)-1H- indool-3-üül)(2,2,3,3- tetrametüültsüklopropüül)metanoon",
+          "en": "5F-UR-144 (XLR-11); (1-(5-fluoropentyl)-1H- indol-3-yl)(2,2,3,3- tetramethylcyclopropyl)methanone"
+        },
+        {
+          "et": "6-(2-aminopropüül)bensofuraan (6-APB)",
+          "en": "6-(2-aminopropyl)benzofuran (6-APB)"
+        },
+        {
+          "et": "6-etüül-6-nor-lüsergiinhappe dietüülamiid (ETH- LAD); (6aR,9R)N,N-dietüül-7-etüül-4,6,6a,7,8,9- heksahüdroindolo-[4,3-fg]kinoliin-9-karboksamiid",
+          "en": "6-ethyl-6-nor-lysergic acid diethylamide (ETH- LAD); (6aR,9R)N,N-diethyl-7-ethyl- 4,6,6a,7,8,9-hexahydroindolo-[4,3-fg]quinoline- 9-carboxamide"
+        },
+        {
+          "et": "7-hüdroksümitragüniin",
+          "en": "7-hydroxymitragynine"
+        },
+        {
+          "et": "AB-CHMINACA; N-[(1S)-1-(aminokarbonüül)-2- metüülpropüül]-1-(tsükloheksüülmetüül)-1H- indasool-3-karboksamiid",
+          "en": "AB-CHMINACA; N-[(1S)-1-(aminocarbonyl)-2- methylpropyl]-1-(cyclohexylmethyl)-1H- indazole-3-carboxamide"
+        },
+        {
+          "et": "AB-FUBINACA; N-(1-amino-3-metüül-1- oksobutaan-2-üül)-1-(4-fluorobensüül)-1H- indasool-3-karboksamiid",
+          "en": "AB-FUBINACA; N-(1-amino-3-methyl-1- oxobutan-2-yl)-1-(4-fluorobenzyl)-1H-indazole- 3-carboxamide"
+        },
+        {
+          "et": "AB-PINACA; N-(1-amino-3-metüül-1-oksobutaan- 2-üül)-1-pentüül-1H-indasool-3-karboksamiid",
+          "en": "AB-PINACA; N-(1-amino-3-methyl-1-oxobutan- 2-yl)-1-pentyl-1H-indazole-3-carboxamide"
+        },
+        {
+          "et": "ADB-BUTINACA; ADMB-BINACA; N-(1-amino- 3,3-dimetüül-1-oksobutaan-2-üül)-1-butüül-1H- indasool-3-karboksamiid; 1-butüül-N-(1- karbamoüül-2,2-dimetüülpropüül)indasool-3- karboksamiid",
+          "en": "ADB-BUTINACA; ADMB-BINACA; N-(1-amino- 3,3-dimethyl-1-oxobutan-2-yl)-1-butyl-1H- indazole-3-carboxamide; 1-butyl-N-(1- carbamoyl-2,2-dimethyl-propyl)indazole-3- carboxamide"
+        },
+        {
+          "et": "ADB-CHMINACA; N-[1-(aminokarbonüül)-2,2- dimetüülpropüül]-1-(tsükloheksüülmetüül)-1H- indasool-3-karboksamiid",
+          "en": "ADB-CHMINACA; N-[1-(aminocarbonyl)-2,2- dimethylpropyl]-1-(cyclohexylmethyl)-1H- indazole-3-carboxamide"
+        },
+        {
+          "et": "ADB-FUBINACA; N-[(1S)-1-(aminokarbonüül)- 2,2-dimetüülpropüül]-1-[(4-fluorofenüül)metüül]- 1H-indasool-3-karboksamiid",
+          "en": "ADB-FUBINACA; N-[(1S)-1-(aminocarbonyl)- 2,2-dimethylpropyl]-1-[(4-fluorophenyl)methyl]- 1H-indazole-3-carboxamide"
+        },
+        {
+          "et": "ADB-PINACA; N-(1-amino-3,3-dimetüül-1- oksobutaan-2-üül)-1-pentüül-1H-indasool-3- karboksamiid",
+          "en": "ADB-PINACA; N-(1-amino-3,3-dimethyl-1- oxobutan-2-yl)-1-pentyl-1H-indazole-3- carboxamide"
+        },
+        {
+          "et": "Ainete eestikeelne nimetus",
+          "en": "Ainete ingliskeelne nimetus"
+        },
+        {
+          "et": "alfa-metüültrüptamiin (AMT; α-MT); 2-(1H-indool- 3-üül)-1-metüül-etüülamiin",
+          "en": "alpha-methyltryptamine (AMT; α-MT); 2-(1H- indol-3-yl)-1-methyl-ethylamine"
+        },
+        {
+          "et": "alfa-pürrolidinoheksanofenoon (alfa-PHP, α- PHP); 2-(pürrolidiin-1-üül)-1-(fenüül)heksaan-1- oon",
+          "en": "alpha-pyrrolidinohexanophenone (alfa-PHP, α- PHP); 2-(pyrrolidin-1-yl)-1-(phenyl)hexan-1- one"
+        },
+        {
+          "et": "alfa-pürrolidinoheptanofenoon (PV8; alfa-PHPP; alfa-PEP); alfa-pürrolidinoheptiofenoon; α- pürrolidinoenantofenoon; 1-fenüül-2-(1- pürrolidinüül)heptaan-1-oon",
+          "en": "alpha-pyrrolidinoheptanophenone (PV8; alpha- PHPP; alpha-PEP); alpha- pyrrolidinoheptiophenone; α- pyrrolidinoenanthophenone; 1-phenyl-2-(1- pyrrolidinyl)heptan-1-one"
+        },
+        {
+          "et": "alfa-pürrolidinoisoheksanofenoon; alfa-PiHP; α- PiHP; alfa-PHiP; α-PHiP;4-metüül-1-fenüül-2- (pürrolidiin-1-üül)pentaan-1-oon",
+          "en": "alpha-pyrrolidinoisohexanophenone; alpha- PiHP; α-PiHP; alpha-PHiP; α-PHiP; 4-methyl- 1-phenyl-2-(pyrrolidin-1-yl)pentan-1-one"
+        },
+        {
+          "et": "alfa-pürrolidinovalerofenoon (alfa-PVP; α-PVP); 1-fenüül-2-(1-pürrolidinüül)-1-pentanoon",
+          "en": "alpha-pyrrolidinovalerophenone (alfa-PVP; α- PVP); 1-phenyl-2-(1-pyrrolidinyl)-1-pentanone"
+        },
+        {
+          "et": "AM-2201; 1-[(5-fluoropentüül)-1H-indool-3-üül]- (naftaleen-1-üül)metanoon",
+          "en": "AM-2201; 1-[(5-fluoropentyl)-1H-indol-3-yl]- (naphthalen-1-yl)methanone"
+        },
+        {
+          "et": "AMB-FUBINACA (FUB-AMB; MMB-FUBINACA); metüül-2-[[1-[(4-fluorofenüül)metüül]indasool-3- karbonüül]amino]-3-metüülbutanoaat",
+          "en": "AMB-FUBINACA (FUB-AMB; MMB- FUBINACA); methyl 2-[[1-[(4- fluorophenyl)methyl]indazole-3- carbonyl]amino]-3-methylbutanoate"
+        },
+        {
+          "et": "Amfetamiin",
+          "en": "Amfetamine (amphetamine); (+–)-alfa- methylphenethylamine"
+        },
+        {
+          "et": "Amineptiin",
+          "en": "Amineptine; (7-[(10,11-dihydro-5H- dibenzo[a,d]cyclohepten-5-yl)amino]heptanoic acid)"
+        },
+        {
+          "et": "APINACA, AKB48; 1-pentüül-N- tritsüklo[3.3.1.13,7]dets-1-üül-1H-indasool-3- karboksamiid",
+          "en": "APINACA, AKB48; 1-pentyl-N- tricyclo[3.3.1.13,7]dec-1-yl-1H-indazole-3- carboxamide"
+        },
+        {
+          "et": "Atsetüülfentanüül; N-(1-fenetüül-piperidiin-4-üül)- N-fenüülatseetamiid",
+          "en": "Acetylfentanyl; N-(1-phenethylpiperidin-4-yl)-N- phenylacetamide"
+        },
+        {
+          "et": "Bensüülpiperasiin (BZP)",
+          "en": "Benzylpiperazine (BZP)"
+        },
+        {
+          "et": "Bromasolaam (XLI-268); 8-bromo-1-metüül- 6- fenüül-4H-[1,2,4]triasolo[4,3- a][1,4]bensodiasepiin; 8-bromo-6- fenüül-1- metüül-4H-benso[f] [1,2,4]triasolo[4,3-a] [1,4]diasepiin",
+          "en": "Bromazolam (XLI-268); 8-bromo-1-methyl- 6- phenyl-4H-[1,2,4]triazolo[4,3- a][1,4]benzodiazepine; 8-bromo-6- phenyl-1- methyl-4H-benzo[f] [1,2,4]triazolo[4,3-a] [1,4]diazepine"
+        },
+        {
+          "et": "Broolamfetamiin (DOB)",
+          "en": "Brolamfetamine (DOB); (+–)-4-bromo-2,5- dimethoxy-alfa-methylphenethylamine"
+        },
+        {
+          "et": "Brorfiin; 1-[1-[1-(4-bromofenüül)etüül]-4- piperidinüül]-1,3-dihüdro-2H-bensimidasool-2- oon",
+          "en": "Brorphine; 1-[1-[1-(4-bromophenyl)ethyl]-4- piperidinyl]-1,3-dihydro-2H-benzimidazol-2-one"
+        },
+        {
+          "et": "Bufedroon (MABP); α-metüülaminobutürofenoon; 2-(metüülamino)-1-fenüülbutaan-1-oon",
+          "en": "Buphedrone (MABP); α-methylamino- butyrophenone; 2-(methylamino)-1- phenylbutan-1-one"
+        },
+        {
+          "et": "Butüloon (bk-MBDB); 1-(1,3-bensodioksool-5- üül)-2-(metüülamino)butaan-1-oon",
+          "en": "Butylone (bk-MBDB); 1-(1,3-benzodioxol-5-yl)- 2-(methylamino)butan-1-one"
+        },
+        {
+          "et": "CP 47497-C6-homoloog; 5-(1,1- dimetüülheksüül)- 2-[(1R,3S)-3-hüdroksütsükloheksüül]fenool",
+          "en": "CP 47497-C6-homologe; 5-(1,1- dimethylhexyl)- 2-[(1R,3S)-3-hydroxycyclohexyl]phenol"
+        },
+        {
+          "et": "CP 47497-C8-homoloog; 5-(1,1-dimetüüloktüül)- 2-[(1R,3S)-3-hüdroksütsükloheksüül]fenool",
+          "en": "CP 47497-C8-homologe; 5-(1,1-dimethyloctyl)- 2-[(1R,3S)-3-hydroxycyclohexyl]phenol"
+        },
+        {
+          "et": "CP 47497-C9-homoloog; 5-(1,1-dimetüülnonüül)- 2-[(1R,3S)-3-hüdroksütsükloheksüül]fenool",
+          "en": "CP 47497-C9-homologe; 5-(1,1- dimethylnonyl)- 2-[(1R,3S)-3-hydroxycyclohexyl]phenol"
+        },
+        {
+          "et": "CP 47497; 5-(1,1-dimetüülheptüül)- 2-[(1R,3S)-3-hüdroksütsükloheksüül]fenool",
+          "en": "CP 47497; 5-(1,1-dimethylheptyl)- 2-[(1R,3S)-3-hydroxycyclohexyl]phenol"
+        },
+        {
+          "et": "CUMYL-4CN-BINACA; 1-(4-tsüanobutüül)-N-(1- metüül-1-fenüületüül)indasool-3-karboksamiid",
+          "en": "CUMYL-4CN-BINACA; 1-(4-cyanobutyl)-N-(1- methyl-1-phenylethyl)indazole-3-carboxamide"
+        },
+        {
+          "et": "Deksamfetamiin",
+          "en": "Dexamfetamine (dexamphetamine); (+)-alfa- methylphenethylamine"
+        },
+        {
+          "et": "Delta-8-tetrahüdrokannabinool- atsetaat (delta-8- THC-O; delta-8-THC-O atsetaat; Δ8-THC atsetaat) ; 6aR,7,10,10aR-tetrahüdro-6,6,9- trimetüül-3-pentüül-6H-dibenso[b,d]püraan-1-ool- 1-atsetaat",
+          "en": "Delta-8-tetrahydrocannabinol acetate; 6aR,7,10,10aR-tetrahydro-6,6,9-trimethyl-3- pentyl-6H-dibenzo[b,d]pyran-1-ol, 1-acetate"
+        },
+        {
+          "et": "Delta-9-tetrahüdrokannabinool-metüülkarbonaat; metüül-6,6,9-trimetüül-3-pentüül-6a,7,8,10a- tetrahüdro-6H-dibenso[b,d]püraan-1- üülkarbonaat",
+          "en": "Delta-9-tetrahydrocannabinol-methylcarbonate; methyl 6,6,9-trimethyl-3-pentyl-6a,7,8,10a- tetrahydro-6H-dibenzo[b,d]pyran-1-yl carbonate"
+        },
+        {
+          "et": "Delta-9-tetrahüdrokannabutool (THCB; THC-C4; Δ9-THCB); tetrahüdrokannabinool-C4; Δ9- tetrahüdrokannabibutool; butüül-THC",
+          "en": "delta-9-tetrahydrocannabutol (THCB; THC-C4; Δ9-THCB); tetrahydrocannabinol-C4; Δ9- tetrahydrocannabibutol; butyl-THC"
+        },
+        {
+          "et": "Deskloroetisolaam (ETZ-2); 2-etüül-9-metüül-4- fenüül-6H-tieno[3,2-f][1,2,4]triasolo[4,3- a][1,4]diasepiin; etisolaam-2",
+          "en": "Deschloroetizolam (ETZ-2); 2-ethyl-9-methyl-4- phenyl-6H-tieno[3,2-f][1,2,4]triazolo[4,3- a][1,4]diazepin; etizolam-2"
+        },
+        {
+          "et": "Deskloroketamiin (DXE; DCK;2'- Oxo-PCM);2- (metüülamino)-2-fenüültsükloheksanoon; 2- (fenüül)- 2-(metüülamino)-tsükloheksanoon",
+          "en": "Deschloroketamine (DXE; DCK;2'- Oxo-PCM); 2-(methylamino)-2-phenylcyclohexanone; 2- (phenyl)- 2-(methylamino)-cyclohexanone"
+        },
+        {
+          "et": "Desoksüpipradrool (2-DPMP); 2- (difenüülmetüül)piperidiin; 2- benshüdrüülpiperidiin; deoksüpipradrool",
+          "en": "Desoxypipradrol (2-DPMP); 2- (diphenylmethyl)piperidine; 2- benzhydrylpiperidine; deoxypipradrol"
+        },
+        {
+          "et": "Dietüültrüptamiin (DET)",
+          "en": "Diethyltryptamine (DET); 3-[2- (diethylamino)ethyl]indole"
+        },
+        {
+          "et": "Difenidiin; 1-(1,2-difenüületüül)piperidiin",
+          "en": "Diphenidine; 1-(1,2-diphenylethyl)piperidine"
+        },
+        {
+          "et": "Diklasepaam (klorodiasepaam); 7-kloro-5-(2- klorofenüül)-1-metüül-1,3-dihüdro-2H-1,4- bensodiasepiin-2-oon",
+          "en": "Diclazepam (chlorodiazepam); 7-chloro-5-(2- chlorophenyl)-1-methyl-1,3-dihydro-2H-1,4- benzodiazepin-2-one"
+        },
+        {
+          "et": "Dimetoksüamfetamiin (DMA)",
+          "en": "Dimethoxyamfetamine (DMA); (+–)-2,5- dimethoxy-alfa-methylphenethylamine"
+        },
+        {
+          "et": "Dimetoksüfenüülamfetamiin (DOET)",
+          "en": "DOET; 4-ethyl-2,5-dimethoxy-alfa-methyl- phenethylamine"
+        },
+        {
+          "et": "Dimetüülamüülamiin; 1,3-dimetüülamüülamiin; metüülheksaanamiin, 4-metüül-2-heksaanamiin (DMAA; 1,3-DMAA)",
+          "en": "Dimethylamylamine; 1,3-dimethylamylamine; methylhexamine; 4-methyl-2-hexanamine (DMAA; 1,3-DMAA)"
+        },
+        {
+          "et": "Dimetüültrüptamiin (DMT)",
+          "en": "Dimethyltryptamine (DMT); 3-[2- (dimethylamino)ethyl]indole"
+        },
+        {
+          "et": "DMHP",
+          "en": "DMHP; 3-(1,2-dimethylheptyl)-7,8,9,10- tetrahydro-6,6,9-trimethyl-6H- dibenzo[b,d]pyran-1-ol"
+        },
+        {
+          "et": "DMXE (deoksümetoksetamiin; 2-(etüülamino)-2- (3-metüülfenüül)-tsükloheksanoon; 2- (etüülamino)-2-(m-tolüül)tsükloheksanoon)",
+          "en": "DMXE (deoxymethoxetamine; 2-(ethylamino)- 2-(3-methylphenyl)-cyclohexanone; 2- (ethylamino)-2-(m-tolyl)cyclohexanone)"
+        },
+        {
+          "et": "Efenidiin; N-etüül-1,2-difenüületüülamiin (NEDPA; EPE)",
+          "en": "Ephenidine; N-ethyl-1,2-diphenylethylamine (NEDPA; EPE)"
+        },
+        {
+          "et": "Eriline abuurapuu",
+          "en": "Mitragyna speciosa (Kratom)"
+        },
+        {
+          "et": "Esketamiin*",
+          "en": "Esketamine*"
+        },
+        {
+          "et": "Etaseen; etodesnitaseen; 2-[(4- etoksüfenüül)metüül]-N,N-dietüül-1H- bensimidasool-1-etaanamiin; (2-(2-(4- etoksübensüül)-1H-benso[d]imidasool-1-üül)- N,N-dietüületaan-1-amiin; 1-(β- dietüülaminoetüül)-2-(p- etoksübensüül)bensimidasoo",
+          "en": "Etazene; etodesnitazene; 2-[(4- ethoxyphenyl)methyl]-N,N-diethyl-1H- benzimidazole-1-ethanamine; (2-(2-(4- ethoxybenzyl)-1H-benzo[d]imidazol-1-yl)-N,N- diethylethan-1-amine; 1-(β-diethylaminoethyl)- 2-(p-ethoxybenzyl)benzimidazol"
+        },
+        {
+          "et": "Etisolaam; 4-(2-klorofenüül)-2-etüül-9-metüül-6H- tieno[3,2-f][1,2,4]triasolo[4,3-a][1,4]diasepiin",
+          "en": "Etizolam; 4-(2-chlorophenyl)-2-ethyl-9-methyl- 6H-thieno[3,2-f][1,2,4]¬triazolo[4,3- a][1,4]diazepine"
+        },
+        {
+          "et": "Etitsüklidiin (PCE)",
+          "en": "Eticyclidine (PCE); N-ethyl-1- phenylcyclohexylamine"
+        },
+        {
+          "et": "Etonitaseen",
+          "en": "Etonitazene"
+        },
+        {
+          "et": "Etonitasepüün;N-pürrolidinoetonitaseen;2-(4- etoksübensüül)-5-nitro-1-(2-(pürrolidiin-1- üül)etüül)-1H-benso[d]imidasool; 2-[(4- etoksüfenüül)metüül]-5-nitro-1-(2-pürrolidiin-1- üületüül)bensimidasool",
+          "en": "Etonitazepyne; N-pyrrolidino etonitazene; 2-(4- ethoxybenzyl)-5-nitro-1-(2-(pyrrolidin-1- yl)ethyl)-1H-benzo[d]imidazole; 2-[(4- ethoxyphenyl)methyl]-5-nitro-1-(2-pyrrolidin-1- ylethyl)benzimidazole"
+        },
+        {
+          "et": "Etrüptamiin",
+          "en": "Etryptamine"
+        },
+        {
+          "et": "Etüloon (bk-MDEA; MDEC); 2-etüülamino-1-(3,4- metüleendioksüfenüül)propaan-1-oon",
+          "en": "Ethylone (bk-MDEA; MDEC); 2-ethylamino-1- (3,4-methylenedioxyphenyl)propan-1-one"
+        },
+        {
+          "et": "Etüülfenidaat (EP); etüül-2-fenüül-2-(piperidiin-2- üül)atsetaat",
+          "en": "Ethylphenidate (EP); ethyl-2-phenyl-2- (piperidin-2-yl)acetate"
+        },
+        {
+          "et": "Eutüloon; 1-(1,3-bensodioksool-5-üül)-2- (etüülamino)butaan-1-oon; N-etüülbutüloon; bk- EBDB",
+          "en": "Eutylone; 1-(1,3-benzodioxol-5-yl)-2- (ethylamino)butan-1-one; N-ethylbutylone; bk- EBDB"
+        },
+        {
+          "et": "Fenetülliin",
+          "en": "Fenetylline; 7-[2-[(alfa-methylphenethyl)- amino]ethyl]theophylline"
+        },
+        {
+          "et": "Fenmetrasiin",
+          "en": "Phenmetrazine; 3-methyl-2-phenylmorpholine"
+        },
+        {
+          "et": "Fentsüklidiin (PCP)",
+          "en": "Phencyclidine (PCP); 1-(1- phenylcyclohexyl)piperidine"
+        },
+        {
+          "et": "Flualprasolaam; 8-kloro-6-(2-fluorofenüül)-1- metüül-4H-[1,2,4]triasolo[4,3- a][1,4]bensodiasepiin",
+          "en": "Flualprazolam; 8-chloro-6-(2-fluorophenyl)-1- methyl-4H-[1,2,4]triazolo[4,3- a][1,4]benzodiazepine"
+        },
+        {
+          "et": "Flubromasepaam; 7-bromo-5-(2-fluorofenüül)- 1,3-dihüdro-2H-1,4-bensodiasepiin-2-oon",
+          "en": "Flubromazepam; 7-bromo-5-(2-fluorophenyl)- 1,3-dihydro-2H-1,4-benzodiazepin-2-one"
+        },
+        {
+          "et": "Flubromasolaam; 8-bromo-6-(2-fluorofenüül)-1- metüül-4H-[1,2,4]triasolo- [4,3a][1,4]bensodiasepiin",
+          "en": "Flubromazolam; 8-bromo-6-(2-fluorophenyl)-1- methyl-4H-[1,2,4]triazolo- [4,3a][1,4]benzodiazepine"
+        },
+        {
+          "et": "Flunitrasolaam (FNTZ); 6-(2-fluorofenüül)-1- metüül-8-nitro-4H-[1,2,4]triasool[4,3- a][1,4]bensodiasepiin;1-metüül-8-nitro-6-(2- fluorofenüül)-4H-[1,2,4]triasool[4,3- a][1,4]bensodiasepiin",
+          "en": "Flunitrazolam (FNTS); 6-(2-fluorophenyl)-1- methyl-8-nitro-4H-[1,2,4]triazolo[4,3- a][1,4]benzodiazepine;1-methyl-8-nitro-6-(2- fluorophenyl)-4H-[1,2,4]triazolo[4,3- a][1,4]benzodiazepine"
+        },
+        {
+          "et": "Furanüülfentanüül; N-fenüül-N-[1-(2- fenetüül)piperidiin-4-üül]-furaan-2-karboksamiid; 2-furanoüülfentanüül; despropionüülfuranoüülfentanüül",
+          "en": "Furanylfentanyl; N-phenyl-N-[1-(2- phenethyl)piperidin-4-yl]-furan-2-carboxamide; 2-furoanoylfentanyl; despropionyl furanoyl fentanyl"
+        },
+        {
+          "et": "Gammahüdroksüvõihape (GHB)*",
+          "en": "γ-hydroxybutyric acid (GHB)*"
+        },
+        {
+          "et": "Heksahüdrokannabiforool (HHC-P; HHCP); 3- heptüül-6a,7,8,9,10,10a-heksahüdro-6,6,9- trimetüül-6H- dibenso[b,d]püraan-1-ool; 3- heptüül-6,6,9-trimetüül- 6a,7,8,9,10,10a- heksahüdrobenso[c]kromeen-1-ool",
+          "en": "Hexahydrocannabiphorol (HHC-P; HHCP); 3- heptyl-6a,7,8,9,10,10a-hexahydro-6,6,9- trimethyl-6H- dibenzo[b,d]pyran-1-ol; 3-heptyl- 6,6,9-trimethyl-6a,7,8,9,10,10a- hexahydrobenzo[c]chromen-1-ol"
+        },
+        {
+          "et": "Heksahüdrokannabiheksool (HHCH; HHC-H); 3- heksüül-6,6,9-trimetüül-6a,7,8,9,10,10a- heksahüdrobenso[c]kromeen-1-ool",
+          "en": "Hexahydrocannabihexol (HHCH; HHC-H); 3- hexyl-6,6,9-trimethyl-6a,7,8,9,10,10a- hexahydrobenzo[c]chromen-1-ol"
+        },
+        {
+          "et": "Heksahüdrokannabinool (HHC); heksahüdro- CBN; 6a,7,8,9,10,10aheksahüdro-6,6,9-trimetüül- 3-pentüül6H-dibenso[b,d]püraan-1-ool; 6,6,9- trimetüül-3-pentüül 6a,7,8,9,10,10aheksahüdrobenso[c]kromeen-1- ool",
+          "en": "Hexahydrocannabinol (HHC); hexahydro-CBN; 6a,7,8,9,10,10ahexahydro-6,6,9-trimethyl-3- pentyl6H-dibenzo[b,d]pyran-1-ol; 6,6,9- trimethyl-3-pentyl- 6a,7,8,9,10,10ahexahydrobenzo[c]chromen-1- ol"
+        },
+        {
+          "et": "Heksahüdrokannibinoolatsetaat (HHC-OAc; HHCOA; HHC-O; HHCOAc; HHC-O-acetate); atsetüülheksahüdrokannabinool;O- atsetüülheksahüdrokannabinool; (6,6,9-trimetüül- 3-pentüül-6a,7,8,9,10,10a- heksahüdrobenso[c]kromeen-1- üül)atsetaat",
+          "en": "Hexahydrocannabinol acetate (HHC-OAc; HHCOA; HHC-O; HHCOAc; HHC-O-acetate); acetyl-hexahydrocannabinol; O-acetyl- hexahydrocannabinol; (6,6,9-trimethyl-3- pentyl-6a,7,8,9,10,10a- hexahydrobenzo[c]chromen-1-yl) acetate"
+        },
+        {
+          "et": "Heroiin (diatsetüülmorfiin)",
+          "en": "Heroin (diacetylmorphine)"
+        },
+        {
+          "et": "HU-210; (6aR,10aR)-9-(hüdroksümetüül)- 6,6-dimetüül-3-(2-metüüloktaan-2-üül)- 6a,7,10,10a-tetrahüdrobenso[c]kromeen-1-ool",
+          "en": "HU-210; (6aR,10aR)-9-(hydroxymethyl)- 6,6-dimethyl-3-(2-methyloctan-2-yl)- 6a,7,10,10a-tetrahydrobenzo[c]chromen-1-ol"
+        },
+        {
+          "et": "Isotonitaseen; N,N-dietüül-2-[[4-(1- metüületoksü)fenüül]metüül]-5-nitro-1H- bensimidasool-1-etaanamiin",
+          "en": "Isotonitazene; N,N-diethyl-2-[[4-(1- methylethoxy)phenyl]methyl]-5-nitro-1H- benzimidazole-1-ethanamine"
+        },
+        {
+          "et": "JWH-018; Naftaleen-1-üül-(1-pentüülindool-3- üül)metanoon",
+          "en": "JWH-018; Naphthalen-1-yl-(1-pentylindol-3- yl)methanon"
+        },
+        {
+          "et": "JWH-019; Naftaleen-1-üül-(1-heksüülindool-3- üül)metanoon",
+          "en": "JWH-19; Naphthalen-1-yl-(1-hexylindol-3- yl)methanone"
+        },
+        {
+          "et": "JWH-073; Naftaleen-1-üül-(1-butüülindool-3- üül)metanoon",
+          "en": "JWH-073; Naphthalen-1-yl-(1-butylindol-3- yl)methanone"
+        },
+        {
+          "et": "JWH-081; 4-metoksünaftaleen-1-üül-(1- pentüülindool-3-üül)metanoon",
+          "en": "JWH-081; 4-methoxynaphthalen-1-yl-(1- pentylindol-3-yl)methanone"
+        },
+        {
+          "et": "JWH-200; (1-(2-morfoliin-4-üületüül)indool-3-üül)- naftaleen-1-üülmetanoon",
+          "en": "JWH-200; (1-(2-morpholin-4-ylethyl)indol-3-yl)- naphthalen-1-ylmethanone"
+        },
+        {
+          "et": "JWH-210; 4-etüülnaftaleen-1-üül-(1- pentüülindool-3-üül)metanoon;1-pentüül-3-(4- etüül-1-naftoüül)indool",
+          "en": "JWH-210; 4-ethylnaphthalen-1-yl-(1- pentylindol-3-yl)methanone; 1-pentyl-3-(4- ethyl-1-naphthoyl)indole"
+        },
+        {
+          "et": "JWH-250; 2-(2-metoksüfenüül)-1-(1- pentüülindool-3-üül)etanoon",
+          "en": "JWH-250; 2-(2-methoxyphenyl)-1-(1- pentylindol-3-yl)ethanone"
+        },
+        {
+          "et": "JWH-307; (5-(2-fluorofenüül)-1-pentüülpürrool-3- üül)-naftaleen-1-üülmetanool",
+          "en": "JWH-307; (5-(2-fluorophenyl)-1-pentylpyrrol-3- yl)-naphthalen-1-ylmethanone"
+        },
+        {
+          "et": "Kanep (v.a Euroopa Liidu ühtsesse põllukultuuride sordilehte võetud sordid, mille tetrahüdrokannabinooli sisaldus ei ületa 0,3%) ja selle töötlemisproduktid (hašiš, marihuaana, vaik, ekstraktid, tinktuurid jne)",
+          "en": "Cannabis (excl. the varieties listed in the common catalogue of varieties of agricultural plant species, which tetrahydrocannabinol content not exceeding 0,3%) and cannabis resin and extracts and tinctures of cannabis"
+        },
+        {
+          "et": "Katinoon",
+          "en": "Cathinone; (–)-S-2-aminopropiophenone"
+        },
+        {
+          "et": "Ketamiin*",
+          "en": "Ketamine*"
+        },
+        {
+          "et": "Klonasolaam; klonitrasolaam; 6-(2-klorofenüül)-1- metüül-8-nitro-4H-[1,2,4]triasolo[4,3- a][1,4]bensodiasepiin",
+          "en": "Clonazolam; clonitrazolam; 6-(2-chlorophenyl)- 1-methyl-8-nitro-4H-[1,2,4]triazolo[4,3- a][1,4]benzodiazepine"
+        },
+        {
+          "et": "Klonitaseen",
+          "en": "Clonitazene"
+        },
+        {
+          "et": "Klorofenüülpiperasiin",
+          "en": "Chlorophenylpiperazine (CPP)"
+        },
+        {
+          "et": "Kokapõõsa lehed",
+          "en": "Coca leaf"
+        },
+        {
+          "et": "Levamfetamiin",
+          "en": "Levamfetamine (levamphetamine); (–)-(R)-alfa- methylphenethylamine"
+        },
+        {
+          "et": "Levometamfetamiin",
+          "en": "Levomethamphetamine; (–)-N,alfa- dimethylphenethylamine"
+        },
+        {
+          "et": "Luulusalvei",
+          "en": "Salvia divinorum"
+        },
+        {
+          "et": "Lüsergiinhappe dietüülamiid (lüsergiid; LSD; LSD-25)",
+          "en": "Lysergide; 9,10-didehydro-N,N-diethyl-6- methylergoline-8ß-carboxamide (LSD; LSD-25)"
+        },
+        {
+          "et": "MDMB-4en-PINACA(MDMB-PENINACA);metüül- 3,3-dimetüül-2-(1-(pent-4-een-1-üül)-1Hindasool- 3-karboksamido) butanoaat",
+          "en": "MDMB-4en-PINACA(MDMB- PENINACA);methyl 3,3-dimethyl-2-(1-(pent-4- en-1-yl)-1Hindazole-3-carboxamido)butanoate"
+        },
+        {
+          "et": "MDMB-CHMICA; 2-[[1- (tsükloheksüülmetüül)indool-3-karbonüül]amino]- 3,3-dimetüülbutaanhappe metüülester",
+          "en": "MDMB-CHMICA; methyl 2-[[1- (cyclohexylmethyl)indole-3-carbonyl]amino]- 3,3-dimethylbutanoate"
+        },
+        {
+          "et": "MDMB-FUBINACA (FUB-MDMB; MDMB-Bz-F); (S)-2-(1-(4-fluorobensüül)-1H-indasool-3- karboksamido)-3,3-dimetüülbutaanhappe metüülester",
+          "en": "MDMB-FUBINACA (FUB-MDMB; MDMB-Bz- F); methyl (S)-2-(1-(4-fluorobenzyl)-1H- indazole-3-carboxamido)-3,3- dimethylbutanoate"
+        },
+        {
+          "et": "Meklokvaloon",
+          "en": "Mecloqualone; 3-(o-chlorophenyl)-2-methyl- 4(3H)-quinazolinone"
+        },
+        {
+          "et": "Meklonasepaam; (S)-3-metüülklonasepaam; (3S)-5-(2-klorofenüül)-3-metüül-7-nitro-1,3- dihüdro-1,4-bensodiasepiin-2-oon",
+          "en": "Meclonazepam; (S)-3-methylclonazepam; (3S)-5-(2-chlorophenyl)-3-methyl-7-nitro-1,3- dihydro-1,4-benzodiazepin-2-one"
+        },
+        {
+          "et": "Mesembriin; 3a-(3,4-dimetoksüfenüül)-1-metüül- 2,3,4,5,7,7a-heksahüdroindool-6-oon",
+          "en": "Mesembrine; 3a-(3,4-dimethoxyphenyl)-1- methyl-2,3,4,5,7,7a-hexahydroindol-6-one"
+        },
+        {
+          "et": "Meskaliin",
+          "en": "Mescaline; 3,4,5-trimethoxyphenethylamine"
+        },
+        {
+          "et": "Metakvaloon",
+          "en": "Methaqualone; 2-methyl-3-o-tolyl-4(3H)- quinazolinone"
+        },
+        {
+          "et": "Metamfetamiin",
+          "en": "Metamfetamine (methamphetamine); (+)-(S)- N,alfa-dimethylphenethylamine"
+        },
+        {
+          "et": "Metamfetamiini ratsemaat",
+          "en": "Metamfetamine racemate (methamphetamine racemate); (+–)-N,alfa-dimethylphenethylamine"
+        },
+        {
+          "et": "Metiopropamiin (MPA); metüültienüülpropamiin; 1-(tiofeen-2-üül)-2-metüülaminopropaan; N- metüül-1-(tiofeen-2-üül)propaan-2-amiin",
+          "en": "Methiopropamine (MPA); methylthienylpropamine; 1-(thiophen-2-yl)-2- methyl-aminopropane, N-methyl-1-(thiophen-2- yl)propan-2-amine"
+        },
+        {
+          "et": "Metisolaam; desmetüületisolaam; 4-(2- klorofenüül)-2-etüül-6H-tieno[3,2- f][1,2,4]triasolo[4,3-a][1,4]diasepiin",
+          "en": "Metizolam; desmethyletizolam; 4-(2- chlorophenyl)-2-ethyl-6H-thieno[3,2- f][1,2,4]triazolo[4,3-a][1,4]diazepine"
+        },
+        {
+          "et": "Metkatinoon",
+          "en": "Methcathinone"
+        },
+        {
+          "et": "Metoksetamiin (MXE); 2-(3-metoksüfenüül)-2- (etüülamino)tsükloheksanoon",
+          "en": "Methoxetamine (MXE); 2-(3-methoxyphenyl)-2- (ethylamino)cyclohexanone"
+        },
+        {
+          "et": "Metoksfenidiin (MXP); 1-[1-(2-metoksüfenüül)-2- fenüületüül]piperidiin",
+          "en": "Methoxphenidine; 1-[1-(2-methoxyphenyl)-2- phenylethyl]piperidine"
+        },
+        {
+          "et": "Metoksümetüleendioksüamfetamiin (MMDA)",
+          "en": "2-methoxy-alfa-methyl-4,5- (methylenedioxy)phenethylamine (MMDA)"
+        },
+        {
+          "et": "Metonitaseen; N,N-dietüül-2-[2-[(4- metoksüfenüül)metüül]-5-nitro-bensimidasool-1-",
+          "en": "Metonitazene; N,N-diethyl-2-[2-[(4- methoxyphenyl)methyl]-5-nitro-benzimidazol-1-"
+        },
+        {
+          "et": "Metüleendioksümetamfetamiin (MDMA)",
+          "en": "(+–)-N,alfa-dimethyl-3,4- (methylenedioxy)phenethylamine (MDMA)"
+        },
+        {
+          "et": "Metüleendioksüpürovaleroon (MDPV)",
+          "en": "Methylenedioxypyrovalerone (MDPV)"
+        },
+        {
+          "et": "Mitragüniin",
+          "en": "Mytragynine"
+        },
+        {
+          "et": "Modafiendz; N-metüül-4,4’-difluoromodafiniil; 2- {[bis(4-fluorofenüül)metüül]sulfinüül}-N- metüülatseetamiid",
+          "en": "Modafiendz; N-methyl-4,4'-difluoromodafinil; 2- {[bis(4-fluorophenyl)methyl]sulfinyl}-N- methylacetamide"
+        },
+        {
+          "et": "MT-45; 1-tsükloheksüül-4-(1,2- difenüületüül)piperasiin",
+          "en": "MT-45; 1-cyclohexyl-4-(1,2- diphenylethyl)piperazine"
+        },
+        {
+          "et": "N,N-diallüül-5-metoksütrüptamiin (5-MeO-DALT)",
+          "en": "N,N-diallyl-5-methoxytryptamine (5-MeO- DALT)"
+        },
+        {
+          "et": "N-etüül-MDA (MDE) MDEA",
+          "en": "N-ethyl MDA (MDE) MDEA; (+–)-N-ethyl-alfa- methyl-3,4-(methylenedioxy)phenethylamine"
+        },
+        {
+          "et": "N-hüdroksü-MDA",
+          "en": "N-hydroxy MDA; (+–)-N-[alfa-methyl-3,4- (methylenedioxy)-phenethyl]hydroxylamine"
+        },
+        {
+          "et": "N-metüül-1-(3,4-metüleendioksüfenüül)-2- butaanamiin (MDP-2-MB, MBDB)",
+          "en": "N-methyl-1-(3,4-methylenedioxyphenyl)-2- butanamine (MDP-2-MB, MBDB)"
+        },
+        {
+          "et": "Nafüroon; naftüülpürovaleroon; 1-naftaleen-2- üül-2-pürrolidiin-1-üülpentaan-1-oon",
+          "en": "Naphyrone; naphthylpyrovalerone; 1- naphthalen-2-yl-2-pyrrolidin-1-ylpentan-1-one"
+        },
+        {
+          "et": "Nifoksipaam; 5-(2-fluorofenüül)-3-hüdroksü-7- nitro-1H-benso[e][1,4]diasepiin-2(3H)-oon, 3- hüdroksüdesmetüülflunitrasepaam",
+          "en": "Nifoxipam; 5-(2-fluorophenyl)-3-hydroxy-7- nitro-1H-benzo[e][1,4]diazepin-2(3H)-one, 3- hydroxydesmethylflunitrazepam"
+        },
+        {
+          "et": "Okfentanüül; N-(2-fluorofenüül)-2-metoksü-N-[1- (2-fenüületüül)piperidiin-4-üül]atseetamiid",
+          "en": "Ocfentanil; N-(2-fluorophenyl)-2-methoxy-N-[1- (2-phenylethyl)piperidin-4-yl]acetamide"
+        },
+        {
+          "et": "Oopium",
+          "en": "Opium"
+        },
+        {
+          "et": "Paraheksüül",
+          "en": "Parahexyl; 3-hexyl-7,8,9,10-tetrahydro-6,6,9- trimethyl-6H-dibenzo[b,d]pyran-1-ol"
+        },
+        {
+          "et": "Parametoksüamfetamiin (PMA)",
+          "en": "p-methoxy-alfa-methylphenethylamine (PMA)"
+        },
+        {
+          "et": "Parametoksümetüülamfetamiin (PMMA)",
+          "en": "Para-methoxymethylamphetamine (PMMA)"
+        },
+        {
+          "et": "Pentedroon; 1-fenüül-2-(metüülamino)pentaan-1- oon; 2-metüülamino-1-fenüül-1-pentanoon",
+          "en": "Pentedrone; 1-phenyl-2-(methylamino)pentan- 1-one; 2-methylamino-1-phenyl-1-pentanone"
+        },
+        {
+          "et": "Protonitaseen;propoksünitaseen;N,Ndietüül-5- nitro-2-[(4 propoksüfenüül)metüül]- 1Hbensimidasool-1-etaanamiin",
+          "en": "Protonitazene; propoxynitazene;N,N-diethyl-5- nitro-2-[(4-propoxyphenyl)methyl]-1H- benzimidazole-1-ethanamine"
+        },
+        {
+          "et": "Psilotsiin, kaasa arvatud psilotsiini sisaldavad seened",
+          "en": "Psilocine (psilosin); 3-[2- (dimethylamino)ethyl]indol-4-o,l incl. Psilocine containing mushrooms"
+        },
+        {
+          "et": "Psilotsübiin, kaasa arvatud psilotsübiini sisaldavad seened",
+          "en": "Psilocybine; 3-[2(dimethylamino)- ethyl]indol-4-yl dihydrogen phosphate, incl. Psilocybine containing mushrooms"
+        },
+        {
+          "et": "Pürasolaam; 8-bromo-1-metüül-6-fenüül-4H- [1,2,4]triasolo[4,3a][1,4]bensodiasepiin; 1- metüül[1,2,4]triaso-6-(2-püridinüül)-8-bromo-1,4- bensodiasepiin",
+          "en": "Pyrazolam; 8-bromo-1-methyl-6-phenyl-4H- [1,2,4]triazolo[4,3a][1,4]benzodiazepine; 1- methyl[1,2,4]triazo-6-(2-pyridinyl)-8-bromo-1,4- benzodiazepine"
+        },
+        {
+          "et": "RCS-4; (4-metoksüfenüül)(1-pentüül-1H-indool-3- üül)metanoon",
+          "en": "RCS-4; (4-methoxyphenyl)(1-pentyl-1H-indol- 3-yl)methanone"
+        },
+        {
+          "et": "Rolitsükliin (PHP, PCPY)",
+          "en": "Rolicyclidine (PHP, PCPY); 1-(1- phenylcyclohexyl)-pyrrolidine"
+        },
+        {
+          "et": "Salvinoriin A",
+          "en": "Salvinorin A"
+        },
+        {
+          "et": "Sekobarbitaal",
+          "en": "Secobarbital; 5-allyl-5-(1-methylbutyl)- barbituric acid"
+        },
+        {
+          "et": "STP (DOM)",
+          "en": "STP (DOM); 2,5-dimethoxy-alfa,4- dimethylphenethylamine"
+        },
+        {
+          "et": "STS-135; N-(1-adamantüül)-1-(5-fluoropentüül)- 1H-indool-3-karboksamiid",
+          "en": "STS-135; N-(1-adamantyl)-1-(5-fluoropentyl)- 1H-indole-3-carboxamide"
+        },
+        {
+          "et": "TAREN (sisaldab aprofeeni, tsüklodooli, klorosiili ja karbaloliini)",
+          "en": "TAREN (containing aprofen, cyclodol, chlorosil and carbocholine)"
+        },
+        {
+          "et": "Tenamfetamiin (MDA)",
+          "en": "Tenamfetamine (MDA); alfa-methyl-3,4- (methylenedioxy)phenethylamine"
+        },
+        {
+          "et": "Tenotsüklidiin (TCP)",
+          "en": "Tenocyclidine (TCP); [1-(2-thienyl)- cyclohexyl]piperidine"
+        },
+        {
+          "et": "Tetrahüdrokannabidiool (H4CBD; H4-CBD; HCBD; THD;cyclohexyl CBD); 2-(2-isopropüül-5- metüültsükloheksüül)-5-pentüülbenseen-1,3- diool; 2-(5- metüül-2-propaan-2- üültsükloheksüül)-5-pentüülbenseen-1,3-diool",
+          "en": "Tetrahydrocannabidiol (H4CBD; H4-CBD; HCBD; THD;cyclohexyl CBD); 2-(2-isopropyl- 5- methylcyclohexyl)-5-pentylbenzene-1,3- diol;2-(5- methyl-2-propan-2-ylcyclohexyl)- 5- pentylbenzene-1,3-diol"
+        },
+        {
+          "et": "Tetrahüdrokannabiforool (THCP;delta-9- THCP);3-heptüül-6a,7,8,10a-tetrahüdro- 6,6,9- trimetüül-6H- dibenso[b,d]püraan-1-ool;3- heptüül-6,6,9-trimetüül-6a,7,8,10a- tetrahüdrobenso[c]kromeen-1-ool",
+          "en": "Tetrahydrocannabiphorol (THCP;delta-9- THCP); 3- heptyl-6a,7,8,10a-tetrahydro-6,6,9- trimethyl-6H-dibenzo[b,d]pyran-1- ol;3-heptyl- 6,6,9-trimethyl- 6a,7,8,10a- tetrahydrobenzo[c]chromen-1-ol"
+        },
+        {
+          "et": "Tetrahüdrokannabinooli (THC) järgmised isomeerid ja nende stereokeemilised teisendid:  7,8,9,10-tetrahüdro-6,6,9-trimetüül-3-pentüül- 6H-dibenso[b,d]püraan-1-ool;  (9R,10aR)-8,9,10a-tetrahüdro-6-6-9- trimetüül-3-pentüül-6H-dibenso[b,d]püraan-1- ool;",
+          "en": "The following tetrahydrocannabinol (THC) isomers and their stereochemical variants:  7,8,9,10-tetrahydro-6,6,9-trimethyl-3- pentyl-6H-dibenzo[b,d]pyran-1-ol;  (9R,10aR)-8,9,10,10a-tetrahydro-6,6,9- trimethyl-3-pentyl-6Hdibenzo[b,d]pyran-1- ol;"
+        },
+        {
+          "et": "THJ-2201; 1-(5-fluoropentüül)-1H-indasool-3- üül)(naftaleen-1-üül)metanoon",
+          "en": "THJ-2201; 1-(5-fluoropentyl)-1H-indazol-3- yl)(naphthalen-1-yl)methanone"
+        },
+        {
+          "et": "Trimetoksüamfetamiin (TMA)",
+          "en": "(+–)-3,4,5-trimethoxy-alfa- methylphenethylamine (TMA)"
+        },
+        {
+          "et": "Tsipeprool",
+          "en": "Zipeprol"
+        },
+        {
+          "et": "Unimaguna (v.a Euroopa Liidu ühtsesse põllukultuuride sordilehte võetud sordid) ürt, kuprad ja sellest kodusel teel valmistatud produktid",
+          "en": "Opium poppy (excl. the varieties listed in the common catalogue of varieties of agricultural plant species) straw and clandestine products"
+        },
+        {
+          "et": "UR-144; (1-pentüül-1H-indool-3-üül)(2,2,3,3- tetrametüültsüklopropüül)metanoon",
+          "en": "UR-144; (1-pentyl-1H-indol-3-yl)(2,2,3,3- tetramethylcyclopropyl)methanone"
+        },
+        {
+          "et": "W-18; 4-kloro-N-(1-[2-(4-nitrofenüül)etüül]- piperidiin-2-ülideen)benseen-1-sulfoonamiid",
+          "en": "W-18; 4-chloro-N-(1-[2-(4-nitrophenyl)ethyl]- piperidin-2-ylidene)benzene-1-sulfonamide"
+        },
+        {
+          "et": "üül]etaanamiin; 1-[2-(dietüülamino)etüül]-2-(p- metoksübensüül)-5-nitrobensimidasool",
+          "en": "yl]ethanamine; 1-[2-(diethylamino)ethyl]-2-(p- methoxybenzyl)-5-nitrobenzimidazole"
+        },
+        {
+          "et": " (6aR,9R,10aR)-6a,9,10,10a-tetrahüdro- 6,6,9-trimetüül-3-pentüül-6H- dibenso[b,d]püraan1-ool;  (6aR,10aR)-6a,7,10,10a-tetrahüdro-6,6,9- trimetüül-3-pentüül-6H-dibenso[b,d]püraan- 1ool;  6a,7,8,9-tetrahüdro-6,6,9-trimetüül-3-pentüül- 6H-dibenso[b,d]püraan-1-ool;  (6aR,10aR)-6a,7,8,9,10,10a-heksahüdro- 6,6-dimetüül-9-metüleen-3-pentüül- 6Hdibenso[b,d]püraan-1-ool",
+          "en": " (6aR,9R,10aR)-6a,9,10,10a-tetrahydro- 6,6,9-trimethyl-3-pentyl-6H- dibenzo[b,d]pyran-1-ol;  (6aR,10aR)-6a,7,10,10a-tetrahydro-6,6,9- trimethyl-3-pentyl-6Hdibenzo[b,d]pyran-1- ol;  6a,7,8,9-tetrahydro-6,6,9-trimethyl-3- pentyl-6H-dibenzo[b,d]pyran-1-ol;  (6aR,10aR)-6a,7,8,9,10,10a-hexahydro- 6,6-dimethyl-9-methylene3-pentyl-6H- dibenzo[b,d]pyran-1-ol"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "II nimekiri",
+      "description": "Opioidid ja kõrge riskiga narkootikumid",
+      "isGroups": false,
+      "substances": [
+        {
+          "et": "3-Metüülfentanüül",
+          "en": "3-methylfentanyl"
+        },
+        {
+          "et": "3-Metüültiofentanüül",
+          "en": "3-methylthiofentanyl"
+        },
+        {
+          "et": "Ainete eestikeelne nimetus",
+          "en": "Ainete ingliskeelne nimetus"
+        },
+        {
+          "et": "Alfameprodiin",
+          "en": "Alphameprodine"
+        },
+        {
+          "et": "Alfametadool",
+          "en": "Alphamethadol"
+        },
+        {
+          "et": "Alfametüülfentanüül",
+          "en": "Alpha-methylfentanyl"
+        },
+        {
+          "et": "Alfametüültiofentanüül",
+          "en": "Alpha-methylthiofentanyl"
+        },
+        {
+          "et": "Alfaprodiin",
+          "en": "Alphaprodine"
+        },
+        {
+          "et": "Alfatsetüülmetadool (LAAM)",
+          "en": "Alphacetylmethadol (LAAM)"
+        },
+        {
+          "et": "Alfentaniil",
+          "en": "Alfentanil"
+        },
+        {
+          "et": "Allüülprodiin",
+          "en": "Allylprodine"
+        },
+        {
+          "et": "Anileridiin",
+          "en": "Anileridine"
+        },
+        {
+          "et": "Atsetorfiin",
+          "en": "Acetorphine"
+        },
+        {
+          "et": "Atsetüülalfametüülfentanüül",
+          "en": "Acetyl-alpha-methylfentanyl"
+        },
+        {
+          "et": "Atsetüülmetadool",
+          "en": "Acetylmethadol"
+        },
+        {
+          "et": "Beetaatsetüülmetadool",
+          "en": "Betacetylmethadol"
+        },
+        {
+          "et": "Beetahüdroksü-3-metüülfentanüül",
+          "en": "Beta-hydroxy-3-methylfentanyl"
+        },
+        {
+          "et": "Beetahüdroksüfentanüül",
+          "en": "Beta-hydroxyfentanyl"
+        },
+        {
+          "et": "Beetameprodiin",
+          "en": "Betameprodine"
+        },
+        {
+          "et": "Beetametadool",
+          "en": "Betamethadol"
+        },
+        {
+          "et": "Beetaprodiin",
+          "en": "Betaprodine"
+        },
+        {
+          "et": "Bensetidiin",
+          "en": "Benzethidine"
+        },
+        {
+          "et": "Bensüülmorfiin",
+          "en": "Benzylmorphine"
+        },
+        {
+          "et": "Besitramiid",
+          "en": "Bezitramide"
+        },
+        {
+          "et": "Buprenorfiin",
+          "en": "Buprenorphine"
+        },
+        {
+          "et": "Dekstromoramiid",
+          "en": "Dextromoramide"
+        },
+        {
+          "et": "Desomorfiin",
+          "en": "Desomorphine"
+        },
+        {
+          "et": "Diampromiid",
+          "en": "Diampromide"
+        },
+        {
+          "et": "Dietüültiambuteen",
+          "en": "Diethylthiambutene"
+        },
+        {
+          "et": "Difenoksiin",
+          "en": "Difenoxin"
+        },
+        {
+          "et": "Difenoksülaat",
+          "en": "Diphenoxylate"
+        },
+        {
+          "et": "Dihüdroetorfiin",
+          "en": "Dihydroetorphine"
+        },
+        {
+          "et": "Dihüdromorfiin",
+          "en": "Dihydromorphine"
+        },
+        {
+          "et": "Dimefeptanool",
+          "en": "Dimepheptanol"
+        },
+        {
+          "et": "Dimenoksadool",
+          "en": "Dimenoxadol"
+        },
+        {
+          "et": "Dimetüültiambuteen",
+          "en": "Dimethylthiambutene"
+        },
+        {
+          "et": "Dioksafetüülbutüraat",
+          "en": "Dioxaphetyl butyrate"
+        },
+        {
+          "et": "Dipipanoon",
+          "en": "Dipipanone"
+        },
+        {
+          "et": "Drotebanool",
+          "en": "Drotebanol"
+        },
+        {
+          "et": "Ekoniin ja ekoniini estrid ning derivaadid, mida saab muuta ekoniiniks ja kokaiiniks",
+          "en": "Ecgonine, its esters and derivatives, which are convertible to ecgonine and cocaine"
+        },
+        {
+          "et": "Etokseridiin",
+          "en": "Etoxeridine"
+        },
+        {
+          "et": "Etorfiin",
+          "en": "Etorphine"
+        },
+        {
+          "et": "Etüülmetüültiambuteen",
+          "en": "Ethylmethylthiambutene"
+        },
+        {
+          "et": "Fenadoksoon",
+          "en": "Phenadoxone"
+        },
+        {
+          "et": "Fenampromiid",
+          "en": "Phenampromide"
+        },
+        {
+          "et": "Fenasotsiin",
+          "en": "Phenazocine"
+        },
+        {
+          "et": "Fenomorfaan",
+          "en": "Phenomorphan"
+        },
+        {
+          "et": "Fenoperidiin",
+          "en": "Phenoperidine"
+        },
+        {
+          "et": "Fentanüül",
+          "en": "Fentanyl"
+        },
+        {
+          "et": "Flunitrasepaam",
+          "en": "Flunitrazepam"
+        },
+        {
+          "et": "Furetidiin",
+          "en": "Furethidine"
+        },
+        {
+          "et": "Hüdrokodoon",
+          "en": "Hydrocodone"
+        },
+        {
+          "et": "Hüdroksüpetidiin",
+          "en": "Hydroxypethidine"
+        },
+        {
+          "et": "Hüdromorfinool",
+          "en": "Hydromorphinol"
+        },
+        {
+          "et": "Hüdromorfoon",
+          "en": "Hydromorphone"
+        },
+        {
+          "et": "Isometadoon",
+          "en": "Isomethadone"
+        },
+        {
+          "et": "Ketobemidoon",
+          "en": "Ketobemidone"
+        },
+        {
+          "et": "Kodoksiim",
+          "en": "Codoxime"
+        },
+        {
+          "et": "Kokaiin",
+          "en": "Cocaine"
+        },
+        {
+          "et": "Levofenatsüülmorfaan",
+          "en": "Levophenacylmorphan"
+        },
+        {
+          "et": "Levometorfaan",
+          "en": "Levomethorphan"
+        },
+        {
+          "et": "Levomoramiid",
+          "en": "Levomoramide"
+        },
+        {
+          "et": "Levorfanool",
+          "en": "Levorphanol"
+        },
+        {
+          "et": "Lisdeksamfetamiindimesülaat",
+          "en": "Lisdexamfetamine dimesylate"
+        },
+        {
+          "et": "Metadoon",
+          "en": "Methadone"
+        },
+        {
+          "et": "Metadooni vaheprodukt",
+          "en": "Methadone Intermediate"
+        },
+        {
+          "et": "Metasotsiin",
+          "en": "Metazocine"
+        },
+        {
+          "et": "Metopoon",
+          "en": "Metopon"
+        },
+        {
+          "et": "Metüüldesorfiin",
+          "en": "Methyldesorphine"
+        },
+        {
+          "et": "Metüüldihüdromorfiin",
+          "en": "Methyldihydromorphine"
+        },
+        {
+          "et": "Metüülfenidaat",
+          "en": "Methylphenidate; methyl-alfa-phenyl-2- piperidineacetate"
+        },
+        {
+          "et": "Moramiidi vaheprodukt",
+          "en": "Moramide Intermediate"
+        },
+        {
+          "et": "Morferidiin",
+          "en": "Morpheridine"
+        },
+        {
+          "et": "Morfiin",
+          "en": "Morphine"
+        },
+        {
+          "et": "Morfiin-N-oksiid",
+          "en": "Morphine-N-oxide"
+        },
+        {
+          "et": "Morfiinmetobromiid ja teised morfiini viievalentsed lämmastikuderivaadid, millest üks on kodeiin-N- oksiid",
+          "en": "Morphine methobromide and other pentavalent nitrogen morphine derivatives, one of which is Codeine-N-Oxide"
+        },
+        {
+          "et": "MPPP",
+          "en": "MPPP; 1-methyl-4-phenyl-4-piperidinol proprionate (ester)"
+        },
+        {
+          "et": "Mürofiin",
+          "en": "Myrophine"
+        },
+        {
+          "et": "Nikomorfiin",
+          "en": "Nicomorphine"
+        },
+        {
+          "et": "Noratsümetadool",
+          "en": "Noracymethadol"
+        },
+        {
+          "et": "Norlevorfanool",
+          "en": "Norlevorphanol"
+        },
+        {
+          "et": "Normetadoon",
+          "en": "Normethadone"
+        },
+        {
+          "et": "Normorfiin",
+          "en": "Normorphine"
+        },
+        {
+          "et": "Norpipanoon",
+          "en": "Norpipanone"
+        },
+        {
+          "et": "Oksükodoon",
+          "en": "Oxycodone"
+        },
+        {
+          "et": "Oksümorfoon",
+          "en": "Oxymorphone"
+        },
+        {
+          "et": "Oripaviin",
+          "en": "Oripavine"
+        },
+        {
+          "et": "Parafluorfentanüül",
+          "en": "Para-fluorofentanyl"
+        },
+        {
+          "et": "PEPAP",
+          "en": "PEPAP; 1-phenethyl-4-phenyl-4-piperidinol acetate (ester)"
+        },
+        {
+          "et": "Petidiin",
+          "en": "Pethidine"
+        },
+        {
+          "et": "Petidiini vaheprodukt A",
+          "en": "Pethidine-Intermediate A"
+        },
+        {
+          "et": "Petidiini vaheprodukt B",
+          "en": "Pethidine-Intermediate B"
+        },
+        {
+          "et": "Petidiini vaheprodukt C",
+          "en": "Pethidine-Intermediate C"
+        },
+        {
+          "et": "Piminodiin",
+          "en": "Piminodine"
+        },
+        {
+          "et": "Piritramiid",
+          "en": "Piritramide"
+        },
+        {
+          "et": "Proheptasiin",
+          "en": "Proheptazine"
+        },
+        {
+          "et": "Properidiin",
+          "en": "Properidine"
+        },
+        {
+          "et": "Ratsemetorfaan",
+          "en": "Racemethorphan"
+        },
+        {
+          "et": "Ratsemoramiid",
+          "en": "Racemoramide"
+        },
+        {
+          "et": "Ratsemorfaan",
+          "en": "Racemorphan"
+        },
+        {
+          "et": "Remifentaniil",
+          "en": "Remifentanil"
+        },
+        {
+          "et": "Sufentaniil",
+          "en": "Sufentanil"
+        },
+        {
+          "et": "Tapentadool",
+          "en": "Tapentadol"
+        },
+        {
+          "et": "Tebaiin",
+          "en": "Thebaine"
+        },
+        {
+          "et": "Tebakoon",
+          "en": "Thebacon"
+        },
+        {
+          "et": "Tilidiin",
+          "en": "Tilidine"
+        },
+        {
+          "et": "Tiofentanüül",
+          "en": "Thiofentanyl"
+        },
+        {
+          "et": "Trimeperidiin",
+          "en": "Trimeperidine"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "III nimekiri",
+      "description": "Kontrollitud ained piiratud meditsiinilise kasutusega",
+      "isGroups": false,
+      "substances": [
+        {
+          "et": "Ainete eestikeelne nimetus",
+          "en": "Ainete ingliskeelne nimetus"
+        },
+        {
+          "et": "Amobarbitaal",
+          "en": "Amobarbital"
+        },
+        {
+          "et": "Atsetüüldihüdrokodeiin",
+          "en": "Acetyldihydrocodeine"
+        },
+        {
+          "et": "Butaalbitaal",
+          "en": "Butalbital"
+        },
+        {
+          "et": "Butorfanool",
+          "en": "Butorphanol"
+        },
+        {
+          "et": "Dekstropropoksüfeen",
+          "en": "Dextropropoxyphene"
+        },
+        {
+          "et": "Delta-9-tetrahüdrokannabinool ja selle stereokeemilised teisendid (sh dronabinool, (6aR,10aR)-6a,7,8,10a-tetrahüdro-6,6,9-trimetüül- 3-pentüül-6H-dibenso[b,d]püraan-1ool)",
+          "en": "Delta-9-tetrahydrocannabinol and its stereochemical variants (incl. dronabinol, (6aR,10aR)-6a,7,8,10a-tetrahydro-6,6,9- trimethyl-3-pentyl-6H-dibenzo[b,d]pyran-1-ol)"
+        },
+        {
+          "et": "Dihüdrokodeiin",
+          "en": "Dihydrocodeine"
+        },
+        {
+          "et": "Etüülmorfiin",
+          "en": "Ethylmorphine"
+        },
+        {
+          "et": "Folkodiin",
+          "en": "Pholcodine"
+        },
+        {
+          "et": "Glutetimiid",
+          "en": "Glutethimide"
+        },
+        {
+          "et": "Katiin ((+)-norpseudoefedriin)",
+          "en": "Cathine ((+)-norpseudo-ephedrine)"
+        },
+        {
+          "et": "Kodeiin",
+          "en": "Codeine"
+        },
+        {
+          "et": "Nikodikodiin",
+          "en": "Nicodicodine"
+        },
+        {
+          "et": "Nikokodiin",
+          "en": "Nicocodine"
+        },
+        {
+          "et": "Norkodeiin",
+          "en": "Norcodeine"
+        },
+        {
+          "et": "Pentasotsiin",
+          "en": "Pentazocine"
+        },
+        {
+          "et": "Pentobarbitaal",
+          "en": "Pentobarbital"
+        },
+        {
+          "et": "Propiraam",
+          "en": "Propiram"
+        },
+        {
+          "et": "Tramadool",
+          "en": "Tramadol"
+        },
+        {
+          "et": "Tsüklobarbitaal",
+          "en": "Cyclobarbital"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "IV nimekiri",
+      "description": "Psühhotroopsed ained meditsiinilise kasutusega",
+      "isGroups": false,
+      "substances": [
+        {
+          "et": "Ainete eestikeelne nimetus",
+          "en": "Ainete ingliskeelne nimetus"
+        },
+        {
+          "et": "Allobarbitaal",
+          "en": "Allobarbital"
+        },
+        {
+          "et": "Alprasolaam",
+          "en": "Alprazolam"
+        },
+        {
+          "et": "Amfepramoon (dietüülpropioon)",
+          "en": "Amfepramone (diethylpropion)"
+        },
+        {
+          "et": "Aminoreks",
+          "en": "Aminorex"
+        },
+        {
+          "et": "Aprobarbitaal",
+          "en": "Aprobarbital"
+        },
+        {
+          "et": "Barbitaal",
+          "en": "Barbital"
+        },
+        {
+          "et": "Bensfetamiin",
+          "en": "Benzfetamine (benzphetamine)"
+        },
+        {
+          "et": "Bromasepaam",
+          "en": "Bromazepam"
+        },
+        {
+          "et": "Brotisolaam",
+          "en": "Brotizolam"
+        },
+        {
+          "et": "Butobarbitaal",
+          "en": "Butobarbital"
+        },
+        {
+          "et": "Delorasepaam",
+          "en": "Delorazepam"
+        },
+        {
+          "et": "Diasepaam",
+          "en": "Diazepam"
+        },
+        {
+          "et": "Dikaaliumklorasepaat",
+          "en": "Clorazepate dipotassium"
+        },
+        {
+          "et": "Esketamiin",
+          "en": "Esketamine"
+        },
+        {
+          "et": "Estasolaam",
+          "en": "Estazolam"
+        },
+        {
+          "et": "Eszopikloon",
+          "en": "Eszopiclone"
+        },
+        {
+          "et": "Etinamaat",
+          "en": "Ethinamate"
+        },
+        {
+          "et": "Etkloorvüloon",
+          "en": "Ethchlorvynol"
+        },
+        {
+          "et": "Etüül-loflasepaat",
+          "en": "Ethyl loflazepate"
+        },
+        {
+          "et": "Etüülamfetamiin (N-etüülamfetamiin)",
+          "en": "Etilamfetamine (N-ethylamphetamine)"
+        },
+        {
+          "et": "Fenasepaam",
+          "en": "Phenazepam"
+        },
+        {
+          "et": "Fendimetrasiin",
+          "en": "Phendimetrazine"
+        },
+        {
+          "et": "Fenkamfamiin",
+          "en": "Fencamfamin"
+        },
+        {
+          "et": "Fenobarbitaal",
+          "en": "Phenobarbital"
+        },
+        {
+          "et": "Fenproporeks",
+          "en": "Fenproporex"
+        },
+        {
+          "et": "Fentermiin",
+          "en": "Phentermine"
+        },
+        {
+          "et": "Fludiasepaam",
+          "en": "Fludiazepam"
+        },
+        {
+          "et": "Flurasepaam",
+          "en": "Flurazepam"
+        },
+        {
+          "et": "Halasepaam",
+          "en": "Halazepam"
+        },
+        {
+          "et": "Haloksasolaam",
+          "en": "Haloxazolam"
+        },
+        {
+          "et": "Heksobarbitaal",
+          "en": "Hexobarbital"
+        },
+        {
+          "et": "Heptabarbitaal",
+          "en": "Heptabarbital"
+        },
+        {
+          "et": "Kamasepaam",
+          "en": "Camazepam"
+        },
+        {
+          "et": "Karisoprodool",
+          "en": "Carisoprodol"
+        },
+        {
+          "et": "Ketamiin",
+          "en": "Ketamine"
+        },
+        {
+          "et": "Ketasolaam",
+          "en": "Ketazolam"
+        },
+        {
+          "et": "Klobasaam",
+          "en": "Clobazam"
+        },
+        {
+          "et": "Kloksasolaam",
+          "en": "Cloxazolam"
+        },
+        {
+          "et": "Klonasepaam",
+          "en": "Clonazepam"
+        },
+        {
+          "et": "Kloordiasepoksiid",
+          "en": "Chlordiazepoxide"
+        },
+        {
+          "et": "Klorasepaat",
+          "en": "Clorazepate"
+        },
+        {
+          "et": "Klotiasepaam",
+          "en": "Clotiazepam"
+        },
+        {
+          "et": "Lefetamiin (SPA)",
+          "en": "Lefetamine (SPA)"
+        },
+        {
+          "et": "Loprasolaam",
+          "en": "Loprazolam"
+        },
+        {
+          "et": "Lorasepaam",
+          "en": "Lorazepam"
+        },
+        {
+          "et": "Lormetasepaam",
+          "en": "Lormetazepam"
+        },
+        {
+          "et": "Masindool",
+          "en": "Mazindol"
+        },
+        {
+          "et": "Medasepaam",
+          "en": "Medazepam"
+        },
+        {
+          "et": "Mefenoreks",
+          "en": "Mefenorex"
+        },
+        {
+          "et": "Meprobamaat",
+          "en": "Meprobamate"
+        },
+        {
+          "et": "Mesokarb",
+          "en": "Mesocarb"
+        },
+        {
+          "et": "Metoheksitaal",
+          "en": "Methohexital"
+        },
+        {
+          "et": "Metüprüloon",
+          "en": "Methyprylon"
+        },
+        {
+          "et": "Metüülfenobarbitaal",
+          "en": "Methylphenobarbital"
+        },
+        {
+          "et": "Midasolaam",
+          "en": "Midazolam"
+        },
+        {
+          "et": "Modafiniil",
+          "en": "Modafinil"
+        },
+        {
+          "et": "Naatriumoksübaat",
+          "en": "Sodium oxybate"
+        },
+        {
+          "et": "Nimetasepaam",
+          "en": "Nimetazepam"
+        },
+        {
+          "et": "Nitrasepaam",
+          "en": "Nitrazepam"
+        },
+        {
+          "et": "Nordasepaam",
+          "en": "Nordazepam"
+        },
+        {
+          "et": "Oksasepaam",
+          "en": "Oxazepam"
+        },
+        {
+          "et": "Oksasolaam",
+          "en": "Oxazolam"
+        },
+        {
+          "et": "Pemoliin",
+          "en": "Pemoline"
+        },
+        {
+          "et": "Pinasepaam",
+          "en": "Pinazepam"
+        },
+        {
+          "et": "Pipradrool",
+          "en": "Pipradrol"
+        },
+        {
+          "et": "Prasepaam",
+          "en": "Prazepam"
+        },
+        {
+          "et": "Propüülheksedriin",
+          "en": "Propylhexedrine"
+        },
+        {
+          "et": "Pürovaleroon",
+          "en": "Pyrovalerone"
+        },
+        {
+          "et": "Sekbutabarbitaal",
+          "en": "Secbutabarbital"
+        },
+        {
+          "et": "Temasepaam",
+          "en": "Temazepam"
+        },
+        {
+          "et": "Tetrasepaam",
+          "en": "Tetrazepam"
+        },
+        {
+          "et": "Tiopentaal",
+          "en": "Thiopentaal"
+        },
+        {
+          "et": "Triasolaam",
+          "en": "Triazolam"
+        },
+        {
+          "et": "Vinbarbitaal",
+          "en": "Vinbarbital"
+        },
+        {
+          "et": "Vinüülbitaal",
+          "en": "Vinylbital"
+        },
+        {
+          "et": "Zolpideem",
+          "en": "Zolpidem"
+        },
+        {
+          "et": "Zopikloon",
+          "en": "Zopiclone"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "V nimekiri",
+      "description": "Lähteained ja muud kontrollitud ained",
+      "isGroups": false,
+      "substances": [
+        {
+          "et": "1,4-butaandiool (1,4-BD)",
+          "en": "1,4-butanediol (1,4-BD)"
+        },
+        {
+          "et": "Ainete eestikeelne nimetus",
+          "en": "Ainete ingliskeelne nimetus"
+        },
+        {
+          "et": "Dilämmastikoksiid (N2O)",
+          "en": "Dilämmastikoksiid (N2O)"
+        },
+        {
+          "et": "Gammabutürolaktoon (GBL)",
+          "en": "Gamma-butyrolactone (GBL)"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "VI nimekiri",
+      "description": "Kontrollitud ainerühmad (mitte üksikained)",
+      "isGroups": true,
+      "substances": [
+        {
+          "et": "Adamantoüülindoolid",
+          "en": "Adamantoylindoles"
+        },
+        {
+          "et": "Bensoüülindoolid",
+          "en": "Benzoylindoles"
+        },
+        {
+          "et": "Fenetüülamiinid",
+          "en": "Phenethylamines"
+        },
+        {
+          "et": "Fentanüülid*",
+          "en": "Fentanyl derivates*"
+        },
+        {
+          "et": "Fenüülatsetüülindoolid",
+          "en": "Phenethylacetylindoles"
+        },
+        {
+          "et": "Indasoolkarboksamiidid",
+          "en": "Indazolecarboxamides"
+        },
+        {
+          "et": "Indoolkarboksamiidid",
+          "en": "Indolecarboxamides"
+        },
+        {
+          "et": "Katinoonid",
+          "en": "Cathinones"
+        },
+        {
+          "et": "Naftoüülindoolid",
+          "en": "Naphthoylindoles"
+        },
+        {
+          "et": "Naftoüülpürroolid",
+          "en": "Naphtoylpyrroles"
+        },
+        {
+          "et": "Naftüülmetüleenindeenid",
+          "en": "Naphthylmethyleneindenes"
+        },
+        {
+          "et": "Naftüülmetüülindoolid",
+          "en": "Naphtylmethylindoles"
+        },
+        {
+          "et": "Nitaseenid",
+          "en": "Nitazenes"
+        },
+        {
+          "et": "Trüptamiinid",
+          "en": "Tryptamines"
+        },
+        {
+          "et": "Tsükloheksüülfenoolid",
+          "en": "Cyclohexylphenoles"
+        },
+        {
+          "et": "Tsüklopropüülkarbonüülindoolid",
+          "en": "Cyclopropylcarbonylindoles"
+        }
+      ]
+    }
+  ]
+}
