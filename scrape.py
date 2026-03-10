@@ -106,21 +106,67 @@ def find_lisa1_url():
         )
 
     print("  Leitud Lisa 1 URL: " + finder.found_url)
-    return finder.found_url
+    return finder.found_url, html
+
+def find_effective_date(html):
+    """
+    Leiab redaktsiooni joustumise kuupäeva akti HTML-ist.
+    Otsib mustrit: <th>Redaktsiooni joustumise kp:</th><td>KP</td>
+    Tagastab kuupäeva stringina (nt "23.02.2026") voi None.
+    """
+    from html.parser import HTMLParser
+
+    class DateFinder(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.found_date = None
+            self._next_td = False
+            self._in_td = False
+
+        def handle_starttag(self, tag, attrs):
+            if tag == 'td' and self._next_td:
+                self._in_td = True
+
+        def handle_data(self, data):
+            stripped = data.strip()
+            if stripped == 'Redaktsiooni jõustumise kp:':
+                self._next_td = True
+            elif self._in_td and stripped:
+                self.found_date = stripped
+                self._in_td = False
+                self._next_td = False
+
+        def handle_endtag(self, tag):
+            if tag == 'td':
+                self._in_td = False
+
+    finder = DateFinder()
+    finder.feed(html)
+    return finder.found_date
+
 
 def load_pdf_bytes(url=None, local_path=None):
     """Laadib PDF-i. Tagastab (tegelik_url, pdf_bytes)."""
     if local_path:
         print("Loen kohalikku faili: " + local_path)
-        return local_path, Path(local_path).read_bytes()
+        return local_path, Path(local_path).read_bytes(), None
+    effective_date = None
     if url is None:
-        url = find_lisa1_url()
+        url, act_html = find_lisa1_url()
+        effective_date = find_effective_date(act_html)
+        if effective_date:
+            print("  Redaktsiooni joustumise kp: " + effective_date)
+        else:
+            raise RuntimeError(
+                "Redaktsiooni joustumise kuupaeva ei leitud lehelt " + ACT_URL + "\n"
+                "Kontrolli, kas lehe struktuur on muutunud."
+            )
     print("Laadin alla: " + url)
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, timeout=60) as r:
         data = r.read()
     print("Allalaaditud: " + str(len(data)) + " baiti")
-    return url, data
+    return url, data, effective_date
 
 # ── PDF parsimine ─────────────────────────────────────────────────────────────
 
@@ -234,11 +280,12 @@ def clean_results(result):
 
 # ── JSON valjund ──────────────────────────────────────────────────────────────
 
-def build_json(result, pdf_url):
+def build_json(result, pdf_url, effective_date=None):
     return {
         "meta": {
             "source": pdf_url,
             "act": ACT_URL,
+            "effective_date": effective_date,
             "generated": __import__("datetime").datetime.now().isoformat(timespec="seconds"),
         },
         "lists": [
@@ -263,7 +310,7 @@ def main():
     args = parser.parse_args()
 
     try:
-        actual_url, pdf_bytes = load_pdf_bytes(url=args.url, local_path=args.pdf)
+        actual_url, pdf_bytes, effective_date = load_pdf_bytes(url=args.url, local_path=args.pdf)
     except Exception as e:
         sys.exit("Viga PDF laadimisel: " + str(e))
 
@@ -284,7 +331,7 @@ def main():
         print("\n" + msg)
         sys.exit(1)
 
-    output = build_json(result, actual_url)
+    output = build_json(result, actual_url, effective_date)
     out_path = Path(args.out)
     tmp_path = out_path.with_suffix(".tmp")
     try:
