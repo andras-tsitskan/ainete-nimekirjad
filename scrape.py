@@ -1,18 +1,8 @@
 #!/usr/bin/env python3
 """
 Narkootiliste ainete nimekirja kraapija
----------------------------------------
-Laadib alla sotsiaalministri maaruse lisa 1 PDF Riigi Teatajast,
-parsib nimekirjad I-VI ja salvestab tulemuse data.json faili.
-
-Kasutamine:
-    python3 scrape.py
-    python3 scrape.py --pdf /tee/failini.pdf
-    python3 scrape.py --url https://...
-    python3 scrape.py --out minu_andmed.json
-
-Soltuvused:
-    pip install pdfplumber
+Kasutamine: python3 scrape.py [--pdf fail.pdf] [--url URL] [--out data.json]
+Soltuvused: pip install pdfplumber
 """
 
 import argparse
@@ -29,11 +19,9 @@ except ImportError:
     sys.exit("Viga: pdfplumber pole paigaldatud. Kaivita: pip install pdfplumber")
 
 # ── URL-id ────────────────────────────────────────────────────────────────────
-# Akti pysi-URL Riigi Teatajas -- see ei muutu kunagi.
 ACT_URL = "https://www.riigiteataja.ee/akt/128022023013?leiaKehtiv"
 BASE_URL = "https://www.riigiteataja.ee"
-# Vaikimisi PDF URL -- kasutatakse ainult siis, kui automaatne leidmine ebaonnestub.
-DEFAULT_URL = "https://www.riigiteataja.ee/aktilisa/1300/7202/5008/SOM_m31_lisa1.pdf"
+# Ei ole vaikimisi URL-i -- kui automaatne leidmine ebaonnestub, skript katkestab.
 
 LIST_TITLES = {1: "I nimekiri", 2: "II nimekiri", 3: "III nimekiri",
                4: "IV nimekiri", 5: "V nimekiri", 6: "VI nimekiri"}
@@ -56,55 +44,42 @@ def _fetch_text(url, timeout=30):
 
 def find_lisa1_url():
     """
-    Leiab Lisa 1 PDF URL-i Riigi Teataja akti lehelt automaatselt.
-    Tagastab leitud absoluutse URL-i, voi DEFAULT_URL kui leidmine ebaonnestub.
+    Leiab Lisa 1 PDF URL-i Riigi Teataja akti lehelt.
+    Otsib tapselt mustrit <a href="...">Lisa 1</a>.
+    Annab erindi, kui URL-i ei leita -- ei ole tagavaraplaani.
     """
-    print(f"Otsin Lisa 1 URL-i: {ACT_URL}")
+    print("Otsin Lisa 1 URL-i: " + ACT_URL)
     try:
         html = _fetch_text(ACT_URL)
     except Exception as e:
-        print(f"  Hoiatus: akti lehe laadimine ebaonnestus ({e}), kasutan vaikimisi URL-i.")
-        return DEFAULT_URL
+        raise RuntimeError("Akti lehe laadimine ebaonnestus: " + str(e))
 
-    # Otsi href="...aktilisa...pdf" mis on lahedal tekstile "Lisa 1"
-    # Muster 1: href enne "Lisa 1" teksti
     m = re.search(
-        r'href=["\']([^"\']*aktilisa[^"\']*\.pdf)["\'][^>]*>[^<]*Lisa\s*1\b',
-        html, re.IGNORECASE | re.DOTALL,
+        r'<a\s[^>]*href=["\']([ ^"\']+)["\'\'][^>]*>\s*Lisa 1\s*</a>',
+        html, re.IGNORECASE,
     )
-    if m:
-        path = m.group(1)
-        url = path if path.startswith("http") else BASE_URL + path
-        print(f"  Leitud Lisa 1 URL: {url}")
-        return url
+    if not m:
+        raise RuntimeError(
+            "Lisa 1 linki ei leitud lehelt " + ACT_URL + "\n"
+            "Kontrolli, kas lehe struktuur on muutunud."
+        )
 
-    # Muster 2: "Lisa 1" tekst enne href-i (mone lehe puhul)
-    m2 = re.search(
-        r'Lisa\s*1\b[^<]{0,200}href=["\']([^"\']*aktilisa[^"\']*\.pdf)["\']',
-        html, re.IGNORECASE | re.DOTALL,
-    )
-    if m2:
-        path = m2.group(1)
-        url = path if path.startswith("http") else BASE_URL + path
-        print(f"  Leitud Lisa 1 URL (muster 2): {url}")
-        return url
-
-    print("  Hoiatus: Lisa 1 URL-i ei leitud, kasutan vaikimisi URL-i.")
-    return DEFAULT_URL
-
+    url = m.group(1).split("#")[0]
+    print("  Leitud Lisa 1 URL: " + url)
+    return url
 
 def load_pdf_bytes(url=None, local_path=None):
     """Laadib PDF-i. Tagastab (tegelik_url, pdf_bytes)."""
     if local_path:
-        print(f"Loen kohalikku faili: {local_path}")
+        print("Loen kohalikku faili: " + local_path)
         return local_path, Path(local_path).read_bytes()
     if url is None:
         url = find_lisa1_url()
-    print(f"Laadin alla: {url}")
+    print("Laadin alla: " + url)
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, timeout=60) as r:
         data = r.read()
-    print(f"Allalaaditud: {len(data):,} baiti")
+    print("Allalaaditud: " + str(len(data)) + " baiti")
     return url, data
 
 # ── PDF parsimine ─────────────────────────────────────────────────────────────
@@ -150,7 +125,6 @@ def _process_row(row, current_list, result):
     padded = cells + ["", ""]
     et_cell, en_cell = padded[0], padded[1]
 
-    # Jatku-rida: tapselt yks lahter on tyhja
     if et_cell == "" and en_cell != "":
         if result[current_list]:
             result[current_list][-1][1] = (result[current_list][-1][1] + " " + en_cell).strip()
@@ -173,11 +147,10 @@ def extract_rows_from_pdf(pdf_bytes):
     current_list = None
 
     with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
-        print(f"Lehekylgi: {len(pdf.pages)}")
+        print("Lehekylgi: " + str(len(pdf.pages)))
         for page in pdf.pages:
             events = []
 
-            # Pahised lehekylje tekstist koos y-koordinaadiga
             lines_by_top = {}
             for w in page.extract_words():
                 top = round(w["top"])
@@ -187,7 +160,6 @@ def extract_rows_from_pdf(pdf_bytes):
                 if det is not None:
                     events.append((top, "header", det))
 
-            # Tabeliread koos y-koordinaadiga
             for tbl in page.find_tables():
                 tbl_top = tbl.bbox[1]
                 for row_idx, row in enumerate(tbl.extract()):
@@ -253,7 +225,7 @@ def main():
     try:
         actual_url, pdf_bytes = load_pdf_bytes(url=args.url, local_path=args.pdf)
     except Exception as e:
-        sys.exit(f"Viga PDF laadimisel: {e}")
+        sys.exit("Viga PDF laadimisel: " + str(e))
 
     print("Parsin PDF-i...")
     raw = extract_rows_from_pdf(pdf_bytes)
@@ -262,21 +234,16 @@ def main():
     total = sum(len(v) for v in result.values())
     for num in range(1, 7):
         unit = "ryhma" if num == 6 else "ainet"
-        print(f"  Nimekiri {num}: {len(result[num])} {unit}")
-    print(f"  Kokku: {total}")
+        print("  Nimekiri " + str(num) + ": " + str(len(result[num])) + " " + unit)
+    print("  Kokku: " + str(total))
 
-    # Tyhjade nimekirjade kontroll -- exit-kood 1 paneb GitHub Actions saatma e-posti.
     empty = [n for n in range(1, 7) if not result[n]]
     if empty:
-        msg = (
-            f"VIGA: Tyhjade nimekirjad nummerdus: {empty}\n"
-            "PDF struktuur on ilmselt muutunud. Kontrolli skripti."
-        )
-        print(f"\n{msg}", file=sys.stderr)
-        print(f"\n{msg}")
+        msg = "VIGA: Tyhjad nimekirjad: " + str(empty) + "\nPDF struktuur on ilmselt muutunud."
+        print("\n" + msg, file=sys.stderr)
+        print("\n" + msg)
         sys.exit(1)
 
-    # Salvesta
     output = build_json(result, actual_url)
     out_path = Path(args.out)
     tmp_path = out_path.with_suffix(".tmp")
@@ -287,9 +254,9 @@ def main():
         alt_path = out_path.with_stem(out_path.stem + "_new")
         tmp_path.rename(alt_path)
         out_path = alt_path
-        print(f"\nEi saanud kirjutada '{args.out}' (fail on avatud?). Salvestatud: {alt_path}")
+        print("Ei saanud kirjutada '" + args.out + "'. Salvestatud: " + str(alt_path))
 
-    print(f"\nSalvestatud: {out_path} ({out_path.stat().st_size:,} baiti)")
+    print("\nSalvestatud: " + str(out_path) + " (" + str(out_path.stat().st_size) + " baiti)")
 
 
 if __name__ == "__main__":
