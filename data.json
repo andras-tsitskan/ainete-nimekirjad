@@ -1,13 +1,14 @@
 {
   "meta": {
     "source": "https://www.riigiteataja.ee/aktilisa/1300/7202/5008/SOM_m31_lisa1.pdf",
-    "generated": "2026-03-06T11:46:00"
+    "act": "https://www.riigiteataja.ee/akt/128022023013?leiaKehtiv",
+    "generated": "2026-03-10T07:39:41"
   },
   "lists": [
     {
       "id": 1,
       "title": "I nimekiri",
-      "description": "Kõige rangemalt piiritletud ained, meditsiiniline kasutus puudub",
+      "description": "Koige rangemalt piiritletud ained, meditsiiniline kasutus puudub",
       "isGroups": false,
       "substances": [
         {
@@ -863,7 +864,7 @@
     {
       "id": 2,
       "title": "II nimekiri",
-      "description": "Opioidid ja kõrge riskiga narkootikumid",
+      "description": "Opioidid ja korge riskiga narkootikumid",
       "isGroups": false,
       "substances": [
         {
@@ -1395,7 +1396,7 @@
     {
       "id": 4,
       "title": "IV nimekiri",
-      "description": "Psühhotroopsed ained meditsiinilise kasutusega",
+      "description": "Psyhhotroopsed ained meditsiinilise kasutusega",
       "isGroups": false,
       "substances": [
         {
@@ -1715,7 +1716,7 @@
     {
       "id": 5,
       "title": "V nimekiri",
-      "description": "Lähteained ja muud kontrollitud ained",
+      "description": "Lahteained ja muud kontrollitud ained",
       "isGroups": false,
       "substances": [
         {
@@ -1739,12 +1740,16 @@
     {
       "id": 6,
       "title": "VI nimekiri",
-      "description": "Kontrollitud ainerühmad (mitte üksikained)",
+      "description": "Kontrollitud ainegruhmad (mitte yksikained)",
       "isGroups": true,
       "substances": [
         {
           "et": "Adamantoüülindoolid",
           "en": "Adamantoylindoles"
+        },
+        {
+          "et": "Ainerühmade eestikeelne nimetus",
+          "en": "Ainerühmade ingliskeelne nimetus"
         },
         {
           "et": "Bensoüülindoolid",
