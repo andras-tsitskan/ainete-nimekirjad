@@ -455,6 +455,9 @@
       <div class="stat"><div class="stat-dot" style="background:var(--list6)"></div>VI nimekiri <strong id="c6">—</strong></div>
       <div id="result-count"></div>
     </div>
+    <div class="stat" style="margin-top:4px;">
+      Redaktsiooni jõustumise kp: <strong id="effective-date">—</strong>
+    </div>
   </div>
   <div class="search-center">
     <div class="search-wrap">
@@ -609,7 +612,6 @@
 </main>
 
 <footer>
-  Allikas: <a id="source-link" href="https://www.riigiteataja.ee/aktilisa/1300/7202/5008/SOM_m31_lisa1.pdf" target="_blank">sotsiaalministri määrus nr 31 lisa 1</a> (<span id="source-date">23.07.2025</span>) &nbsp;·&nbsp;
   Narkootiliste ja psühhotroopsete ainete nimekirjad I–VI &nbsp;·&nbsp;
   See veebileht on informatiivse eesmärgiga.
 </footer>
@@ -640,12 +642,9 @@ function renderData(jsonData) {
     const sourceLink = document.getElementById('source-link');
     if (sourceLink) sourceLink.href = meta.source;
   }
-  if (meta.generated) {
-    const genEl = document.getElementById('source-date');
-    if (genEl) {
-      const d = new Date(meta.generated);
-      genEl.textContent = d.toLocaleDateString('et-EE');
-    }
+  if (meta.effective_date) {
+    const effEl = document.getElementById('effective-date');
+    if (effEl) effEl.textContent = meta.effective_date;
   }
 
   // Build DATA map: {1: [{et, en}, ...], ...}
