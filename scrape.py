@@ -45,8 +45,8 @@ def _fetch_text(url, timeout=30):
 def find_lisa1_url():
     """
     Leiab Lisa 1 PDF URL-i Riigi Teataja akti lehelt.
-    Otsib tapselt mustrit <a href="...">Lisa 1</a>.
-    Annab erindi, kui URL-i ei leita -- ei ole tagavaraplaani.
+    Otsib mustrit href="...">Lisa 1< -- lihtne ja vastupidav.
+    Annab erindi kui URL-i ei leita -- ei ole tagavaraplaani.
     """
     print("Otsin Lisa 1 URL-i: " + ACT_URL)
     try:
@@ -54,14 +54,30 @@ def find_lisa1_url():
     except Exception as e:
         raise RuntimeError("Akti lehe laadimine ebaonnestus: " + str(e))
 
+    # Lihtne muster: href="...">Lisa 1<
+    # Ei ole seotud <a> tagi tapselt struktuuri -- toimib olenemata lisaatribuutidest
     m = re.search(
-        r'<a\s[^>]*href=["\']([ ^"\']+)["\'\'][^>]*>\s*Lisa 1\s*</a>',
+        r'href=["\']([ ^"\']+)["\'\'][^>]*>\s*Lisa 1\s*<',
         html, re.IGNORECASE,
     )
     if not m:
+        # Tryki debug-infot, et saaks GitHub Actions logist aru, mis lehel on
+        lisa_pos = html.lower().find("lisa 1")
+        if lisa_pos >= 0:
+            snippet = html[max(0, lisa_pos - 300):lisa_pos + 100]
+            print("  \'Lisa 1\' leiti lehelt, aga href-i ei saanud katta. Kontekst:")
+            print("  " + repr(snippet))
+        else:
+            print("  \'Lisa 1\' teksti ei leitud lehelt uldse!")
+            # Tryki esimesed aktilisa lingid mis leiti
+            all_links = re.findall(r'href=["\']([ ^"\']*aktilisa[^"\']*)["\']', html, re.IGNORECASE)
+            if all_links:
+                print("  Aktilisa lingid lehel:")
+                for lnk in all_links[:5]:
+                    print("    " + lnk)
         raise RuntimeError(
             "Lisa 1 linki ei leitud lehelt " + ACT_URL + "\n"
-            "Kontrolli, kas lehe struktuur on muutunud."
+            "Vaata GitHub Actions logi tapsema info jaoks."
         )
 
     url = m.group(1).split("#")[0]
