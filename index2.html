@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nimekirjad I–VI · Redesign 2: Noir</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void:     #050507;
+  --deep:     #0c0d11;
+  --surface:  #111318;
+  --lift:     #181b22;
+  --border:   #1e2230;
+  --line:     #252a38;
+  --amber:    #e8a83a;
+  --amber-dim:#7a5520;
+  --red:      #e84a3a;
+  --text:     #dde3f5;
+  --muted:    #6b7490;
+  --dim:      #3d4258;
+  --mono:     'JetBrains Mono', monospace;
+  --display:  'Syne', sans-serif;
+
+  --l1: #e84a3a; --l2: #e87c3a; --l3: #e8c547;
+  --l4: #e8a23a; --l5: #4d9de0; --l6: #9b72cf;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.7;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scanline overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── HEADER ── */
+header {
+  background: var(--deep);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-chrome {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.header-chrome::-webkit-scrollbar { display: none; }
+
+.chrome-tab {
+  padding: 8px 16px;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-right: 1px solid var(--border);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.chrome-tab.active {
+  color: var(--amber);
+  background: var(--surface);
+}
+
+.chrome-right {
+  margin-left: auto;
+  padding: 8px 16px;
+  font-size: 9px;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.header-main {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 32px;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.logo-mark {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: 0.1em;
+  flex-shrink: 0;
+  position: relative;
+}
+.logo-mark::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(232,74,58,0.2);
+}
+
+.title-block h1 {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.title-block .subtitle {
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.eff-row {
+  margin-left: auto;
+  text-align: right;
+  flex-shrink: 0;
+}
+.eff-row .label { font-size: 8px; color: var(--dim); letter-spacing: 0.15em; text-transform: uppercase; }
+.eff-row .val { font-size: 12px; color: var(--amber); }
+
+/* Stats */
+.stats-band {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.stats-band::-webkit-scrollbar { display: none; }
+
+.stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-right: 1px solid var(--border);
+  flex-shrink: 0;
+  cursor: default;
+  transition: background 0.1s;
+}
+.stat-pill:hover { background: var(--surface); }
+.stat-pill:last-child { border-right: none; margin-left: auto; padding-right: 20px; }
+
+.pill-bar {
+  width: 3px;
+  height: 20px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.pill-label { font-size: 9px; letter-spacing: 0.1em; color: var(--muted); }
+.pill-n { font-size: 13px; font-weight: 700; color: var(--text); }
+
+/* Search */
+.search-zone {
+  padding: 12px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--surface);
+}
+
+.prompt {
+  font-size: 12px;
+  color: var(--amber);
+  flex-shrink: 0;
+  animation: blink 1.2s step-end infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+#search {
+  flex: 1;
+  max-width: 500px;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  outline: none;
+  caret-color: var(--amber);
+}
+#search::placeholder { color: var(--dim); }
+
+#result-count {
+  font-size: 10px;
+  color: var(--muted);
+  margin-left: auto;
+  letter-spacing: 0.05em;
+}
+
+/* ── MAIN ── */
+main {
+  flex: 1;
+  padding: 24px 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ── LIST SECTIONS ── */
+.list-section {
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: border-color 0.2s;
+  animation: appear 0.25s ease both;
+}
+.list-section:hover { border-color: var(--line); }
+.list-section.hidden { display: none; }
+
+@keyframes appear {
+  from { opacity:0; transform: translateY(6px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  cursor: pointer;
+  user-select: none;
+  background: var(--surface);
+  gap: 12px;
+  transition: background 0.1s;
+}
+.list-header:hover { background: var(--lift); }
+
+.list-title { display: flex; align-items: center; gap: 12px; min-width: 0; }
+
+.list-sigil {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 18px;
+  width: 32px;
+  text-align: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.list-info { min-width: 0; }
+.list-info .n { font-size: 11px; font-weight: 500; color: var(--text); letter-spacing: 0.05em; }
+.list-info .d { font-size: 10px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.list-meta { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+
+.count-badge {
+  font-size: 10px;
+  color: var(--muted);
+  background: var(--deep);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  letter-spacing: 0.05em;
+}
+
+.chevron {
+  color: var(--dim);
+  font-size: 10px;
+  transition: transform 0.2s;
+}
+.list-section.collapsed .chevron { transform: rotate(-90deg); }
+.list-section.collapsed .list-body { display: none; }
+
+/* ── TABLE ── */
+.substances-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.substances-table thead {
+  background: var(--deep);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.substances-table thead th {
+  padding: 7px 14px;
+  text-align: left;
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.substances-table thead th:nth-child(3) { border-left: 1px solid var(--border); }
+
+.substances-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.08s;
+}
+.substances-table tbody tr:last-child { border-bottom: none; }
+.substances-table tbody tr:hover { background: var(--surface); }
+.substances-table tbody tr.hidden { display: none; }
+
+.substances-table td {
+  padding: 8px 14px;
+  vertical-align: middle;
+  line-height: 1.4;
+}
+.substances-table td:nth-child(3) {
+  border-left: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.row-num {
+  font-size: 10px;
+  color: var(--dim);
+  width: 44px;
+  text-align: right;
+  padding-right: 0;
+}
+
+.et-name { font-size: 13px; color: var(--text); }
+.en-name { font-size: 12px; color: var(--muted); }
+
+mark {
+  background: rgba(232,168,58,0.2);
+  color: var(--amber);
+  padding: 0 2px;
+}
+
+.no-results {
+  padding: 28px;
+  text-align: center;
+  color: var(--dim);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.no-results:not(.visible) { display: none; }
+.no-results.visible { display: block; }
+
+/* VI */
+.list-vi-wrap { margin-bottom: 12px; }
+.groups-note {
+  background: var(--deep);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  padding: 8px 16px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.note-label {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #9b72cf;
+  white-space: nowrap;
+}
+
+footer {
+  padding: 16px 32px;
+  border-top: 1px solid var(--border);
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+  background: var(--deep);
+  display: flex;
+  justify-content: space-between;
+}
+
+#loading { padding: 60px; text-align: center; color: var(--muted); letter-spacing: 0.1em; }
+
+@media (max-width: 640px) {
+  main { padding: 12px; }
+  .header-main { padding: 12px 16px; gap: 12px; }
+  .search-zone { padding: 10px 16px; }
+  .stats-band { display: none; }
+  .row-num { display: none; }
+  .eff-row { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-chrome">
+    <div class="chrome-tab active">NIMEKIRJAD I–VI</div>
+    <div class="chrome-tab">KONTROLLITUD AINED</div>
+    <div class="chrome-tab">EESTI ÕIGUS</div>
+    <div class="chrome-right" id="effective-date">—</div>
+  </div>
+
+  <div class="header-main">
+    <div class="logo-block">
+      <div class="logo-mark">RT</div>
+    </div>
+    <div class="title-block">
+      <h1>Narkootilised ja psühhotroopsed ained</h1>
+      <div class="subtitle">Nimekirjad I – VI &nbsp;·&nbsp; Kehtiv redaktsioon</div>
+    </div>
+    <div class="eff-row">
+      <div class="label">Jõustus</div>
+      <div class="val" id="eff-display">—</div>
+    </div>
+  </div>
+
+  <div class="stats-band">
+    <div class="stat-pill"><div class="pill-bar" style="background:var(--l1)"></div><span class="pill-label">I&nbsp;</span><span class="pill-n" id="c1">—</span></div>
+    <div class="stat-pill"><div class="pill-bar" style="background:var(--l2)"></div><span class="pill-label">II&nbsp;</span><span class="pill-n" id="c2">—</span></div>
+    <div class="stat-pill"><div class="pill-bar" style="background:var(--l3)"></div><span class="pill-label">III&nbsp;</span><span class="pill-n" id="c3">—</span></div>
+    <div class="stat-pill"><div class="pill-bar" style="background:var(--l4)"></div><span class="pill-label">IV&nbsp;</span><span class="pill-n" id="c4">—</span></div>
+    <div class="stat-pill"><div class="pill-bar" style="background:var(--l5)"></div><span class="pill-label">V&nbsp;</span><span class="pill-n" id="c5">—</span></div>
+    <div class="stat-pill"><div class="pill-bar" style="background:var(--l6)"></div><span class="pill-label">VI&nbsp;</span><span class="pill-n" id="c6">—</span></div>
+    <div class="stat-pill"><span id="result-count"></span></div>
+  </div>
+
+  <div class="search-zone">
+    <span class="prompt">›_</span>
+    <input type="text" id="search" placeholder="otsi ainet…" autocomplete="off" spellcheck="false">
+  </div>
+</header>
+
+<main>
+<div id="loading">// laen andmeid…</div>
+<div id="main-content" style="display:none">
+
+<div class="list-section" id="section1">
+  <div class="list-header" onclick="toggleSection(1)">
+    <div class="list-title">
+      <div class="list-sigil" style="color:var(--l1)">I</div>
+      <div class="list-info"><div class="n">I NIMEKIRI</div><div class="d">Kõige rangemalt piiritletud ained, meditsiiniline kasutus puudub</div></div>
+    </div>
+    <div class="list-meta"><span class="count-badge" id="badge1"></span><span class="chevron">▾</span></div>
+  </div>
+  <div class="list-body">
+    <table class="substances-table">
+      <thead><tr><th></th><th>Eesti</th><th>English</th></tr></thead>
+      <tbody id="tbody1"></tbody>
+    </table>
+    <div class="no-results" id="no1">// no results</div>
+  </div>
+</div>
+
+<div class="list-section" id="section2">
+  <div class="list-header" onclick="toggleSection(2)">
+    <div class="list-title">
+      <div class="list-sigil" style="color:var(--l2)">II</div>
+      <div class="list-info"><div class="n">II NIMEKIRI</div><div class="d">Opioidid ja kõrge riskiga narkootikumid</div></div>
+    </div>
+    <div class="list-meta"><span class="count-badge" id="badge2"></span><span class="chevron">▾</span></div>
+  </div>
+  <div class="list-body">
+    <table class="substances-table">
+      <thead><tr><th></th><th>Eesti</th><th>English</th></tr></thead>
+      <tbody id="tbody2"></tbody>
+    </table>
+    <div class="no-results" id="no2">// no results</div>
+  </div>
+</div>
+
+<div class="list-section" id="section3">
+  <div class="list-header" onclick="toggleSection(3)">
+    <div class="list-title">
+      <div class="list-sigil" style="color:var(--l3)">III</div>
+      <div class="list-info"><div class="n">III NIMEKIRI</div><div class="d">Kontrollitud ained piiratud meditsiinilise kasutusega</div></div>
+    </div>
+    <div class="list-meta"><span class="count-badge" id="badge3"></span><span class="chevron">▾</span></div>
+  </div>
+  <div class="list-body">
+    <table class="substances-table">
+      <thead><tr><th></th><th>Eesti</th><th>English</th></tr></thead>
+      <tbody id="tbody3"></tbody>
+    </table>
+    <div class="no-results" id="no3">// no results</div>
+  </div>
+</div>
+
+<div class="list-section" id="section4">
+  <div class="list-header" onclick="toggleSection(4)">
+    <div class="list-title">
+      <div class="list-sigil" style="color:var(--l4)">IV</div>
+      <div class="list-info"><div class="n">IV NIMEKIRI</div><div class="d">Psühhotroopsed ained meditsiinilise kasutusega</div></div>
+    </div>
+    <div class="list-meta"><span class="count-badge" id="badge4"></span><span class="chevron">▾</span></div>
+  </div>
+  <div class="list-body">
+    <table class="substances-table">
+      <thead><tr><th></th><th>Eesti</th><th>English</th></tr></thead>
+      <tbody id="tbody4"></tbody>
+    </table>
+    <div class="no-results" id="no4">// no results</div>
+  </div>
+</div>
+
+<div class="list-section" id="section5">
+  <div class="list-header" onclick="toggleSection(5)">
+    <div class="list-title">
+      <div class="list-sigil" style="color:var(--l5)">V</div>
+      <div class="list-info"><div class="n">V NIMEKIRI</div><div class="d">Lähteained ja muud kontrollitud ained</div></div>
+    </div>
+    <div class="list-meta"><span class="count-badge" id="badge5"></span><span class="chevron">▾</span></div>
+  </div>
+  <div class="list-body">
+    <table class="substances-table">
+      <thead><tr><th></th><th>Eesti</th><th>English</th></tr></thead>
+      <tbody id="tbody5"></tbody>
+    </table>
+    <div class="no-results" id="no5">// no results</div>
+  </div>
+</div>
+
+<div class="list-vi-wrap" id="list-vi-wrap">
+  <div class="groups-note">
+    <span class="note-label">// MÄRKUS</span>
+    VI nimekiri sisaldab ainerühmi, mitte üksikaineid. Kõik ainerühma esindajad on keelatud.
+  </div>
+  <div class="list-section" id="section6" style="margin-bottom:0">
+    <div class="list-header" onclick="toggleSection(6)">
+      <div class="list-title">
+        <div class="list-sigil" style="color:var(--l6)">VI</div>
+        <div class="list-info"><div class="n">VI NIMEKIRI</div><div class="d">Kontrollitud ainerühmad (mitte üksikained)</div></div>
+      </div>
+      <div class="list-meta"><span class="count-badge" id="badge6"></span><span class="chevron">▾</span></div>
+    </div>
+    <div class="list-body">
+      <table class="substances-table">
+        <thead><tr><th></th><th>Ainerühm (ET)</th><th>Group (EN)</th></tr></thead>
+        <tbody id="tbody6"></tbody>
+      </table>
+      <div class="no-results" id="no6">// no results</div>
+    </div>
+  </div>
+</div>
+
+</div>
+</main>
+
+<footer>
+  <span>Narkootiliste ja psühhotroopsete ainete nimekirjad I–VI</span>
+  <span>Informatiivse eesmärgiga</span>
+</footer>
+
+<script>
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function highlight(t,q){if(!q)return esc(t);const re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');return esc(t).replace(re,'<mark>$1</mark>');}
+function toggleSection(n){document.getElementById('section'+n).classList.toggle('collapsed');}
+
+function renderData(d){
+  const meta=d.meta||{};
+  if(meta.effective_date){
+    document.getElementById('effective-date').textContent=meta.effective_date;
+    document.getElementById('eff-display').textContent=meta.effective_date;
+  }
+  const DATA={};
+  for(const l of d.lists){DATA[l.id]=l.substances;}
+  for(let n=1;n<=6;n++){
+    const subs=DATA[n]||[];
+    const tbody=document.getElementById('tbody'+n);
+    tbody.innerHTML='';
+    subs.forEach((s,i)=>{
+      const tr=document.createElement('tr');
+      tr.dataset.et=s.et.toLowerCase();tr.dataset.en=(s.en||'').toLowerCase();
+      tr.innerHTML=`<td class="row-num">${String(i+1).padStart(3,'0')}</td><td class="et-name">${esc(s.et)}</td><td class="en-name">${esc(s.en||'')}</td>`;
+      tbody.appendChild(tr);
+    });
+    const u=n===6?' rühma':' ainet';
+    document.getElementById('badge'+n).textContent=subs.length+u;
+    document.getElementById('c'+n).textContent=subs.length;
+  }
+  initSearch(DATA);
+  document.getElementById('loading').style.display='none';
+  document.getElementById('main-content').style.display='';
+}
+
+function initSearch(DATA){
+  const inp=document.getElementById('search');
+  const rc=document.getElementById('result-count');
+  inp.addEventListener('input',()=>{
+    const q=inp.value.trim().toLowerCase();
+    let total=0;
+    for(let list=1;list<=6;list++){
+      const subs=DATA[list]||[];
+      const tbody=document.getElementById('tbody'+list);
+      const rows=tbody.querySelectorAll('tr');
+      const section=document.getElementById('section'+list);
+      const noRes=document.getElementById('no'+list);
+      let vis=0;
+      rows.forEach((tr,idx)=>{
+        const match=!q||tr.dataset.et.includes(q)||tr.dataset.en.includes(q);
+        tr.classList.toggle('hidden',!match);
+        if(match){vis++;total++;tr.cells[1].innerHTML=highlight(subs[idx].et,q);tr.cells[2].innerHTML=highlight(subs[idx].en||'',q);}
+      });
+      if(q){if(vis===0){section.classList.add('hidden');}else{section.classList.remove('hidden','collapsed');}}
+      else{section.classList.remove('hidden');}
+      noRes.classList.toggle('visible',vis===0&&!!q);
+      const u=list===6?' rühma':' ainet';
+      document.getElementById('badge'+list).textContent=q?`${vis}/${subs.length}`:subs.length+u;
+      if(list===6)document.getElementById('list-vi-wrap').style.display=(q&&vis===0)?'none':'';
+    }
+    rc.textContent=q?`${total} tulemust`:'';
+  });
+}
+
+fetch('data.json').then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}).then(renderData).catch(err=>{document.getElementById('loading').innerHTML=`// viga: ${esc(err.message)}`;});
+</script>
+</body>
+</html>
