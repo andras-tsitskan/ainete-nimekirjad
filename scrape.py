@@ -45,42 +45,68 @@ def _fetch_text(url, timeout=30):
 def find_lisa1_url():
     """
     Leiab Lisa 1 PDF URL-i Riigi Teataja akti lehelt.
-    Strateegia: leia koik aktilisa PDF lingid, siis kontrolli,
-    kas vahetult jargnev tekst sisaldab "Lisa 1".
+    Kasutab HTML parserit (mitte regexpit) -- vastupidav HTML struktuuri muutustele.
     Annab erindi kui URL-i ei leita -- ei ole tagavaraplaani.
     """
+    from html.parser import HTMLParser
+
+    class Lisa1Finder(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.found_url = None
+            self._current_href = None
+
+        def handle_starttag(self, tag, attrs):
+            if tag == "a":
+                self._current_href = dict(attrs).get("href", "")
+
+        def handle_data(self, data):
+            if self._current_href and data.strip() == "Lisa 1":
+                self.found_url = self._current_href.split("#")[0]
+
+        def handle_endtag(self, tag):
+            if tag == "a":
+                self._current_href = None
+
     print("Otsin Lisa 1 URL-i: " + ACT_URL)
     try:
         html = _fetch_text(ACT_URL)
     except Exception as e:
         raise RuntimeError("Akti lehe laadimine ebaonnestus: " + str(e))
 
-    href_re = re.compile(r'href=["\']([ ^"\']*aktilisa[^"\']*\.pdf[^"\']*)["\']', re.IGNORECASE)
+    finder = Lisa1Finder()
+    finder.feed(html)
 
-    for m in href_re.finditer(html):
-        # Kontrolli, kas "Lisa 1" esineb 200 tahemarga jooksul parast lingi sulgemist
-        after = html[m.end():m.end() + 200]
-        if re.search(r'Lisa\s*1\b', after, re.IGNORECASE):
-            url = m.group(1).split("#")[0]
-            print("  Leitud Lisa 1 URL: " + url)
-            return url
+    if not finder.found_url:
+        # Debug: leia koik <a> tagid, mille tekst sisaldab "lisa"
+        class AllLinks(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.links = []
+                self._href = None
+            def handle_starttag(self, tag, attrs):
+                if tag == "a":
+                    self._href = dict(attrs).get("href", "")
+            def handle_data(self, data):
+                if self._href and "lisa" in data.lower():
+                    self.links.append((self._href, data.strip()))
+            def handle_endtag(self, tag):
+                if tag == "a":
+                    self._href = None
 
-    # Ei leitud -- tryki debug-infot GitHub Actions logi jaoks
-    all_aktilisa = href_re.findall(html)
-    lisa1_idx = html.lower().find("lisa 1")
-    print("  Aktilisa lingid lehel (" + str(len(all_aktilisa)) + "):")
-    for lnk in all_aktilisa[:10]:
-        print("    " + lnk)
-    if lisa1_idx >= 0:
-        print("  'Lisa 1' kontekst lehel:")
-        print("  " + repr(html[max(0, lisa1_idx - 300):lisa1_idx + 100]))
-    else:
-        print("  'Lisa 1' teksti ei leitud lehelt uldse!")
+        all_links = AllLinks()
+        all_links.feed(html)
+        print("  <a> tagid tekstiga 'lisa':")
+        for href, text in all_links.links[:10]:
+            print("    " + repr(text) + " -> " + href)
 
-    raise RuntimeError(
-        "Lisa 1 linki ei leitud lehelt " + ACT_URL + "\n"
-        "Vaata GitHub Actions logi tapsema info jaoks."
-    )
+        raise RuntimeError(
+            "Lisa 1 linki ei leitud lehelt " + ACT_URL + "\n"
+            "Vaata GitHub Actions logi tapsema info jaoks."
+        )
+
+    print("  Leitud Lisa 1 URL: " + finder.found_url)
+    return finder.found_url
 
 def load_pdf_bytes(url=None, local_path=None):
     """Laadib PDF-i. Tagastab (tegelik_url, pdf_bytes)."""
