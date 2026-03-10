@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Narkootiliste ja psühhotroopsete ainete ja ainerühmade nimekirjad I–VI</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Colors */
+    --bg:         #0d0f14;
+    --surface:    #13161e;
+    --surface2:   #1a1e28;
+    --border:     #252a38;
+    --accent:     #e84a3a;
+    --text:       #e8ecff;
+    --text-muted: #9ca3af;
+    --text-dim:   #6b7280;
+    
+    /* List colors */
+    --list1:      #e84a3a;
+    --list2:      #e87c3a;
+    --list3:      #e8c547;
+    --list4:      #e8a23a;
+    --list5:      #4d9de0;
+    --list6:      #9b72cf;
+    --purple:     #9b72cf;
+    
+    /* Spacing */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+    --spacing-lg: 16px;
+    --spacing-xl: 24px;
+    --spacing-2xl: 28px;
+    --spacing-3xl: 32px;
+    
+    /* Sizing */
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 10px;
+    --radius-pill: 20px;
+    
+    /* Transitions */
+    --duration-fast: 0.12s;
+    --duration: 0.15s;
+    --duration-slow: 0.2s;
+    
+    /* Hover states */
+    --hover-bg-light: rgba(255,255,255,0.04);
+    --hover-bg-lighter: rgba(255,255,255,0.02);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── HEADER ─────────────────────────────────────── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: var(--spacing-2xl) var(--spacing-3xl) var(--spacing-lg);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-xl);
+    flex-wrap: wrap;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .header-title {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+
+  .logo-badge {
+    background: var(--accent);
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+  }
+
+  h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.3;
+  }
+
+  .stats-bar {
+    display: flex;
+    gap: var(--spacing-xl);
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .stat {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .stat-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .stat strong {
+    color: var(--text);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  #result-count {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  /* ── SEARCH ─────────────────────────────────────── */
+  .search-center {
+    display: flex;
+    justify-content: center;
+  }
+
+  .search-wrap {
+    width: 100%;
+    max-width: 560px;
+  }
+
+  .search-input-row {
+    position: relative;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: var(--spacing-md);
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    color: var(--text-muted);
+    pointer-events: none;
+    font-size: 22px;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  #search {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 10px var(--spacing-lg) 10px 42px;
+    color: var(--text);
+    font-size: 15px;
+    transition: border-color var(--duration-slow), box-shadow var(--duration-slow);
+    outline: none;
+  }
+
+  #search::placeholder { color: var(--text-muted); }
+
+  #search:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(232,74,58,0.2);
+  }
+
+
+
+  /* ── MAIN ───────────────────────────────────────── */
+  main {
+    padding: var(--spacing-2xl) var(--spacing-3xl);
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    flex: 1;
+  }
+
+  /* ── LIST SECTIONS ──────────────────────────────── */
+  .list-section {
+    margin-bottom: var(--spacing-3xl);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .list-section:not(.hidden) { display: block; }
+  .list-section.hidden { display: none; }
+
+  .list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-lg) var(--spacing-lg);
+    cursor: pointer;
+    user-select: none;
+    gap: var(--spacing-md);
+    transition: background var(--duration);
+  }
+
+  .list-header:hover { background: var(--hover-bg-lighter); }
+
+  .list-title {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    min-width: 0;
+  }
+
+  .list-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    padding: var(--spacing-xs) 9px;
+    border-radius: var(--radius-sm);
+    color: var(--bg);
+    flex-shrink: 0;
+  }
+
+  .list-name {
+    font-weight: 600;
+    font-size: 15px;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .list-name span {
+    font-weight: 300;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-left: var(--spacing-sm);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .list-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    flex-shrink: 0;
+  }
+
+  .count-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    background: var(--surface2);
+    padding: var(--spacing-xs) 9px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border);
+  }
+
+  .toggle-icon {
+    color: var(--text-muted);
+    font-size: 16px;
+    transition: transform var(--duration-slow);
+    flex-shrink: 0;
+  }
+
+  .list-section.collapsed .toggle-icon { transform: rotate(-90deg); }
+  .list-section.collapsed .list-body { display: none; }
+
+  /* ── TABLE ──────────────────────────────────────── */
+  .substances-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .substances-table thead {
+    background: var(--surface2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .substances-table thead th {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .substances-table thead th:last-child { border-left: 1px solid var(--border); }
+
+  .substances-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background var(--duration-fast);
+  }
+
+  .substances-table tbody tr:last-child { border-bottom: none; }
+  .substances-table tbody tr:hover { background: var(--hover-bg-light); }
+  .substances-table tbody tr:not(.hidden) { display: table-row; }
+  .substances-table tbody tr.hidden { display: none; }
+
+  .substances-table td {
+    padding: 10px var(--spacing-lg);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  .substances-table td:last-child {
+    border-left: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  .row-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    width: 40px;
+    text-align: right;
+    vertical-align: top;
+    padding: 11px 0 10px 16px;
+  }
+
+  .et-name { color: #fff; font-weight: 500; }
+  .en-name { color: var(--text-muted); font-weight: 400; font-size: 14px; }
+
+  mark {
+    background: rgba(232,197,71,0.35);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    padding: 0 2px;
+  }
+
+  .no-results {
+    padding: var(--spacing-3xl) var(--spacing-lg);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .no-results:not(.visible) { display: none; }
+  .no-results.visible { display: block; }
+
+  /* ── VI nimekiri wrapper (note + section joined) ── */
+  .list-vi-wrap { margin-bottom: var(--spacing-3xl); }
+
+  .groups-note {
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--surface);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    line-height: 1.6;
+  }
+
+  .note-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--purple);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  /* ── FOOTER ─────────────────────────────────────── */
+  footer {
+    text-align: center;
+    padding: var(--spacing-xl) var(--spacing-3xl);
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+
+  footer a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color var(--duration);
+  }
+  
+  footer a:hover { color: var(--text); text-decoration: underline; }
+
+  /* ── RESPONSIVE ─────────────────────────────────── */
+  @media (max-width: 768px) {
+    body { font-size: 14px; }
+    
+    header { padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-sm); }
+    
+    .header-top { gap: var(--spacing-lg); }
+    
+    .stats-bar { flex-direction: column; align-items: flex-start; width: 100%; }
+    
+    #result-count { margin-left: 0; }
+    
+    main { padding: var(--spacing-lg); }
+    
+    .substances-table td { padding: 8px var(--spacing-md); }
+    .substances-table thead th { padding: 8px var(--spacing-md); }
+    
+    .row-num { display: none; }
+    
+    .list-name { font-size: 14px; }
+    .list-name span { font-size: 10px; }
+  }
+  
+  @media (max-width: 480px) {
+    h1 { font-size: 16px; }
+    
+    .header-title { gap: var(--spacing-sm); }
+    
+    .list-name span { display: none; }
+    
+    .list-meta { gap: var(--spacing-md); }
+    
+    .stats-bar { gap: var(--spacing-md); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="header-title">
+      <div class="logo-badge"></div>
+      <h1>Narkootiliste ja psühhotroopsete ainete ja ainerühmade nimekirjad I–VI</h1>
+    </div>
+    <div class="stats-bar">
+      <div class="stat"><div class="stat-dot" style="background:var(--list1)"></div>I nimekiri <strong id="c1">—</strong></div>
+      <div class="stat"><div class="stat-dot" style="background:var(--list2)"></div>II nimekiri <strong id="c2">—</strong></div>
+      <div class="stat"><div class="stat-dot" style="background:var(--list3)"></div>III nimekiri <strong id="c3">—</strong></div>
+      <div class="stat"><div class="stat-dot" style="background:var(--list4)"></div>IV nimekiri <strong id="c4">—</strong></div>
+      <div class="stat"><div class="stat-dot" style="background:var(--list5)"></div>V nimekiri <strong id="c5">—</strong></div>
+      <div class="stat"><div class="stat-dot" style="background:var(--list6)"></div>VI nimekiri <strong id="c6">—</strong></div>
+      <div id="result-count"></div>
+    </div>
+    <div class="stat" style="margin-top:4px;">
+      Redaktsiooni jõustumise kp: <strong id="effective-date">—</strong>
+    </div>
+  </div>
+  <div class="search-center">
+    <div class="search-wrap">
+      <div class="search-input-row">
+        <span class="search-icon">⌕</span>
+        <input type="text" id="search" placeholder="Otsi ainet…" autocomplete="off" spellcheck="false">
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<main>
+<div id="loading" style="padding:60px 32px; text-align:center; color:var(--text-muted);">
+  Laen andmeid…
+</div>
+<div id="main-content" style="display:none;">
+
+<!-- I nimekiri -->
+<div class="list-section" id="section1">
+  <div class="list-header" onclick="toggleSection(1)">
+    <div class="list-title">
+      <div class="list-num" style="background:var(--list1)">I</div>
+      <div class="list-name">I nimekiri <span>Kõige rangemalt piiritletud ained, meditsiiniline kasutus puudub</span></div>
+    </div>
+    <div class="list-meta">
+      <div class="count-badge" id="badge1"></div>
+      <div class="toggle-icon">▾</div>
+    </div>
+  </div>
+  <div class="list-body">
+    <table class="substances-table">
+      <thead><tr><th></th><th>Eestikeelne nimetus</th><th>Ingliskeelne nimetus</th></tr></thead>
+      <tbody id="tbody1"></tbody>
+    </table>
+    <div class="no-results" id="no1">Otsingutulemusi ei leitud</div>
+  </div>
+</div>
+
+<!-- II nimekiri -->
+<div class="list-section" id="section2">
+  <div class="list-header" onclick="toggleSection(2)">
+    <div class="list-title">
+      <div class="list-num" style="background:var(--list2)">II</div>
+      <div class="list-name">II nimekiri <span>Opioidid ja kõrge riskiga narkootikumid</span></div>
+    </div>
+    <div class="list-meta">
+      <div class="count-badge" id="badge2"></div>
+      <div class="toggle-icon">▾</div>
+    </div>
+  </div>
+  <div class="list-body">
+    <table class="substances-table">
+      <thead><tr><th></th><th>Eestikeelne nimetus</th><th>Ingliskeelne nimetus</th></tr></thead>
+      <tbody id="tbody2"></tbody>
+    </table>
+    <div class="no-results" id="no2">Otsingutulemusi ei leitud</div>
+  </div>
+</div>
+
+<!-- III nimekiri -->
+<div class="list-section" id="section3">
+  <div class="list-header" onclick="toggleSection(3)">
+    <div class="list-title">
+      <div class="list-num" style="background:var(--list3)">III</div>
+      <div class="list-name">III nimekiri <span>Kontrollitud ained piiratud meditsiinilise kasutusega</span></div>
+    </div>
+    <div class="list-meta">
+      <div class="count-badge" id="badge3"></div>
+      <div class="toggle-icon">▾</div>
+    </div>
+  </div>
+  <div class="list-body">
+    <table class="substances-table">
+      <thead><tr><th></th><th>Eestikeelne nimetus</th><th>Ingliskeelne nimetus</th></tr></thead>
+      <tbody id="tbody3"></tbody>
+    </table>
+    <div class="no-results" id="no3">Otsingutulemusi ei leitud</div>
+  </div>
+</div>
+
+<!-- IV nimekiri -->
+<div class="list-section" id="section4">
+  <div class="list-header" onclick="toggleSection(4)">
+    <div class="list-title">
+      <div class="list-num" style="background:var(--list4)">IV</div>
+      <div class="list-name">IV nimekiri <span>Psühhotroopsed ained meditsiinilise kasutusega</span></div>
+    </div>
+    <div class="list-meta">
+      <div class="count-badge" id="badge4"></div>
+      <div class="toggle-icon">▾</div>
+    </div>
+  </div>
+  <div class="list-body">
+    <table class="substances-table">
+      <thead><tr><th></th><th>Eestikeelne nimetus</th><th>Ingliskeelne nimetus</th></tr></thead>
+      <tbody id="tbody4"></tbody>
+    </table>
+    <div class="no-results" id="no4">Otsingutulemusi ei leitud</div>
+  </div>
+</div>
+
+<!-- V nimekiri -->
+<div class="list-section" id="section5">
+  <div class="list-header" onclick="toggleSection(5)">
+    <div class="list-title">
+      <div class="list-num" style="background:var(--list5)">V</div>
+      <div class="list-name">V nimekiri <span>Lähteained ja muud kontrollitud ained</span></div>
+    </div>
+    <div class="list-meta">
+      <div class="count-badge" id="badge5"></div>
+      <div class="toggle-icon">▾</div>
+    </div>
+  </div>
+  <div class="list-body">
+    <table class="substances-table">
+      <thead><tr><th></th><th>Eestikeelne nimetus</th><th>Ingliskeelne nimetus</th></tr></thead>
+      <tbody id="tbody5"></tbody>
+    </table>
+    <div class="no-results" id="no5">Otsingutulemusi ei leitud</div>
+  </div>
+</div>
+
+<!-- VI nimekiri -->
+<div class="list-vi-wrap" id="list-vi-wrap">
+  <div class="groups-note">
+    <div class="note-label">MÄRKUS</div>
+    VI nimekiri sisaldab ainerühmi (mitte üksikaineid). Iga ainerühma kõik esindajad on keelatud.
+  </div>
+  <div class="list-section" id="section6" style="border-radius:0 0 10px 10px; margin-bottom:0;">
+    <div class="list-header" onclick="toggleSection(6)">
+      <div class="list-title">
+        <div class="list-num" style="background:var(--list6)">VI</div>
+        <div class="list-name">VI nimekiri <span>Kontrollitud ainerühmad (mitte üksikained)</span></div>
+      </div>
+      <div class="list-meta">
+        <div class="count-badge" id="badge6"></div>
+        <div class="toggle-icon">▾</div>
+      </div>
+    </div>
+    <div class="list-body">
+      <table class="substances-table">
+        <thead><tr><th></th><th>Ainerühma eestikeelne nimetus</th><th>Ingliskeelne nimetus</th></tr></thead>
+        <tbody id="tbody6"></tbody>
+      </table>
+      <div class="no-results" id="no6">Otsingutulemusi ei leitud</div>
+    </div>
+  </div>
+</div>
+</div><!-- /main-content -->
+
+</main>
+
+<footer>
+  Narkootiliste ja psühhotroopsete ainete nimekirjad I–VI &nbsp;·&nbsp;
+  See veebileht on informatiivse eesmärgiga.
+</footer>
+
+<script>
+// ── Utilities ────────────────────────────────────────────────────────────────
+
+function esc(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function highlight(text, query) {
+  if (!query) return esc(text);
+  const re = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+  return esc(text).replace(re, '<mark>$1</mark>');
+}
+
+function toggleSection(n) {
+  document.getElementById('section' + n).classList.toggle('collapsed');
+}
+
+// ── Render ───────────────────────────────────────────────────────────────────
+
+function renderData(jsonData) {
+  // Update footer source link from meta
+  const meta = jsonData.meta || {};
+  if (meta.source) {
+    const sourceLink = document.getElementById('source-link');
+    if (sourceLink) sourceLink.href = meta.source;
+  }
+  if (meta.effective_date) {
+    const effEl = document.getElementById('effective-date');
+    if (effEl) effEl.textContent = meta.effective_date;
+  }
+
+  // Build DATA map: {1: [{et, en}, ...], ...}
+  const DATA = {};
+  for (const list of jsonData.lists) {
+    DATA[list.id] = list.substances;
+    // Update list description in header
+    const descEl = document.querySelector(`#section${list.id} .list-name span`);
+    if (descEl) descEl.textContent = list.description;
+  }
+
+  // Render tables
+  for (let listNum = 1; listNum <= 6; listNum++) {
+    const substances = DATA[listNum] || [];
+    const tbody = document.getElementById('tbody' + listNum);
+    tbody.innerHTML = '';
+    substances.forEach((s, i) => {
+      const tr = document.createElement('tr');
+      tr.dataset.et = s.et.toLowerCase();
+      tr.dataset.en = (s.en || '').toLowerCase();
+      tr.innerHTML = `<td class="row-num">${i + 1}</td><td class="et-name">${esc(s.et)}</td><td class="en-name">${esc(s.en || '')}</td>`;
+      tbody.appendChild(tr);
+    });
+    const unit = listNum === 6 ? ' rühma' : ' ainet';
+    document.getElementById('badge' + listNum).textContent = substances.length + unit;
+    document.getElementById('c' + listNum).textContent = substances.length;
+  }
+
+  // Wire up search now that data is ready
+  initSearch(DATA);
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('main-content').style.display = '';
+}
+
+// ── Search ───────────────────────────────────────────────────────────────────
+
+function initSearch(DATA) {
+  const searchInput = document.getElementById('search');
+  const resultCount = document.getElementById('result-count');
+
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim().toLowerCase();
+    let total = 0;
+
+    for (let list = 1; list <= 6; list++) {
+      const substances = DATA[list] || [];
+      const tbody = document.getElementById('tbody' + list);
+      const rows = tbody.querySelectorAll('tr');
+      const section = document.getElementById('section' + list);
+      const noRes = document.getElementById('no' + list);
+      let visible = 0;
+
+      rows.forEach((tr, idx) => {
+        const match = !q || tr.dataset.et.includes(q) || tr.dataset.en.includes(q);
+        tr.classList.toggle('hidden', !match);
+        if (match) {
+          visible++;
+          total++;
+          tr.cells[1].innerHTML = highlight(substances[idx].et, q);
+          tr.cells[2].innerHTML = highlight(substances[idx].en || '', q);
+        }
+      });
+
+      if (q) {
+        if (visible === 0) {
+          section.classList.add('hidden');
+        } else {
+          section.classList.remove('hidden', 'collapsed');
+        }
+      } else {
+        section.classList.remove('hidden');
+      }
+
+      noRes.classList.toggle('visible', visible === 0 && !!q);
+
+      const unit = list === 6 ? ' rühma' : ' ainet';
+      document.getElementById('badge' + list).textContent =
+        q ? `${visible}/${substances.length}` : substances.length + unit;
+
+      if (list === 6) {
+        document.getElementById('list-vi-wrap').style.display =
+          (q && visible === 0) ? 'none' : '';
+      }
+    }
+
+    resultCount.textContent = q ? `${total} tulemust` : '';
+  });
+}
+
+// ── Bootstrap ────────────────────────────────────────────────────────────────
+
+fetch('data.json')
+  .then(r => {
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    return r.json();
+  })
+  .then(renderData)
+  .catch(err => {
+    document.getElementById('loading').innerHTML =
+      `<p style="color:var(--accent)">Viga andmete laadimisel: ${esc(err.message)}</p>` +
+      `<p style="margin-top:8px;font-size:12px;color:var(--text-muted)">Veendu, et <code>data.json</code> on samal kaustal kui <code>index.html</code>.</p>`;
+    console.error('Failed to load data.json:', err);
+  });
+</script>
+</body>
+</html>

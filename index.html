@@ -4,496 +4,526 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Narkootiliste ja psühhotroopsete ainete ja ainerühmade nimekirjad I–VI</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root {
-    /* Colors */
-    --bg:         #0d0f14;
-    --surface:    #13161e;
-    --surface2:   #1a1e28;
-    --border:     #252a38;
-    --accent:     #e84a3a;
-    --text:       #e8ecff;
-    --text-muted: #9ca3af;
-    --text-dim:   #6b7280;
-    
-    /* List colors */
-    --list1:      #e84a3a;
-    --list2:      #e87c3a;
-    --list3:      #e8c547;
-    --list4:      #e8a23a;
-    --list5:      #4d9de0;
-    --list6:      #9b72cf;
-    --purple:     #9b72cf;
-    
-    /* Spacing */
-    --spacing-xs: 4px;
-    --spacing-sm: 8px;
-    --spacing-md: 12px;
-    --spacing-lg: 16px;
-    --spacing-xl: 24px;
-    --spacing-2xl: 28px;
-    --spacing-3xl: 32px;
-    
-    /* Sizing */
-    --radius-sm: 4px;
-    --radius-md: 6px;
-    --radius-lg: 10px;
-    --radius-pill: 20px;
-    
-    /* Transitions */
-    --duration-fast: 0.12s;
-    --duration: 0.15s;
-    --duration-slow: 0.2s;
-    
-    /* Hover states */
-    --hover-bg-light: rgba(255,255,255,0.04);
-    --hover-bg-lighter: rgba(255,255,255,0.02);
-  }
+:root {
+  --void:     #050507;
+  --deep:     #0e0f14;
+  --surface:  #14161d;
+  --lift:     #1c1f29;
+  --border:   #272c3d;
+  --line:     #313749;
+  --amber:    #f5b942;
+  --red:      #f25443;
+  --text:     #eef1ff;
+  --muted:    #9099b8;
+  --dim:      #7a84a8;
+  --mono:     'JetBrains Mono', monospace;
+  --display:  'Syne', sans-serif;
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  --l1: #f25443; --l2: #f0893d; --l3: #f5c842;
+  --l4: #f0ae3d; --l5: #5aade8; --l6: #a87fd4;
+}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 15px;
-    line-height: 1.6;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* ── HEADER ─────────────────────────────────────── */
-  header {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: var(--spacing-2xl) var(--spacing-3xl) var(--spacing-lg);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 15px;
+  line-height: 1.7;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-  .header-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--spacing-xl);
-    flex-wrap: wrap;
-    margin-bottom: var(--spacing-lg);
-  }
+/* Scanline overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.025) 2px, rgba(0,0,0,0.025) 4px);
+  pointer-events: none;
+  z-index: 9999;
+}
 
-  .header-title {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-  }
+/* ── HEADER ── */
+header {
+  background: var(--deep);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
 
-  .logo-badge {
-    background: var(--accent);
-    width: 32px;
-    height: 32px;
-    border-radius: var(--radius-sm);
-    flex-shrink: 0;
-  }
+/* Chrome bar */
+.header-chrome {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.header-chrome::-webkit-scrollbar { display: none; }
 
-  h1 {
-    font-size: 20px;
-    font-weight: 600;
-    color: #fff;
-    line-height: 1.3;
-  }
+.chrome-tab {
+  padding: 8px 18px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+  border-right: 1px solid var(--border);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+.chrome-tab.active { color: var(--amber); background: var(--surface); }
 
-  .stats-bar {
-    display: flex;
-    gap: var(--spacing-xl);
-    flex-wrap: wrap;
-    align-items: center;
-  }
+/* Clickable list nav links in the chrome bar */
+.chrome-tab.nav-link {
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+}
+.chrome-tab.nav-link:hover { color: var(--text); background: var(--lift); }
 
-  .stat {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    font-size: 12px;
-    color: var(--text-muted);
-  }
+.chrome-right {
+  margin-left: auto;
+  padding: 8px 18px;
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
 
-  .stat-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
+/* Main header row */
+.header-main {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 36px;
+  padding-top: 26px;
+  border-bottom: 1px solid var(--border);
+}
 
-  .stat strong {
-    color: var(--text);
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-  }
+.logo-mark {
+  width: 40px;
+  height: 40px;
+  background: var(--red);
+  flex-shrink: 0;
+}
 
-  #result-count {
-    margin-left: auto;
-    font-size: 12px;
-    color: var(--text-muted);
-    font-family: 'IBM Plex Mono', monospace;
-  }
+.title-block h1 {
+  font-family: var(--display);
+  font-size: 19px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+.title-block .subtitle {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  margin-top: 5px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.subtitle-label { color: var(--muted); }
+.subtitle-date  { color: var(--amber); font-weight: 500; }
 
-  /* ── SEARCH ─────────────────────────────────────── */
-  .search-center {
-    display: flex;
-    justify-content: center;
-  }
+/* Stats band */
+.stats-band {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.stats-band::-webkit-scrollbar { display: none; }
 
-  .search-wrap {
-    width: 100%;
-    max-width: 560px;
-  }
+.stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 20px;
+  border-right: 1px solid var(--border);
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: background 0.12s;
+  text-decoration: none;
+  color: inherit;
+}
+.stat-pill:hover { background: var(--surface); }
+.stat-pill:last-child { border-right: none; }
 
-  .search-input-row {
-    position: relative;
-  }
+.pill-bar {
+  width: 3px;
+  height: 22px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.pill-label { font-size: 11px; letter-spacing: 0.08em; color: var(--muted); }
+.pill-n     { font-size: 15px; font-weight: 700; color: var(--text); }
 
-  .search-icon {
-    position: absolute;
-    left: var(--spacing-md);
-    top: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    color: var(--text-muted);
-    pointer-events: none;
-    font-size: 22px;
-    margin-bottom: var(--spacing-sm);
-  }
+/* Search — centred */
+.search-zone {
+  padding: 14px 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  background: var(--surface);
+}
 
-  #search {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: 10px var(--spacing-lg) 10px 42px;
-    color: var(--text);
-    font-size: 15px;
-    transition: border-color var(--duration-slow), box-shadow var(--duration-slow);
-    outline: none;
-  }
+.search-inner {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+  max-width: 600px;
+  background: var(--deep);
+  border: 1px solid var(--border);
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+.search-inner:focus-within {
+  border-color: var(--amber);
+  box-shadow: 0 0 0 2px rgba(245,185,66,0.12);
+}
 
-  #search::placeholder { color: var(--text-muted); }
+.prompt {
+  padding: 0 14px;
+  font-size: 14px;
+  color: var(--amber);
+  flex-shrink: 0;
+  animation: blink 1.2s step-end infinite;
+  line-height: 1;
+  user-select: none;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.25} }
 
-  #search:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(232,74,58,0.2);
-  }
+#search {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 15px;
+  padding: 11px 0;
+  outline: none;
+  caret-color: var(--amber);
+  min-width: 0;
+}
+#search::placeholder { color: var(--dim); }
 
+/* Clear button */
+.search-clear {
+  padding: 0 14px;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--dim);
+  cursor: pointer;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s;
+  font-family: var(--mono);
+}
+.search-clear:hover { color: var(--text); }
+.search-clear.visible { display: flex; }
 
+#result-count {
+  min-width: 100px;
+  text-align: right;
+  font-size: 12px;
+  color: var(--muted);
+  padding-left: 16px;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
 
-  /* ── MAIN ───────────────────────────────────────── */
-  main {
-    padding: var(--spacing-2xl) var(--spacing-3xl);
-    max-width: 1400px;
-    margin: 0 auto;
-    width: 100%;
-    flex: 1;
-  }
+/* ── MAIN ── */
+main {
+  flex: 1;
+  padding: 28px 36px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
 
-  /* ── LIST SECTIONS ──────────────────────────────── */
-  .list-section {
-    margin-bottom: var(--spacing-3xl);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-  }
+/* ── LIST SECTIONS ── */
+.list-section {
+  margin-bottom: 14px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: border-color 0.2s;
+  animation: appear 0.25s ease both;
+  scroll-margin-top: 200px; /* offset for sticky header */
+}
+.list-section:hover { border-color: var(--line); }
+.list-section.hidden { display: none; }
 
-  .list-section:not(.hidden) { display: block; }
-  .list-section.hidden { display: none; }
+@keyframes appear {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
-  .list-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--spacing-lg) var(--spacing-lg);
-    cursor: pointer;
-    user-select: none;
-    gap: var(--spacing-md);
-    transition: background var(--duration);
-  }
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  cursor: pointer;
+  user-select: none;
+  background: var(--surface);
+  gap: 14px;
+  transition: background 0.12s;
+}
+.list-header:hover { background: var(--lift); }
 
-  .list-header:hover { background: var(--hover-bg-lighter); }
+.list-title { display: flex; align-items: center; gap: 14px; min-width: 0; }
 
-  .list-title {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    min-width: 0;
-  }
+.list-sigil {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 22px;
+  width: 36px;
+  text-align: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
 
-  .list-num {
-    font-family: 'IBM Plex Mono', monospace;
-    font-weight: 600;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    padding: var(--spacing-xs) 9px;
-    border-radius: var(--radius-sm);
-    color: var(--bg);
-    flex-shrink: 0;
-  }
+.list-info { min-width: 0; }
+.list-info .n {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: 0.04em;
+}
+.list-info .d {
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-  .list-name {
-    font-weight: 600;
-    font-size: 15px;
-    color: #fff;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+.list-meta { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
 
-  .list-name span {
-    font-weight: 300;
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-left: var(--spacing-sm);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+.count-badge {
+  font-size: 12px;
+  color: var(--muted);
+  background: var(--deep);
+  border: 1px solid var(--border);
+  padding: 3px 10px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
 
-  .list-meta {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-lg);
-    flex-shrink: 0;
-  }
+.chevron {
+  color: var(--dim);
+  font-size: 12px;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.list-section.collapsed .chevron { transform: rotate(-90deg); }
+.list-section.collapsed .list-body { display: none; }
 
-  .count-badge {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--text-muted);
-    background: var(--surface2);
-    padding: var(--spacing-xs) 9px;
-    border-radius: var(--radius-pill);
-    border: 1px solid var(--border);
-  }
+/* ── TABLE ── */
+.substances-table {
+  width: 100%;
+  border-collapse: collapse;
+}
 
-  .toggle-icon {
-    color: var(--text-muted);
-    font-size: 16px;
-    transition: transform var(--duration-slow);
-    flex-shrink: 0;
-  }
+.substances-table thead {
+  background: var(--deep);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
 
-  .list-section.collapsed .toggle-icon { transform: rotate(-90deg); }
-  .list-section.collapsed .list-body { display: none; }
+.substances-table thead th {
+  padding: 9px 16px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.substances-table thead th:nth-child(3) { border-left: 1px solid var(--border); }
 
-  /* ── TABLE ──────────────────────────────────────── */
-  .substances-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
+.substances-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.08s;
+}
+.substances-table tbody tr:last-child { border-bottom: none; }
+.substances-table tbody tr:hover { background: var(--surface); }
+.substances-table tbody tr.hidden { display: none; }
 
-  .substances-table thead {
-    background: var(--surface2);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
+.substances-table td {
+  padding: 10px 16px;
+  vertical-align: middle;
+  line-height: 1.45;
+}
+.substances-table td:nth-child(3) {
+  border-left: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 14px;
+}
 
-  .substances-table thead th {
-    padding: var(--spacing-sm) var(--spacing-lg);
-    text-align: left;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
+.row-num {
+  font-size: 11px;
+  color: var(--dim);
+  width: 50px;
+  text-align: right;
+  padding-right: 4px;
+}
 
-  .substances-table thead th:last-child { border-left: 1px solid var(--border); }
+.et-name { font-size: 15px; color: var(--text); }
+.en-name { font-size: 14px; color: var(--muted); }
 
-  .substances-table tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background var(--duration-fast);
-  }
+mark {
+  background: rgba(245,185,66,0.22);
+  color: var(--amber);
+  padding: 0 2px;
+}
 
-  .substances-table tbody tr:last-child { border-bottom: none; }
-  .substances-table tbody tr:hover { background: var(--hover-bg-light); }
-  .substances-table tbody tr:not(.hidden) { display: table-row; }
-  .substances-table tbody tr.hidden { display: none; }
+.no-results {
+  padding: 32px;
+  text-align: center;
+  color: var(--dim);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.no-results:not(.visible) { display: none; }
+.no-results.visible { display: block; }
 
-  .substances-table td {
-    padding: 10px var(--spacing-lg);
-    vertical-align: top;
-    line-height: 1.5;
-  }
+/* VI wrapper */
+.list-vi-wrap { margin-bottom: 14px; }
+.groups-note {
+  background: var(--deep);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  padding: 10px 18px;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.note-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--l6);
+  white-space: nowrap;
+}
 
-  .substances-table td:last-child {
-    border-left: 1px solid var(--border);
-    color: var(--text-muted);
-    font-size: 13px;
-  }
+/* ── FOOTER ── */
+footer {
+  padding: 18px 36px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  background: var(--deep);
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
 
-  .row-num {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--text-dim);
-    width: 40px;
-    text-align: right;
-    vertical-align: top;
-    padding: 11px 0 10px 16px;
-  }
+#loading {
+  padding: 60px;
+  text-align: center;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  font-size: 14px;
+}
 
-  .et-name { color: #fff; font-weight: 500; }
-  .en-name { color: var(--text-muted); font-weight: 400; font-size: 14px; }
-
-  mark {
-    background: rgba(232,197,71,0.35);
-    color: #fff;
-    border-radius: var(--radius-sm);
-    padding: 0 2px;
-  }
-
-  .no-results {
-    padding: var(--spacing-3xl) var(--spacing-lg);
-    text-align: center;
-    color: var(--text-muted);
-    font-size: 15px;
-    line-height: 1.6;
-  }
-
-  .no-results:not(.visible) { display: none; }
-  .no-results.visible { display: block; }
-
-  /* ── VI nimekiri wrapper (note + section joined) ── */
-  .list-vi-wrap { margin-bottom: var(--spacing-3xl); }
-
-  .groups-note {
-    font-size: 13px;
-    color: var(--text-muted);
-    padding: var(--spacing-md) var(--spacing-lg);
-    background: var(--surface);
-    border-radius: var(--radius-md) var(--radius-md) 0 0;
-    border: 1px solid var(--border);
-    border-bottom: none;
-    line-height: 1.6;
-  }
-
-  .note-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    color: var(--purple);
-    margin-bottom: var(--spacing-xs);
-  }
-
-  /* ── FOOTER ─────────────────────────────────────── */
-  footer {
-    text-align: center;
-    padding: var(--spacing-xl) var(--spacing-3xl);
-    border-top: 1px solid var(--border);
-    color: var(--text-muted);
-    font-size: 12px;
-  }
-
-  footer a {
-    color: var(--text-muted);
-    text-decoration: none;
-    transition: color var(--duration);
-  }
-  
-  footer a:hover { color: var(--text); text-decoration: underline; }
-
-  /* ── RESPONSIVE ─────────────────────────────────── */
-  @media (max-width: 768px) {
-    body { font-size: 14px; }
-    
-    header { padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-sm); }
-    
-    .header-top { gap: var(--spacing-lg); }
-    
-    .stats-bar { flex-direction: column; align-items: flex-start; width: 100%; }
-    
-    #result-count { margin-left: 0; }
-    
-    main { padding: var(--spacing-lg); }
-    
-    .substances-table td { padding: 8px var(--spacing-md); }
-    .substances-table thead th { padding: 8px var(--spacing-md); }
-    
-    .row-num { display: none; }
-    
-    .list-name { font-size: 14px; }
-    .list-name span { font-size: 10px; }
-  }
-  
-  @media (max-width: 480px) {
-    h1 { font-size: 16px; }
-    
-    .header-title { gap: var(--spacing-sm); }
-    
-    .list-name span { display: none; }
-    
-    .list-meta { gap: var(--spacing-md); }
-    
-    .stats-bar { gap: var(--spacing-md); }
-  }
+/* ── RESPONSIVE ── */
+@media (max-width: 700px) {
+  body { font-size: 14px; }
+  main { padding: 14px; }
+  .header-main { padding: 14px 16px; gap: 12px; }
+  .search-zone { padding: 12px 16px; }
+  #result-count { display: none; }
+  .stats-band { display: none; }
+  .row-num { display: none; }
+  .eff-row { display: none; }
+  .title-block h1 { font-size: 16px; }
+  footer { flex-direction: column; gap: 4px; }
+}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="header-top">
-    <div class="header-title">
-      <div class="logo-badge"></div>
+  <!-- Chrome bar: kept for top spacing only -->
+  <div class="header-chrome"></div>
+
+  <!-- Title row -->
+  <div class="header-main">
+    <div class="logo-mark"></div>
+    <div class="title-block">
       <h1>Narkootiliste ja psühhotroopsete ainete ja ainerühmade nimekirjad I–VI</h1>
-    </div>
-    <div class="stats-bar">
-      <div class="stat"><div class="stat-dot" style="background:var(--list1)"></div>I nimekiri <strong id="c1">—</strong></div>
-      <div class="stat"><div class="stat-dot" style="background:var(--list2)"></div>II nimekiri <strong id="c2">—</strong></div>
-      <div class="stat"><div class="stat-dot" style="background:var(--list3)"></div>III nimekiri <strong id="c3">—</strong></div>
-      <div class="stat"><div class="stat-dot" style="background:var(--list4)"></div>IV nimekiri <strong id="c4">—</strong></div>
-      <div class="stat"><div class="stat-dot" style="background:var(--list5)"></div>V nimekiri <strong id="c5">—</strong></div>
-      <div class="stat"><div class="stat-dot" style="background:var(--list6)"></div>VI nimekiri <strong id="c6">—</strong></div>
-      <div id="result-count"></div>
-    </div>
-    <div class="stat" style="margin-top:4px;">
-      Redaktsiooni jõustumise kp: <strong id="effective-date">—</strong>
+      <div class="subtitle">
+        <span class="subtitle-label">Redaktsiooni jõustumise kp:</span>
+        <span class="subtitle-date" id="eff-display">—</span>
+      </div>
     </div>
   </div>
-  <div class="search-center">
-    <div class="search-wrap">
-      <div class="search-input-row">
-        <span class="search-icon">⌕</span>
-        <input type="text" id="search" placeholder="Otsi ainet…" autocomplete="off" spellcheck="false">
-      </div>
 
+  <!-- Stats band — each pill links to its list -->
+  <div class="stats-band">
+    <a class="stat-pill" href="#section1" onclick="expandSection(1)"><div class="pill-bar" style="background:var(--l1)"></div><span class="pill-label">I nimekiri&nbsp;</span><span class="pill-n" id="c1">—</span></a>
+    <a class="stat-pill" href="#section2" onclick="expandSection(2)"><div class="pill-bar" style="background:var(--l2)"></div><span class="pill-label">II nimekiri&nbsp;</span><span class="pill-n" id="c2">—</span></a>
+    <a class="stat-pill" href="#section3" onclick="expandSection(3)"><div class="pill-bar" style="background:var(--l3)"></div><span class="pill-label">III nimekiri&nbsp;</span><span class="pill-n" id="c3">—</span></a>
+    <a class="stat-pill" href="#section4" onclick="expandSection(4)"><div class="pill-bar" style="background:var(--l4)"></div><span class="pill-label">IV nimekiri&nbsp;</span><span class="pill-n" id="c4">—</span></a>
+    <a class="stat-pill" href="#section5" onclick="expandSection(5)"><div class="pill-bar" style="background:var(--l5)"></div><span class="pill-label">V nimekiri&nbsp;</span><span class="pill-n" id="c5">—</span></a>
+    <a class="stat-pill" href="#section6" onclick="expandSection(6)"><div class="pill-bar" style="background:var(--l6)"></div><span class="pill-label">VI nimekiri&nbsp;</span><span class="pill-n" id="c6">—</span></a>
+  </div>
+
+  <!-- Search — centred, with clear button -->
+  <div class="search-zone">
+    <div class="search-inner">
+      <span class="prompt">›_</span>
+      <input type="text" id="search" placeholder="Otsi ainet…" autocomplete="off" spellcheck="false">
+      <button class="search-clear" id="search-clear" title="Tühjenda otsing" aria-label="Tühjenda otsing">×</button>
     </div>
+    <div id="result-count"></div>
   </div>
 </header>
 
 <main>
-<div id="loading" style="padding:60px 32px; text-align:center; color:var(--text-muted);">
-  Laen andmeid…
-</div>
-<div id="main-content" style="display:none;">
+<div id="loading">// laen andmeid…</div>
+<div id="main-content" style="display:none">
 
 <!-- I nimekiri -->
 <div class="list-section" id="section1">
   <div class="list-header" onclick="toggleSection(1)">
     <div class="list-title">
-      <div class="list-num" style="background:var(--list1)">I</div>
-      <div class="list-name">I nimekiri <span>Kõige rangemalt piiritletud ained, meditsiiniline kasutus puudub</span></div>
+      <div class="list-sigil" style="color:var(--l1)">I</div>
+      <div class="list-info">
+        <div class="n">I nimekiri</div>
+        <div class="d">Kõige rangemalt piiritletud ained, meditsiiniline kasutus puudub</div>
+      </div>
     </div>
-    <div class="list-meta">
-      <div class="count-badge" id="badge1"></div>
-      <div class="toggle-icon">▾</div>
-    </div>
+    <div class="list-meta"><span class="count-badge" id="badge1"></span><span class="chevron">▾</span></div>
   </div>
   <div class="list-body">
     <table class="substances-table">
       <thead><tr><th></th><th>Eestikeelne nimetus</th><th>Ingliskeelne nimetus</th></tr></thead>
       <tbody id="tbody1"></tbody>
     </table>
-    <div class="no-results" id="no1">Otsingutulemusi ei leitud</div>
+    <div class="no-results" id="no1">// otsingutulemusi ei leitud</div>
   </div>
 </div>
 
@@ -501,20 +531,20 @@
 <div class="list-section" id="section2">
   <div class="list-header" onclick="toggleSection(2)">
     <div class="list-title">
-      <div class="list-num" style="background:var(--list2)">II</div>
-      <div class="list-name">II nimekiri <span>Opioidid ja kõrge riskiga narkootikumid</span></div>
+      <div class="list-sigil" style="color:var(--l2)">II</div>
+      <div class="list-info">
+        <div class="n">II nimekiri</div>
+        <div class="d">Opioidid ja kõrge riskiga narkootikumid</div>
+      </div>
     </div>
-    <div class="list-meta">
-      <div class="count-badge" id="badge2"></div>
-      <div class="toggle-icon">▾</div>
-    </div>
+    <div class="list-meta"><span class="count-badge" id="badge2"></span><span class="chevron">▾</span></div>
   </div>
   <div class="list-body">
     <table class="substances-table">
       <thead><tr><th></th><th>Eestikeelne nimetus</th><th>Ingliskeelne nimetus</th></tr></thead>
       <tbody id="tbody2"></tbody>
     </table>
-    <div class="no-results" id="no2">Otsingutulemusi ei leitud</div>
+    <div class="no-results" id="no2">// otsingutulemusi ei leitud</div>
   </div>
 </div>
 
@@ -522,20 +552,20 @@
 <div class="list-section" id="section3">
   <div class="list-header" onclick="toggleSection(3)">
     <div class="list-title">
-      <div class="list-num" style="background:var(--list3)">III</div>
-      <div class="list-name">III nimekiri <span>Kontrollitud ained piiratud meditsiinilise kasutusega</span></div>
+      <div class="list-sigil" style="color:var(--l3)">III</div>
+      <div class="list-info">
+        <div class="n">III nimekiri</div>
+        <div class="d">Kontrollitud ained piiratud meditsiinilise kasutusega</div>
+      </div>
     </div>
-    <div class="list-meta">
-      <div class="count-badge" id="badge3"></div>
-      <div class="toggle-icon">▾</div>
-    </div>
+    <div class="list-meta"><span class="count-badge" id="badge3"></span><span class="chevron">▾</span></div>
   </div>
   <div class="list-body">
     <table class="substances-table">
       <thead><tr><th></th><th>Eestikeelne nimetus</th><th>Ingliskeelne nimetus</th></tr></thead>
       <tbody id="tbody3"></tbody>
     </table>
-    <div class="no-results" id="no3">Otsingutulemusi ei leitud</div>
+    <div class="no-results" id="no3">// otsingutulemusi ei leitud</div>
   </div>
 </div>
 
@@ -543,20 +573,20 @@
 <div class="list-section" id="section4">
   <div class="list-header" onclick="toggleSection(4)">
     <div class="list-title">
-      <div class="list-num" style="background:var(--list4)">IV</div>
-      <div class="list-name">IV nimekiri <span>Psühhotroopsed ained meditsiinilise kasutusega</span></div>
+      <div class="list-sigil" style="color:var(--l4)">IV</div>
+      <div class="list-info">
+        <div class="n">IV nimekiri</div>
+        <div class="d">Psühhotroopsed ained meditsiinilise kasutusega</div>
+      </div>
     </div>
-    <div class="list-meta">
-      <div class="count-badge" id="badge4"></div>
-      <div class="toggle-icon">▾</div>
-    </div>
+    <div class="list-meta"><span class="count-badge" id="badge4"></span><span class="chevron">▾</span></div>
   </div>
   <div class="list-body">
     <table class="substances-table">
       <thead><tr><th></th><th>Eestikeelne nimetus</th><th>Ingliskeelne nimetus</th></tr></thead>
       <tbody id="tbody4"></tbody>
     </table>
-    <div class="no-results" id="no4">Otsingutulemusi ei leitud</div>
+    <div class="no-results" id="no4">// otsingutulemusi ei leitud</div>
   </div>
 </div>
 
@@ -564,189 +594,187 @@
 <div class="list-section" id="section5">
   <div class="list-header" onclick="toggleSection(5)">
     <div class="list-title">
-      <div class="list-num" style="background:var(--list5)">V</div>
-      <div class="list-name">V nimekiri <span>Lähteained ja muud kontrollitud ained</span></div>
+      <div class="list-sigil" style="color:var(--l5)">V</div>
+      <div class="list-info">
+        <div class="n">V nimekiri</div>
+        <div class="d">Lähteained ja muud kontrollitud ained</div>
+      </div>
     </div>
-    <div class="list-meta">
-      <div class="count-badge" id="badge5"></div>
-      <div class="toggle-icon">▾</div>
-    </div>
+    <div class="list-meta"><span class="count-badge" id="badge5"></span><span class="chevron">▾</span></div>
   </div>
   <div class="list-body">
     <table class="substances-table">
       <thead><tr><th></th><th>Eestikeelne nimetus</th><th>Ingliskeelne nimetus</th></tr></thead>
       <tbody id="tbody5"></tbody>
     </table>
-    <div class="no-results" id="no5">Otsingutulemusi ei leitud</div>
+    <div class="no-results" id="no5">// otsingutulemusi ei leitud</div>
   </div>
 </div>
 
 <!-- VI nimekiri -->
 <div class="list-vi-wrap" id="list-vi-wrap">
   <div class="groups-note">
-    <div class="note-label">MÄRKUS</div>
+    <span class="note-label">// MÄRKUS</span>
     VI nimekiri sisaldab ainerühmi (mitte üksikaineid). Iga ainerühma kõik esindajad on keelatud.
   </div>
-  <div class="list-section" id="section6" style="border-radius:0 0 10px 10px; margin-bottom:0;">
+  <div class="list-section" id="section6" style="margin-bottom:0">
     <div class="list-header" onclick="toggleSection(6)">
       <div class="list-title">
-        <div class="list-num" style="background:var(--list6)">VI</div>
-        <div class="list-name">VI nimekiri <span>Kontrollitud ainerühmad (mitte üksikained)</span></div>
+        <div class="list-sigil" style="color:var(--l6)">VI</div>
+        <div class="list-info">
+          <div class="n">VI nimekiri</div>
+          <div class="d">Kontrollitud ainerühmad (mitte üksikained)</div>
+        </div>
       </div>
-      <div class="list-meta">
-        <div class="count-badge" id="badge6"></div>
-        <div class="toggle-icon">▾</div>
-      </div>
+      <div class="list-meta"><span class="count-badge" id="badge6"></span><span class="chevron">▾</span></div>
     </div>
     <div class="list-body">
       <table class="substances-table">
         <thead><tr><th></th><th>Ainerühma eestikeelne nimetus</th><th>Ingliskeelne nimetus</th></tr></thead>
         <tbody id="tbody6"></tbody>
       </table>
-      <div class="no-results" id="no6">Otsingutulemusi ei leitud</div>
+      <div class="no-results" id="no6">// otsingutulemusi ei leitud</div>
     </div>
   </div>
 </div>
-</div><!-- /main-content -->
 
+</div><!-- /main-content -->
 </main>
 
 <footer>
-  Narkootiliste ja psühhotroopsete ainete nimekirjad I–VI &nbsp;·&nbsp;
-  See veebileht on informatiivse eesmärgiga.
+  <span>© Andraš Tšitškan <span id="footer-year"></span></span>
 </footer>
 
 <script>
 // ── Utilities ────────────────────────────────────────────────────────────────
-
 function esc(s) {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function highlight(t, q) {
+  if (!q) return esc(t);
+  const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+  return esc(t).replace(re, '<mark>$1</mark>');
 }
 
-function highlight(text, query) {
-  if (!query) return esc(text);
-  const re = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
-  return esc(text).replace(re, '<mark>$1</mark>');
-}
-
+// Toggle collapse — but if section is collapsed, ensure it is expanded before scrolling
 function toggleSection(n) {
   document.getElementById('section' + n).classList.toggle('collapsed');
 }
 
+// Ensure section is expanded when navigated to (from stat-pills or nav links)
+function expandSection(n) {
+  document.getElementById('section' + n).classList.remove('collapsed');
+}
+
+// Nav links: ensure target section is expanded when jumped to
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', e => {
+    const target = link.getAttribute('href'); // e.g. #section3
+    if (!target) return;
+    const sec = document.querySelector(target);
+    if (sec) sec.classList.remove('collapsed');
+  });
+});
+
 // ── Render ───────────────────────────────────────────────────────────────────
-
-function renderData(jsonData) {
-  // Update footer source link from meta
-  const meta = jsonData.meta || {};
-  if (meta.source) {
-    const sourceLink = document.getElementById('source-link');
-    if (sourceLink) sourceLink.href = meta.source;
-  }
+function renderData(d) {
+  const meta = d.meta || {};
   if (meta.effective_date) {
-    const effEl = document.getElementById('effective-date');
-    if (effEl) effEl.textContent = meta.effective_date;
+    document.getElementById('eff-display').textContent = meta.effective_date;
   }
 
-  // Build DATA map: {1: [{et, en}, ...], ...}
   const DATA = {};
-  for (const list of jsonData.lists) {
-    DATA[list.id] = list.substances;
-    // Update list description in header
-    const descEl = document.querySelector(`#section${list.id} .list-name span`);
-    if (descEl) descEl.textContent = list.description;
-  }
+  for (const l of d.lists) { DATA[l.id] = l.substances; }
 
-  // Render tables
-  for (let listNum = 1; listNum <= 6; listNum++) {
-    const substances = DATA[listNum] || [];
-    const tbody = document.getElementById('tbody' + listNum);
+  for (let n = 1; n <= 6; n++) {
+    const subs = DATA[n] || [];
+    const tbody = document.getElementById('tbody' + n);
     tbody.innerHTML = '';
-    substances.forEach((s, i) => {
+    subs.forEach((s, i) => {
       const tr = document.createElement('tr');
       tr.dataset.et = s.et.toLowerCase();
       tr.dataset.en = (s.en || '').toLowerCase();
-      tr.innerHTML = `<td class="row-num">${i + 1}</td><td class="et-name">${esc(s.et)}</td><td class="en-name">${esc(s.en || '')}</td>`;
+      tr.innerHTML = `<td class="row-num">${String(i + 1).padStart(3, '0')}</td><td class="et-name">${esc(s.et)}</td><td class="en-name">${esc(s.en || '')}</td>`;
       tbody.appendChild(tr);
     });
-    const unit = listNum === 6 ? ' rühma' : ' ainet';
-    document.getElementById('badge' + listNum).textContent = substances.length + unit;
-    document.getElementById('c' + listNum).textContent = substances.length;
+    const u = n === 6 ? ' rühma' : ' ainet';
+    document.getElementById('badge' + n).textContent = subs.length + u;
+    document.getElementById('c' + n).textContent = subs.length;
   }
 
-  // Wire up search now that data is ready
   initSearch(DATA);
   document.getElementById('loading').style.display = 'none';
   document.getElementById('main-content').style.display = '';
 }
 
 // ── Search ───────────────────────────────────────────────────────────────────
-
 function initSearch(DATA) {
-  const searchInput = document.getElementById('search');
-  const resultCount = document.getElementById('result-count');
+  const inp   = document.getElementById('search');
+  const rc    = document.getElementById('result-count');
+  const clearBtn = document.getElementById('search-clear');
 
-  searchInput.addEventListener('input', () => {
-    const q = searchInput.value.trim().toLowerCase();
+  function runSearch() {
+    const q = inp.value.trim().toLowerCase();
+
+    // Show/hide clear button
+    clearBtn.classList.toggle('visible', q.length > 0);
+
     let total = 0;
-
     for (let list = 1; list <= 6; list++) {
-      const substances = DATA[list] || [];
-      const tbody = document.getElementById('tbody' + list);
-      const rows = tbody.querySelectorAll('tr');
+      const subs   = DATA[list] || [];
+      const tbody  = document.getElementById('tbody' + list);
+      const rows   = tbody.querySelectorAll('tr');
       const section = document.getElementById('section' + list);
-      const noRes = document.getElementById('no' + list);
-      let visible = 0;
+      const noRes  = document.getElementById('no' + list);
+      let vis = 0;
 
       rows.forEach((tr, idx) => {
         const match = !q || tr.dataset.et.includes(q) || tr.dataset.en.includes(q);
         tr.classList.toggle('hidden', !match);
         if (match) {
-          visible++;
+          vis++;
           total++;
-          tr.cells[1].innerHTML = highlight(substances[idx].et, q);
-          tr.cells[2].innerHTML = highlight(substances[idx].en || '', q);
+          tr.cells[1].innerHTML = highlight(subs[idx].et, q);
+          tr.cells[2].innerHTML = highlight(subs[idx].en || '', q);
         }
       });
 
       if (q) {
-        if (visible === 0) {
-          section.classList.add('hidden');
-        } else {
-          section.classList.remove('hidden', 'collapsed');
-        }
+        if (vis === 0) { section.classList.add('hidden'); }
+        else           { section.classList.remove('hidden', 'collapsed'); }
       } else {
         section.classList.remove('hidden');
       }
 
-      noRes.classList.toggle('visible', visible === 0 && !!q);
-
-      const unit = list === 6 ? ' rühma' : ' ainet';
-      document.getElementById('badge' + list).textContent =
-        q ? `${visible}/${substances.length}` : substances.length + unit;
-
+      noRes.classList.toggle('visible', vis === 0 && !!q);
+      const u = list === 6 ? ' rühma' : ' ainet';
+      document.getElementById('badge' + list).textContent = q ? `${vis}/${subs.length}` : subs.length + u;
       if (list === 6) {
-        document.getElementById('list-vi-wrap').style.display =
-          (q && visible === 0) ? 'none' : '';
+        document.getElementById('list-vi-wrap').style.display = (q && vis === 0) ? 'none' : '';
       }
     }
+    rc.textContent = q ? `${total} tulemust` : '';
+  }
 
-    resultCount.textContent = q ? `${total} tulemust` : '';
+  inp.addEventListener('input', runSearch);
+
+  clearBtn.addEventListener('click', () => {
+    inp.value = '';
+    inp.focus();
+    runSearch();
   });
 }
 
 // ── Bootstrap ────────────────────────────────────────────────────────────────
+document.getElementById('footer-year').textContent = new Date().getFullYear();
 
 fetch('data.json')
-  .then(r => {
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    return r.json();
-  })
+  .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
   .then(renderData)
   .catch(err => {
     document.getElementById('loading').innerHTML =
-      `<p style="color:var(--accent)">Viga andmete laadimisel: ${esc(err.message)}</p>` +
-      `<p style="margin-top:8px;font-size:12px;color:var(--text-muted)">Veendu, et <code>data.json</code> on samal kaustal kui <code>index.html</code>.</p>`;
-    console.error('Failed to load data.json:', err);
+      `<p style="color:var(--red)">// viga andmete laadimisel: ${esc(err.message)}</p>` +
+      `<p style="margin-top:8px;font-size:12px;color:var(--muted)">Veendu, et <code>data.json</code> asub samas kaustas.</p>`;
   });
 </script>
 </body>
