@@ -45,7 +45,8 @@ def _fetch_text(url, timeout=30):
 def find_lisa1_url():
     """
     Leiab Lisa 1 PDF URL-i Riigi Teataja akti lehelt.
-    Otsib mustrit href="...">Lisa 1< -- lihtne ja vastupidav.
+    Strateegia: leia koik aktilisa PDF lingid, siis kontrolli,
+    kas vahetult jargnev tekst sisaldab "Lisa 1".
     Annab erindi kui URL-i ei leita -- ei ole tagavaraplaani.
     """
     print("Otsin Lisa 1 URL-i: " + ACT_URL)
@@ -54,35 +55,32 @@ def find_lisa1_url():
     except Exception as e:
         raise RuntimeError("Akti lehe laadimine ebaonnestus: " + str(e))
 
-    # Lihtne muster: href="...">Lisa 1<
-    # Ei ole seotud <a> tagi tapselt struktuuri -- toimib olenemata lisaatribuutidest
-    m = re.search(
-        r'href=["\']([ ^"\']+)["\'\'][^>]*>\s*Lisa 1\s*<',
-        html, re.IGNORECASE,
-    )
-    if not m:
-        # Tryki debug-infot, et saaks GitHub Actions logist aru, mis lehel on
-        lisa_pos = html.lower().find("lisa 1")
-        if lisa_pos >= 0:
-            snippet = html[max(0, lisa_pos - 300):lisa_pos + 100]
-            print("  \'Lisa 1\' leiti lehelt, aga href-i ei saanud katta. Kontekst:")
-            print("  " + repr(snippet))
-        else:
-            print("  \'Lisa 1\' teksti ei leitud lehelt uldse!")
-            # Tryki esimesed aktilisa lingid mis leiti
-            all_links = re.findall(r'href=["\']([ ^"\']*aktilisa[^"\']*)["\']', html, re.IGNORECASE)
-            if all_links:
-                print("  Aktilisa lingid lehel:")
-                for lnk in all_links[:5]:
-                    print("    " + lnk)
-        raise RuntimeError(
-            "Lisa 1 linki ei leitud lehelt " + ACT_URL + "\n"
-            "Vaata GitHub Actions logi tapsema info jaoks."
-        )
+    href_re = re.compile(r'href=["\']([ ^"\']*aktilisa[^"\']*\.pdf[^"\']*)["\']', re.IGNORECASE)
 
-    url = m.group(1).split("#")[0]
-    print("  Leitud Lisa 1 URL: " + url)
-    return url
+    for m in href_re.finditer(html):
+        # Kontrolli, kas "Lisa 1" esineb 200 tahemarga jooksul parast lingi sulgemist
+        after = html[m.end():m.end() + 200]
+        if re.search(r'Lisa\s*1\b', after, re.IGNORECASE):
+            url = m.group(1).split("#")[0]
+            print("  Leitud Lisa 1 URL: " + url)
+            return url
+
+    # Ei leitud -- tryki debug-infot GitHub Actions logi jaoks
+    all_aktilisa = href_re.findall(html)
+    lisa1_idx = html.lower().find("lisa 1")
+    print("  Aktilisa lingid lehel (" + str(len(all_aktilisa)) + "):")
+    for lnk in all_aktilisa[:10]:
+        print("    " + lnk)
+    if lisa1_idx >= 0:
+        print("  'Lisa 1' kontekst lehel:")
+        print("  " + repr(html[max(0, lisa1_idx - 300):lisa1_idx + 100]))
+    else:
+        print("  'Lisa 1' teksti ei leitud lehelt uldse!")
+
+    raise RuntimeError(
+        "Lisa 1 linki ei leitud lehelt " + ACT_URL + "\n"
+        "Vaata GitHub Actions logi tapsema info jaoks."
+    )
 
 def load_pdf_bytes(url=None, local_path=None):
     """Laadib PDF-i. Tagastab (tegelik_url, pdf_bytes)."""
