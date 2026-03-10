@@ -104,6 +104,7 @@ header {
   align-items: center;
   gap: 20px;
   padding: 18px 36px;
+  padding-top: 26px;
   border-bottom: 1px solid var(--border);
 }
 
@@ -137,20 +138,17 @@ header {
   line-height: 1.25;
 }
 .title-block .subtitle {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin-top: 3px;
+  letter-spacing: 0.06em;
+  margin-top: 5px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
 }
-
-.eff-row {
-  margin-left: auto;
-  text-align: right;
-  flex-shrink: 0;
-}
-.eff-row .label { font-size: 10px; color: var(--dim); letter-spacing: 0.12em; text-transform: uppercase; }
-.eff-row .val   { font-size: 14px; color: var(--amber); font-weight: 500; }
+.subtitle-label { color: var(--muted); }
+.subtitle-date  { color: var(--amber); font-weight: 500; }
 
 /* Stats band */
 .stats-band {
@@ -169,11 +167,13 @@ header {
   padding: 9px 20px;
   border-right: 1px solid var(--border);
   flex-shrink: 0;
-  cursor: default;
+  cursor: pointer;
   transition: background 0.12s;
+  text-decoration: none;
+  color: inherit;
 }
 .stat-pill:hover { background: var(--surface); }
-.stat-pill:last-child { border-right: none; margin-left: auto; }
+.stat-pill:last-child { border-right: none; }
 
 .pill-bar {
   width: 3px;
@@ -480,39 +480,29 @@ footer {
 <body>
 
 <header>
-  <!-- Chrome bar: static tabs + clickable list jump-links -->
-  <div class="header-chrome">
-    <div class="chrome-tab active">NIMEKIRJAD I–VI</div>
-    <a class="chrome-tab nav-link" href="#section1">I NIMEKIRI</a>
-    <a class="chrome-tab nav-link" href="#section2">II NIMEKIRI</a>
-    <a class="chrome-tab nav-link" href="#section3">III NIMEKIRI</a>
-    <a class="chrome-tab nav-link" href="#section4">IV NIMEKIRI</a>
-    <a class="chrome-tab nav-link" href="#section5">V NIMEKIRI</a>
-    <a class="chrome-tab nav-link" href="#section6">VI NIMEKIRI</a>
-    <div class="chrome-right" id="effective-date">—</div>
-  </div>
+  <!-- Chrome bar: kept for top spacing only -->
+  <div class="header-chrome"></div>
 
   <!-- Title row -->
   <div class="header-main">
     <div class="logo-mark">RT</div>
     <div class="title-block">
       <h1>Narkootiliste ja psühhotroopsete ainete ja ainerühmade nimekirjad I–VI</h1>
-      <div class="subtitle">Kehtiv redaktsioon</div>
-    </div>
-    <div class="eff-row">
-      <div class="label">Redaktsiooni jõustumise kp</div>
-      <div class="val" id="eff-display">—</div>
+      <div class="subtitle">
+        <span class="subtitle-label">Redaktsiooni jõustumise kp:</span>
+        <span class="subtitle-date" id="eff-display">—</span>
+      </div>
     </div>
   </div>
 
-  <!-- Stats band -->
+  <!-- Stats band — each pill links to its list -->
   <div class="stats-band">
-    <div class="stat-pill"><div class="pill-bar" style="background:var(--l1)"></div><span class="pill-label">I nimekiri&nbsp;</span><span class="pill-n" id="c1">—</span></div>
-    <div class="stat-pill"><div class="pill-bar" style="background:var(--l2)"></div><span class="pill-label">II nimekiri&nbsp;</span><span class="pill-n" id="c2">—</span></div>
-    <div class="stat-pill"><div class="pill-bar" style="background:var(--l3)"></div><span class="pill-label">III nimekiri&nbsp;</span><span class="pill-n" id="c3">—</span></div>
-    <div class="stat-pill"><div class="pill-bar" style="background:var(--l4)"></div><span class="pill-label">IV nimekiri&nbsp;</span><span class="pill-n" id="c4">—</span></div>
-    <div class="stat-pill"><div class="pill-bar" style="background:var(--l5)"></div><span class="pill-label">V nimekiri&nbsp;</span><span class="pill-n" id="c5">—</span></div>
-    <div class="stat-pill"><div class="pill-bar" style="background:var(--l6)"></div><span class="pill-label">VI nimekiri&nbsp;</span><span class="pill-n" id="c6">—</span></div>
+    <a class="stat-pill" href="#section1" onclick="expandSection(1)"><div class="pill-bar" style="background:var(--l1)"></div><span class="pill-label">I nimekiri&nbsp;</span><span class="pill-n" id="c1">—</span></a>
+    <a class="stat-pill" href="#section2" onclick="expandSection(2)"><div class="pill-bar" style="background:var(--l2)"></div><span class="pill-label">II nimekiri&nbsp;</span><span class="pill-n" id="c2">—</span></a>
+    <a class="stat-pill" href="#section3" onclick="expandSection(3)"><div class="pill-bar" style="background:var(--l3)"></div><span class="pill-label">III nimekiri&nbsp;</span><span class="pill-n" id="c3">—</span></a>
+    <a class="stat-pill" href="#section4" onclick="expandSection(4)"><div class="pill-bar" style="background:var(--l4)"></div><span class="pill-label">IV nimekiri&nbsp;</span><span class="pill-n" id="c4">—</span></a>
+    <a class="stat-pill" href="#section5" onclick="expandSection(5)"><div class="pill-bar" style="background:var(--l5)"></div><span class="pill-label">V nimekiri&nbsp;</span><span class="pill-n" id="c5">—</span></a>
+    <a class="stat-pill" href="#section6" onclick="expandSection(6)"><div class="pill-bar" style="background:var(--l6)"></div><span class="pill-label">VI nimekiri&nbsp;</span><span class="pill-n" id="c6">—</span></a>
   </div>
 
   <!-- Search — centred, with clear button -->
@@ -686,6 +676,11 @@ function toggleSection(n) {
   document.getElementById('section' + n).classList.toggle('collapsed');
 }
 
+// Ensure section is expanded when navigated to (from stat-pills or nav links)
+function expandSection(n) {
+  document.getElementById('section' + n).classList.remove('collapsed');
+}
+
 // Nav links: ensure target section is expanded when jumped to
 document.querySelectorAll('.nav-link').forEach(link => {
   link.addEventListener('click', e => {
@@ -700,7 +695,6 @@ document.querySelectorAll('.nav-link').forEach(link => {
 function renderData(d) {
   const meta = d.meta || {};
   if (meta.effective_date) {
-    document.getElementById('effective-date').textContent = meta.effective_date;
     document.getElementById('eff-display').textContent = meta.effective_date;
   }
 
