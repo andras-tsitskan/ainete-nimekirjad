@@ -167,8 +167,8 @@ header {
   border-radius: 2px;
   flex-shrink: 0;
 }
-.pill-label { font-size: 11px; letter-spacing: 0.08em; color: var(--muted); }
-.pill-n     { font-size: 15px; font-weight: 700; color: var(--text); }
+.pill-label { font-size: 12px; letter-spacing: 0.08em; color: var(--muted); }
+.pill-n     { font-size: 12px; font-weight: 700; color: var(--text); }
 
 /* Search — centred */
 .search-zone {
@@ -265,7 +265,7 @@ main {
   overflow: hidden;
   transition: border-color 0.2s;
   animation: appear 0.25s ease both;
-  scroll-margin-top: 200px; /* offset for sticky header */
+  scroll-margin-top: 28px; /* base fallback; JS overrides with header height + padding */
 }
 .list-section:hover { border-color: var(--line); }
 .list-section.hidden { display: none; }
@@ -767,6 +767,17 @@ function initSearch(DATA) {
     runSearch();
   });
 }
+
+// ── Scroll margin: keep main padding when anchor-jumping ─────────────────────
+function updateScrollMargins() {
+  const headerH = document.querySelector('header').getBoundingClientRect().height;
+  const offset = headerH + 28; // 28px = main padding-top
+  document.querySelectorAll('.list-section').forEach(el => {
+    el.style.scrollMarginTop = offset + 'px';
+  });
+}
+updateScrollMargins();
+window.addEventListener('resize', updateScrollMargins);
 
 // ── Bootstrap ────────────────────────────────────────────────────────────────
 document.getElementById('footer-year').textContent = new Date().getFullYear();
