@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Narkootiliste ja psühhotroopsete ainete ja ainerühmade nimekirjad I–VI</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css">
 <style>
 :root {
   --void:     #050507;
@@ -18,8 +18,8 @@
   --text:     #eef1ff;
   --muted:    #9099b8;
   --dim:      #7a84a8;
-  --mono:     'JetBrains Mono', monospace;
-  --display:  'Syne', sans-serif;
+  --mono:     'Hack', 'Courier New', monospace;
+  --display:  'Hack', 'Courier New', monospace;
 
   --l1: #f25443; --l2: #f0893d; --l3: #f5c842;
   --l4: #f0ae3d; --l5: #5aade8; --l6: #a87fd4;
@@ -293,11 +293,14 @@ main {
 .list-sigil {
   font-family: var(--display);
   font-weight: 800;
-  font-size: 22px;
-  width: 36px;
+  font-size: 28px;
+  width: 44px;
   text-align: center;
   flex-shrink: 0;
   line-height: 1;
+  letter-spacing: -0.02em;
+  opacity: 1;
+  filter: brightness(1.15);
 }
 
 .list-info { min-width: 0; }
@@ -495,7 +498,7 @@ footer {
   <div class="search-zone">
     <div class="search-inner">
       <span class="prompt">›_</span>
-      <input type="text" id="search" placeholder="Otsi ainet…" autocomplete="off" spellcheck="false">
+      <input type="text" id="search" placeholder="Otsi ainet…" autocomplete="off" spellcheck="false" tabindex="1">
       <button class="search-clear" id="search-clear" title="Tühjenda otsing" aria-label="Tühjenda otsing">×</button>
     </div>
     <div id="result-count"></div>
