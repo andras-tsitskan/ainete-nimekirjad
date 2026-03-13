@@ -3,33 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Isikukood ja vanus — Tööriistad</title>
+<title>Rehkendaja — Tööriistad</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css">
 <link rel="stylesheet" href="noir.css">
 <style>
-/* ── Page layout ── */
+/* ── Page-specific styles ── */
 .tool-wrap {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 28px;
   align-items: start;
 }
+
+
 @media (max-width: 900px) {
   .tool-wrap { grid-template-columns: 1fr; }
 }
 
-/* ── Input panel ── */
+/* Input panel */
 .panel {
   border: 1px solid var(--border);
   background: var(--surface);
   display: flex;
   flex-direction: column;
 }
+
 .panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
   padding: 10px 16px;
   border-bottom: 1px solid var(--border);
   font-size: 10px;
@@ -39,203 +38,57 @@
   background: var(--deep);
 }
 
-/* ── Input field ── */
-.input-section {
-  padding: 20px 20px 0 20px;
-}
-.field-label {
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--dim);
-  margin-bottom: 8px;
-}
-.code-input-wrap {
+/* Highlight overlay container — mirror div sizes it, textarea overlays */
+.input-wrap {
   position: relative;
-  display: flex;
-  align-items: center;
 }
-.code-display {
+
+/* The mirror div — drives height; textarea overlaid on top */
+.input-highlight {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 120px;
+  padding: 16px;
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.7;
+  color: transparent;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  pointer-events: none;
+}
+
+.input-highlight mark {
+  background: rgba(245, 185, 66, 0.28);
+  color: transparent;
+  border-radius: 2px;
+  outline: 1px solid rgba(245, 185, 66, 0.5);
+  padding: 0;
+}
+
+#input-text {
   position: absolute;
   inset: 0;
-  padding: 12px 44px 12px 14px;
-  font-family: var(--mono);
-  font-size: 22px;
-  letter-spacing: 0.12em;
-  color: transparent;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  white-space: pre;
-  z-index: 1;
-}
-.code-display .cd-digit    { color: var(--text); }
-.code-display .cd-dim      { color: var(--dim); opacity: 0.5; }
-.code-display .cd-sep      { color: var(--border); }
-.code-display .cd-valid    { color: var(--amber); }
-.code-display .cd-err      { color: var(--red); }
-
-#code-input {
+  box-sizing: border-box;
   width: 100%;
-  background: var(--lift);
-  border: 1px solid var(--border);
-  color: transparent;
-  caret-color: var(--amber);
-  font-family: var(--mono);
-  font-size: 22px;
-  letter-spacing: 0.12em;
-  padding: 12px 44px 12px 14px;
-  outline: none;
-  transition: border-color 0.15s;
-  position: relative;
-  z-index: 2;
-}
-#code-input:focus { border-color: var(--line); }
-#code-input.is-valid  { border-color: var(--amber); }
-#code-input.is-error  { border-color: var(--red); }
-#code-input::placeholder { color: var(--dim); opacity: 0.5; letter-spacing: 0.06em; font-size: 14px; }
-
-.input-clear {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-family: var(--mono);
-  font-size: 16px;
-  color: var(--dim);
-  background: none;
+  height: 100%;
+  background: transparent;
   border: none;
-  cursor: pointer;
-  padding: 4px 6px;
-  line-height: 1;
-  z-index: 3;
-  display: none;
-  transition: color 0.12s;
-}
-.input-clear:hover { color: var(--text); }
-.input-clear.visible { display: block; }
-
-.input-hint {
-  margin-top: 8px;
-  font-size: 11px;
-  color: var(--dim);
-  letter-spacing: 0.04em;
-  min-height: 18px;
-}
-.input-hint.err { color: var(--red); }
-
-/* ── Date separator ── */
-.or-separator {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 20px 0 0 0;
-  padding: 0 20px;
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--dim);
-}
-.or-separator::before,
-.or-separator::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
-
-/* ── DOB input ── */
-.dob-section {
-  padding: 16px 20px 0 20px;
-}
-#dob-input {
-  width: 100%;
-  background: var(--lift);
-  border: 1px solid var(--border);
-  color: var(--text);
-  caret-color: var(--amber);
-  font-family: var(--mono);
-  font-size: 16px;
-  letter-spacing: 0.08em;
-  padding: 10px 14px;
-  outline: none;
-  transition: border-color 0.15s;
-}
-#dob-input:focus { border-color: var(--line); }
-#dob-input.is-valid { border-color: var(--amber); }
-#dob-input.is-error { border-color: var(--red); }
-#dob-input::placeholder { color: var(--dim); opacity: 0.5; letter-spacing: 0.04em; font-size: 13px; }
-
-/* ── Reference date ── */
-.ref-section {
-  padding: 20px 20px 20px 20px;
-  border-top: 1px solid var(--border);
-  margin-top: 20px;
-}
-.ref-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.ref-label {
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--dim);
-  flex-shrink: 0;
-}
-#ref-input {
-  flex: 1;
-  background: var(--lift);
-  border: 1px solid var(--border);
-  color: var(--text);
-  caret-color: var(--amber);
-  font-family: var(--mono);
-  font-size: 14px;
-  letter-spacing: 0.08em;
-  padding: 7px 12px;
-  outline: none;
-  transition: border-color 0.15s;
-}
-#ref-input:focus { border-color: var(--line); }
-#ref-input.is-valid { border-color: var(--line); }
-.ref-today-btn {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  color: var(--dim);
-  background: none;
-  border: 1px solid var(--border);
-  padding: 7px 12px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.12s, color 0.12s;
-  flex-shrink: 0;
-}
-.ref-today-btn:hover { background: var(--lift); color: var(--text); }
-.ref-today-btn.active { color: var(--amber); border-color: var(--line); }
-#ref-calendar {
-  background: var(--lift);
-  border: 1px solid var(--border);
   color: var(--text);
   font-family: var(--mono);
   font-size: 14px;
-  padding: 7px 8px;
+  line-height: 1.7;
+  padding: 16px;
+  resize: none;
   outline: none;
-  cursor: pointer;
-  transition: border-color 0.15s;
-  flex-shrink: 0;
-  color-scheme: dark;
+  caret-color: var(--amber);
+  overflow: hidden;
 }
-#ref-calendar:focus, #ref-calendar:hover { border-color: var(--line); }
-#ref-calendar::-webkit-calendar-picker-indicator {
-  filter: invert(0.55) sepia(1) saturate(3) hue-rotate(5deg) brightness(1.1);
-  cursor: pointer;
-  padding: 0;
-  margin: 0;
-}
+#input-text::placeholder { color: var(--dim); }
 
-/* ── Results panel ── */
+/* Results panel */
 .results-panel {
   display: flex;
   flex-direction: column;
@@ -246,6 +99,12 @@
   border: 1px solid var(--border);
   background: var(--surface);
   overflow: hidden;
+  animation: appear 0.2s ease both;
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .result-header {
@@ -257,6 +116,7 @@
   border-bottom: 1px solid var(--border);
   gap: 12px;
 }
+
 .result-label {
   font-size: 10px;
   letter-spacing: 0.18em;
@@ -264,100 +124,112 @@
   color: var(--dim);
 }
 
-/* Age display */
-.age-main {
-  padding: 18px 18px 14px 18px;
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--amber);
-  letter-spacing: -0.01em;
-  line-height: 1.5;
-}
-.age-detail {
-  padding: 0 18px 16px 18px;
-  font-size: 13px;
-  color: var(--muted);
-  letter-spacing: 0.04em;
-}
-
-/* Info rows */
-.info-rows {
-  padding: 4px 0;
-}
-.info-row {
-  display: flex;
-  align-items: baseline;
-  gap: 0;
-  padding: 8px 18px;
-  border-bottom: 1px solid var(--border);
-  font-size: 13px;
-}
-.info-row:last-child { border-bottom: none; }
-.info-key {
-  color: var(--dim);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  width: 130px;
-  flex-shrink: 0;
-}
-.info-val {
-  color: var(--text);
-}
-.info-val.amber { color: var(--amber); }
-.info-val.muted { color: var(--muted); }
-
-/* Checksum breakdown */
-.checksum-wrap {
-  padding: 12px 18px;
-  overflow-x: auto;
-}
-.checksum-table {
-  border-collapse: collapse;
-  font-size: 12px;
+.copy-btn {
   font-family: var(--mono);
-  width: 100%;
-}
-.checksum-table th {
-  color: var(--dim);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 0 0 6px 0;
-  text-align: center;
-  font-weight: 400;
-  border-bottom: 1px solid var(--border);
-}
-.checksum-table td {
-  text-align: center;
-  padding: 6px 4px;
-  color: var(--muted);
-  border-right: 1px solid var(--border);
-  min-width: 28px;
-}
-.checksum-table td:last-child { border-right: none; }
-.checksum-table tr.row-digit td { color: var(--text); }
-.checksum-table tr.row-weight td { color: var(--dim); }
-.checksum-table tr.row-prod td  { color: var(--muted); }
-.checksum-table .cell-check { color: var(--amber); font-weight: 700; }
-.checksum-sum {
-  margin-top: 8px;
   font-size: 11px;
-  color: var(--dim);
+  color: var(--muted);
+  background: none;
+  border: 1px solid var(--border);
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
   letter-spacing: 0.06em;
 }
-.checksum-sum span { color: var(--muted); }
-.checksum-sum .ok  { color: var(--amber); }
-.checksum-sum .err { color: var(--red); }
+.copy-btn:hover {
+  background: var(--lift);
+  color: var(--text);
+  border-color: var(--line);
+}
+.copy-btn.copied {
+  color: var(--amber);
+  border-color: var(--amber);
+}
 
-/* Idle placeholder */
-.idle-state {
-  padding: 28px 18px;
-  font-size: 12px;
+.result-value {
+  padding: 14px 16px;
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* Sum value — larger */
+.sum-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--amber);
+  letter-spacing: -0.02em;
+  padding: 18px 16px;
+}
+
+/* Count */
+.count-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+  padding: 16px 16px;
+}
+
+/* Ordered list of elements */
+.elements-list {
+  padding: 12px 16px;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.elements-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text);
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+}
+.elements-list li:last-child { border-bottom: none; }
+
+.el-num {
+  font-size: 10px;
   color: var(--dim);
-  letter-spacing: 0.1em;
+  width: 28px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* Empty state */
+.empty-state {
+  padding: 40px 16px;
+  text-align: center;
+  color: var(--dim);
+  font-size: 12px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
+
+/* Unit switcher */
+.unit-switcher {
+  display: flex;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.unit-btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  padding: 5px 14px;
+  background: none;
+  border: none;
+  color: var(--dim);
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  border-right: 1px solid var(--border);
+}
+.unit-btn:last-child { border-right: none; }
+.unit-btn:hover  { background: var(--lift); color: var(--text); }
+.unit-btn.active { background: var(--surface); color: var(--amber); }
 </style>
 </head>
 <body>
@@ -380,18 +252,18 @@
       Narkonimekirjad I–VI
     </a>
 
-    <a class="nav-item" href="rehkendaja.html">
+    <a class="nav-item active" href="rehkendaja.html">
       <span class="nav-sigil">02</span>
       Rehkendaja
     </a>
 
-    <a class="nav-item active" href="isikukood.html">
+    <a class="nav-item" href="isikukood.html">
       <span class="nav-sigil">03</span>
       Isikukood ja vanus
     </a>
 
     <div class="sidebar-foot">
-      © Andraš Tšitškan&nbsp;<span class="footer-year"></span>
+      © Andraš Tšitškan <span class="footer-year"></span>
     </div>
   </nav>
 
@@ -403,88 +275,63 @@
       <div class="header-main">
         <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Ava menüü">☰</button>
         <div class="title-block">
-          <h1>Isikukood ja vanus</h1>
+          <h1>Rehkendaja</h1>
           <div class="subtitle">
-            <span class="subtitle-label">Tuvastab isikukoodi andmed ja arvutab vanuse</span>
+            <span class="subtitle-label">Tuvastab ja liidab tekstis leiduvad arvud (ei arvesta miinusmärke)</span>
           </div>
         </div>
+
       </div>
     </div>
 
     <main>
       <div class="tool-wrap">
 
-        <!-- ── INPUT PANEL ── -->
+        <!-- Input -->
         <div class="panel">
-          <div class="panel-header">
-            <span>// Sisend</span>
-          </div>
-
-          <!-- ID code -->
-          <div class="input-section">
-            <div class="field-label">// Isikukood</div>
-            <div class="code-input-wrap">
-              <div class="code-display" id="code-display" aria-hidden="true"></div>
-              <input type="text" id="code-input" maxlength="11"
-                     placeholder="37605030000"
-                     autocomplete="off" spellcheck="false" tabindex="1">
-              <button class="input-clear" id="code-clear" tabindex="-1" aria-label="Kustuta">×</button>
+          <div class="panel-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <span>// Sisesta tekst</span>
+            <div class="unit-switcher">
+              <button class="unit-btn active" id="btn-eur">€ euro</button>
+              <button class="unit-btn"        id="btn-g">g gramm</button>
+              <button class="unit-btn"        id="btn-n">∑ kõik arvud</button>
             </div>
-            <div class="input-hint" id="code-hint">11-kohaline isikukood</div>
           </div>
-
-          <!-- OR separator -->
-          <div class="or-separator">või</div>
-
-          <!-- Date of birth -->
-          <div class="dob-section">
-            <div class="field-label">// Sünniaeg</div>
-            <input type="text" id="dob-input" maxlength="10"
-                   placeholder="PP.KK.AAAA"
-                   autocomplete="off" spellcheck="false" tabindex="2">
-            <div class="input-hint" id="dob-hint">kuupäev kujul PP.KK.AAAA</div>
-          </div>
-
-          <!-- Reference date -->
-          <div class="ref-section">
-            <div class="field-label" style="margin-bottom:10px">// Arvutuskuupäev</div>
-            <div class="ref-row">
-              <input type="text" id="ref-input" maxlength="10"
-                     placeholder="PP.KK.AAAA"
-                     autocomplete="off" spellcheck="false" tabindex="3">
-              <input type="date" id="ref-calendar" tabindex="4" title="Vali kuupäev">
-              <button class="ref-today-btn active" id="ref-today-btn" tabindex="5">Täna</button>
-            </div>
+          <div class="input-wrap">
+            <div class="input-highlight" id="input-highlight" aria-hidden="true"></div>
+            <textarea id="input-text" placeholder="Sisesta siia tekst, mis sisaldab arve." spellcheck="false" tabindex="1"></textarea>
           </div>
         </div>
 
-        <!-- ── RESULTS PANEL ── -->
+        <!-- Results -->
         <div class="results-panel" id="results-panel">
 
-          <!-- Age -->
-          <div class="result-block" id="block-age">
+          <!-- Sum -->
+          <div class="result-block" id="block-sum">
             <div class="result-header">
-              <span class="result-label">// Vanus</span>
+              <span class="result-label">// Hulga summa</span>
+              <button class="copy-btn" id="copy-sum">Kopeeri summa</button>
             </div>
-            <div id="age-content">
-              <div class="idle-state">// ootab sisendit</div>
-            </div>
+            <div class="sum-value" id="val-sum">0</div>
           </div>
 
-          <!-- Personal info (from ID code) -->
-          <div class="result-block" id="block-info" style="display:none">
+          <!-- Count -->
+          <div class="result-block" id="block-count">
             <div class="result-header">
-              <span class="result-label">// Isikukoodi andmed</span>
+              <span class="result-label">// Hulga elementide arv</span>
             </div>
-            <div class="info-rows" id="info-rows"></div>
+            <div class="count-value" id="val-count">0</div>
           </div>
 
-          <!-- Checksum breakdown -->
-          <div class="result-block" id="block-checksum" style="display:none">
+          <!-- List -->
+          <div class="result-block" id="block-list">
             <div class="result-header">
-              <span class="result-label">// Kontrollnumber</span>
+              <span class="result-label">// Hulga elemendid</span>
+              <button class="copy-btn" id="copy-list">Kopeeri nimekiri</button>
             </div>
-            <div class="checksum-wrap" id="checksum-content"></div>
+            <ol class="elements-list" id="val-list">
+              <li style="color:var(--dim)">–</li>
+            </ol>
           </div>
 
         </div>
@@ -497,440 +344,282 @@
 </div>
 
 <script>
-// ── Sidebar ──────────────────────────────────────────────────────────────────
+// ── Sidebar toggle ──────────────────────────────────────────────────────────
 const sidebar = document.getElementById('sidebar');
 const overlay = document.getElementById('sidebar-overlay');
 const togBtn  = document.getElementById('sidebar-toggle');
+
 function openSidebar()  { sidebar.classList.add('open');    overlay.classList.add('visible'); }
 function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('visible'); }
-togBtn.addEventListener('click', () => sidebar.classList.contains('open') ? closeSidebar() : openSidebar());
+togBtn.addEventListener('click', () =>
+  sidebar.classList.contains('open') ? closeSidebar() : openSidebar()
+);
 overlay.addEventListener('click', closeSidebar);
 
-// ── Utilities ────────────────────────────────────────────────────────────────
-function pad2(n) { return String(n).padStart(2, '0'); }
+// ── Unit mode ───────────────────────────────────────────────────────────────
+// 'eur' or 'g'
+let mode = 'eur';
 
-// Parse "DD.MM.YYYY" → { y, m, d } or null
-function parseDMY(s) {
-  const m = s.trim().match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
-  if (!m) return null;
-  const d = parseInt(m[1], 10), mo = parseInt(m[2], 10), y = parseInt(m[3], 10);
-  if (mo < 1 || mo > 12 || d < 1 || d > 31) return null;
-  const dt = new Date(y, mo - 1, d);
-  if (dt.getFullYear() !== y || dt.getMonth() !== mo - 1 || dt.getDate() !== d) return null;
-  return { y, m: mo, d };
+const btnEur       = document.getElementById('btn-eur');
+const btnG         = document.getElementById('btn-g');
+const btnN         = document.getElementById('btn-n');
+const inputEl      = document.getElementById('input-text');
+const highlightEl  = document.getElementById('input-highlight');
+
+btnEur.addEventListener('click', () => setMode('eur'));
+btnG.addEventListener('click',   () => setMode('g'));
+btnN.addEventListener('click',   () => setMode('n'));
+
+function setMode(m) {
+  mode = m;
+  btnEur.classList.toggle('active', m === 'eur');
+  btnG.classList.toggle('active',   m === 'g');
+  btnN.classList.toggle('active',   m === 'n');
+  inputEl.placeholder = 'Sisesta siia tekst, mis sisaldab arve.';
+  update();
 }
 
-function todayDMY() {
-  const t = new Date();
-  return { y: t.getFullYear(), m: t.getMonth() + 1, d: t.getDate() };
+// ── Regex patterns ──────────────────────────────────────────────────────────
+//
+// Euro (number-first or currency-first):
+//   1 234,56 €  /  € 1 234,56  /  1234.56 EUR  /  1 234,56 eurot
+//
+// Gram (number-first only — grams are never written "g 1.5"):
+//   1,5 g  /  1.5 g  /  12 grammi  /  1 gramm  /  0,5g
+
+const EURO_RE = /((?:€|EUR|eurot|euro)\s*([\d][\d\s.,]*))|(([\d][\d\s.,]*)\s*(?:€|EUR|eurot|euro))/gim;
+const NUM_RE  = /(?<![\d,.])(\d[\d\s]*(?:[.,]\d+)*)(?!\d)/gim;
+const GRAM_RE = /(([\d][\d\s.,]*)\s*(?:grammi|gramm|g)(?=[\s.,;:)\]}\n\r]|$))/gim;
+
+function activeRe() {
+  let re;
+  if      (mode === 'eur') re = EURO_RE;
+  else if (mode === 'g')   re = GRAM_RE;
+  else                     re = NUM_RE;
+  re.lastIndex = 0;
+  return re;
 }
 
-function fmtDMY({ y, m, d }) {
-  return pad2(d) + '.' + pad2(m) + '.' + y;
-}
-
-// Calculate full age between two {y,m,d} objects
-function calcAge(born, ref) {
-  let years  = ref.y - born.y;
-  let months = ref.m - born.m;
-  let days   = ref.d - born.d;
-  if (days < 0) {
-    months--;
-    const prevMonth = new Date(ref.y, ref.m - 1, 0); // last day of prev month
-    days += prevMonth.getDate();
-  }
-  if (months < 0) { years--; months += 12; }
-  return { years, months, days };
-}
-
-// Total days between two dates (ref - born)
-function totalDays(born, ref) {
-  const a = new Date(born.y, born.m - 1, born.d);
-  const b = new Date(ref.y,  ref.m  - 1, ref.d);
-  return Math.floor((b - a) / 86400000);
-}
-
-// ── ID code logic ─────────────────────────────────────────────────────────────
-const CENTURY_MAP = {
-  1: { century: 1800, sex: 'M' }, 2: { century: 1800, sex: 'N' },
-  3: { century: 1900, sex: 'M' }, 4: { century: 1900, sex: 'N' },
-  5: { century: 2000, sex: 'M' }, 6: { century: 2000, sex: 'N' },
-};
-
-function parseIdCode(code) {
-  if (!/^\d{11}$/.test(code)) return { valid: false, error: 'Isikukood peab olema 11 numbrit' };
-
-  const digits = code.split('').map(Number);
-  const g = digits[0];
-  const cm = CENTURY_MAP[g];
-  if (!cm) return { valid: false, error: 'Esimene number peab olema 1–6' };
-
-  const yy  = parseInt(code.slice(1, 3), 10);
-  const mo  = parseInt(code.slice(3, 5), 10);
-  const dd  = parseInt(code.slice(5, 7), 10);
-  const seq = parseInt(code.slice(7, 10), 10);
-  const chk = digits[10];
-  const year = cm.century + yy;
-
-  // Validate date
-  const dt = new Date(year, mo - 1, dd);
-  if (mo < 1 || mo > 12 || dd < 1 || dd > 31 ||
-      dt.getFullYear() !== year || dt.getMonth() !== mo - 1 || dt.getDate() !== dd) {
-    return { valid: false, error: 'Isikukoodi kuupäev on vigane' };
-  }
-
-  // Checksum
-  const w1 = [1,2,3,4,5,6,7,8,9,1];
-  const w2 = [3,4,5,6,7,8,9,1,2,3];
-  const sum1 = digits.slice(0,10).reduce((s, d, i) => s + d * w1[i], 0);
-  let rem = sum1 % 11;
-  let usedWeights = w1, checksumOk;
-  if (rem < 10) {
-    checksumOk = (rem === chk);
-  } else {
-    const sum2 = digits.slice(0,10).reduce((s, d, i) => s + d * w2[i], 0);
-    rem = sum2 % 11;
-    usedWeights = w2;
-    checksumOk = (rem < 10 ? rem === chk : chk === 0);
-    if (rem >= 10) rem = 0;
-  }
-
-  return {
-    valid: true,
-    checksumOk,
-    born: { y: year, m: mo, d: dd },
-    sex: cm.sex,
-    century: cm.century,
-    seq,
-    chk,
-    digits,
-    usedWeights,
-    checkProducts: digits.slice(0,10).map((d, i) => d * usedWeights[i]),
-    checkSum: digits.slice(0,10).reduce((s, d, i) => s + d * usedWeights[i], 0),
-  };
-}
-
-// ── DOM refs ──────────────────────────────────────────────────────────────────
-const codeInput     = document.getElementById('code-input');
-const codeDisplay   = document.getElementById('code-display');
-const codeClear     = document.getElementById('code-clear');
-const codeHint      = document.getElementById('code-hint');
-const dobInput      = document.getElementById('dob-input');
-const dobHint       = document.getElementById('dob-hint');
-const refInput      = document.getElementById('ref-input');
-const refTodayBtn   = document.getElementById('ref-today-btn');
-const ageContent    = document.getElementById('age-content');
-const blockInfo     = document.getElementById('block-info');
-const infoRows      = document.getElementById('info-rows');
-const blockChecksum = document.getElementById('block-checksum');
-const checksumContent = document.getElementById('checksum-content');
-
-// ── State ─────────────────────────────────────────────────────────────────────
-let state = {
-  source:   null,   // 'code' | 'dob'
-  born:     null,   // {y,m,d}
-  ref:      todayDMY(),
-  idParsed: null,
-};
-
-// ── Reference date ────────────────────────────────────────────────────────────
-function setRefToday() {
-  state.ref = todayDMY();
-  refInput.value = '';
-  refInput.classList.remove('is-valid', 'is-error');
-  refTodayBtn.classList.add('active');
-  document.getElementById('ref-calendar').value = '';
-  render();
-}
-
-refTodayBtn.addEventListener('click', setRefToday);
-
-// Calendar picker — sync bidirectionally with text input
-const refCalendar = document.getElementById('ref-calendar');
-function pad2c(n) { return String(n).padStart(2, '0'); }
-function setCalendarValue(p) {
-  refCalendar.value = p.y + '-' + pad2c(p.m) + '-' + pad2c(p.d);
-}
-refCalendar.addEventListener('change', () => {
-  const v = refCalendar.value;
-  if (!v) { setRefToday(); return; }
-  const [y, mo, d] = v.split('-').map(Number);
-  state.ref = { y, m: mo, d };
-  refInput.value = pad2c(d) + '.' + pad2c(mo) + '.' + y;
-  refInput.classList.add('is-valid');
-  refInput.classList.remove('is-error');
-  refTodayBtn.classList.remove('active');
-  render();
-});
-
-refInput.addEventListener('input', () => {
-  const v = refInput.value.trim();
-  if (!v) { setRefToday(); return; }
-  const p = parseDMY(v);
-  if (p) {
-    state.ref = p;
-    refInput.classList.add('is-valid');
-    refInput.classList.remove('is-error');
-    refTodayBtn.classList.remove('active');
-    setCalendarValue(p);
-  } else {
-    refInput.classList.add('is-error');
-    refInput.classList.remove('is-valid');
-    refTodayBtn.classList.remove('active');
-  }
-  render();
-});
-
-// ── Code input ────────────────────────────────────────────────────────────────
-codeInput.addEventListener('input', () => {
-  // Strip non-digits
-  const raw = codeInput.value.replace(/\D/g, '').slice(0, 11);
-  codeInput.value = raw;
-
-  codeClear.classList.toggle('visible', raw.length > 0);
-
-  if (raw.length === 0) {
-    clearCodeState();
-    if (!dobInput.value.trim()) clearResults();
-    return;
-  }
-
-  // If typing into code, clear DOB
-  if (raw.length > 0) {
-    dobInput.value = '';
-    dobInput.classList.remove('is-valid', 'is-error');
-    dobHint.textContent = 'kuupäev kujul PP.KK.AAAA';
-    dobHint.classList.remove('err');
-  }
-
-  updateCodeDisplay(raw);
-
-  if (raw.length < 11) {
-    codeInput.classList.remove('is-valid', 'is-error');
-    codeHint.textContent = (11 - raw.length) + ' numbrit puudu';
-    codeHint.classList.remove('err');
-    state.source = null; state.born = null; state.idParsed = null;
-    clearResults();
-    return;
-  }
-
-  // Full 11 digits
-  const parsed = parseIdCode(raw);
-  if (!parsed.valid) {
-    codeInput.classList.add('is-error');
-    codeInput.classList.remove('is-valid');
-    codeHint.textContent = parsed.error;
-    codeHint.classList.add('err');
-    state.source = null; state.born = null; state.idParsed = null;
-    clearResults();
-    return;
-  }
-
-  codeInput.classList.add('is-valid');
-  codeInput.classList.remove('is-error');
-  codeHint.textContent = parsed.checksumOk ? 'Kontrollnumber korrektne' : 'Kontrollnumber vale';
-  codeHint.classList.toggle('err', !parsed.checksumOk);
-
-  state.source   = 'code';
-  state.born     = parsed.born;
-  state.idParsed = parsed;
-  render();
-});
-
-codeClear.addEventListener('click', () => {
-  codeInput.value = '';
-  codeInput.classList.remove('is-valid', 'is-error');
-  codeHint.textContent = '11-kohaline isikukood';
-  codeHint.classList.remove('err');
-  codeDisplay.innerHTML = '';
-  codeClear.classList.remove('visible');
-  clearCodeState();
-  clearResults();
-});
-
-function clearCodeState() {
-  state.source = null; state.born = null; state.idParsed = null;
-  blockInfo.style.display     = 'none';
-  blockChecksum.style.display = 'none';
-}
-
-// Coloured overlay: dim untyped positions
-function updateCodeDisplay(raw) {
-  // Segment boundaries for visual grouping: [1][2][2][2][3][1]
-  // Positions: 0 | 1-2 | 3-4 | 5-6 | 7-9 | 10
-  const PLACEHOLDER = '37605030000';
-  let html = '';
-  for (let i = 0; i < 11; i++) {
-    if (i < raw.length) {
-      html += '<span class="cd-digit">' + raw[i] + '</span>';
+// ── Parsing ─────────────────────────────────────────────────────────────────
+function parseAmount(raw) {
+  let s = raw.replace(/\s/g, '');
+  const hasDot   = s.includes('.');
+  const hasComma = s.includes(',');
+  if (hasDot && hasComma) {
+    if (s.lastIndexOf(',') > s.lastIndexOf('.')) {
+      s = s.replace(/\./g, '').replace(',', '.');
     } else {
-      html += '<span class="cd-dim">' + PLACEHOLDER[i] + '</span>';
+      s = s.replace(/,/g, '');
     }
-    // Visual separators
-    if (i === 0 || i === 2 || i === 4 || i === 6 || i === 9) {
-      html += '<span class="cd-sep"> </span>';
-    }
+  } else if (hasComma) {
+    s = s.replace(',', '.');
   }
-  codeDisplay.innerHTML = html;
+  const n = parseFloat(s);
+  return isNaN(n) ? null : n;
 }
 
-// ── DOB input ─────────────────────────────────────────────────────────────────
-dobInput.addEventListener('input', () => {
-  const v = dobInput.value.trim();
+function extractAmounts(text) {
+  const re      = activeRe();
+  const results = [];
+  let match;
+  while ((match = re.exec(text)) !== null) {
+    // Euro: group 2 (currency-first numeric) or group 4 (number-first numeric)
+    // Gram: group 2 · Numbers: group 1
+    const rawNum = (match[2] || match[4] || match[1] || '').trim();
+    if (!rawNum) continue;
+    const amount = parseAmount(rawNum);
+    if (amount !== null && amount >= 0) {
+      results.push({ raw: rawNum, amount, decimals: countDecimals(rawNum), index: match.index, matchLen: match[0].length });
+    }
+  }
+  return results;
+}
 
-  if (v.length === 0) {
-    dobInput.classList.remove('is-valid', 'is-error');
-    dobHint.textContent = 'kuupäev kujul PP.KK.AAAA';
-    dobHint.classList.remove('err');
-    state.source = null; state.born = null;
-    clearResults();
+// ── Formatting ──────────────────────────────────────────────────────────────
+// Count decimal places in a raw numeric string (after normalising separator)
+function countDecimals(raw) {
+  const s = raw.replace(/\s/g, '');
+  // Find the decimal separator: if both present, rightmost wins
+  const di = Math.max(s.lastIndexOf(','), s.lastIndexOf('.'));
+  if (di === -1) return 0;
+  return s.length - di - 1;
+}
+
+function formatValue(n, decimals) {
+  if (mode === 'eur') {
+    return n.toLocaleString('et-EE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+  } else if (mode === 'g') {
+    const d = (decimals !== undefined) ? Math.min(decimals, 10) : 10;
+    return n.toLocaleString('et-EE', { minimumFractionDigits: 0, maximumFractionDigits: d }) + ' g';
+  } else {
+    const d = (decimals !== undefined) ? Math.min(decimals, 10) : 10;
+    return n.toLocaleString('et-EE', { minimumFractionDigits: 0, maximumFractionDigits: d });
+  }
+}
+
+function unitShort() {
+  if (mode === 'eur') return '€';
+  if (mode === 'g')   return 'g';
+  return '';
+}
+
+function formatNumeric(n, decimals) {
+  if (mode === 'eur') {
+    return n.toLocaleString('et-EE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  const d = (decimals !== undefined) ? Math.min(decimals, 10) : 10;
+  return n.toLocaleString('et-EE', { minimumFractionDigits: 0, maximumFractionDigits: d });
+}
+
+// ── Highlight mirror ────────────────────────────────────────────────────────
+inputEl.addEventListener('scroll', () => {
+  highlightEl.scrollTop  = inputEl.scrollTop;
+  highlightEl.scrollLeft = inputEl.scrollLeft;
+});
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function buildHighlightHtml(text, matches) {
+  if (!matches.length) return escHtml(text);
+  let html = '', cursor = 0;
+  for (const m of matches) {
+    if (m.index > cursor) html += escHtml(text.slice(cursor, m.index));
+    html += '<mark>' + escHtml(text.slice(m.index, m.index + m.matchLen)) + '</mark>';
+    cursor = m.index + m.matchLen;
+  }
+  if (cursor < text.length) html += escHtml(text.slice(cursor));
+  return html;
+}
+
+// ── Render ──────────────────────────────────────────────────────────────────
+
+const blockSum   = document.getElementById('block-sum');
+const blockCount = document.getElementById('block-count');
+const blockList  = document.getElementById('block-list');
+const valSum     = document.getElementById('val-sum');
+const valCount   = document.getElementById('val-count');
+const valList    = document.getElementById('val-list');
+
+let lastFound = [];
+
+function update() {
+  const text = inputEl.value;
+  lastFound  = extractAmounts(text);
+
+  highlightEl.innerHTML = buildHighlightHtml(text + ' ', lastFound);
+  highlightEl.scrollTop = inputEl.scrollTop;
+
+  const hasText = !!text.trim();
+  if (!hasText) {
+    valSum.textContent   = '0';
+    valCount.textContent = '0';
+    valList.innerHTML    = '<li style="color:var(--dim)">–</li>';
     return;
   }
 
-  // Clear code input if typing DOB
-  codeInput.value = '';
-  codeInput.classList.remove('is-valid', 'is-error');
-  codeHint.textContent = '11-kohaline isikukood';
-  codeHint.classList.remove('err');
-  codeDisplay.innerHTML = '';
-  codeClear.classList.remove('visible');
-  state.idParsed = null;
-  blockInfo.style.display     = 'none';
-  blockChecksum.style.display = 'none';
+  const maxDec = lastFound.reduce((m, x) => Math.max(m, x.decimals), 0);
+  const total  = lastFound.reduce((acc, x) => acc + x.amount, 0);
+  valSum.textContent   = lastFound.length ? formatValue(total, maxDec) : '0 ' + unitShort();
+  valCount.textContent = lastFound.length;
 
-  const p = parseDMY(v);
-  if (p) {
-    dobInput.classList.add('is-valid');
-    dobInput.classList.remove('is-error');
-    dobHint.textContent = 'kuupäev tuvastatud';
-    dobHint.classList.remove('err');
-    state.source = 'dob';
-    state.born   = p;
-    render();
+  valList.innerHTML = '';
+  if (lastFound.length === 0) {
+    const li = document.createElement('li');
+    li.style.cssText = 'color:var(--dim);font-size:12px;letter-spacing:0.1em';
+    li.textContent   = '// ühtegi elementi ei leitud';
+    valList.appendChild(li);
   } else {
-    dobInput.classList.add('is-error');
-    dobInput.classList.remove('is-valid');
-    dobHint.textContent = 'kuupäev kujul PP.KK.AAAA · nt 03.05.1990';
-    dobHint.classList.add('err');
-    state.source = null; state.born = null;
-    clearResults();
+    lastFound.forEach((item, i) => {
+      const li = document.createElement('li');
+      li.innerHTML = '<span class="el-num">' + String(i + 1).padStart(2, '0') + '</span>' + formatValue(item.amount, item.decimals);
+      valList.appendChild(li);
+    });
   }
+}
+
+inputEl.addEventListener('input', update);
+
+// ── Copy buttons ────────────────────────────────────────────────────────────
+function copyText(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.classList.add('copied');
+    const orig = btn.textContent;
+    btn.textContent = 'Kopeeritud \u2713';
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+document.getElementById('copy-sum').addEventListener('click', () => {
+  copyText(document.getElementById('copy-sum'), valSum.textContent);
 });
 
-// ── Render ────────────────────────────────────────────────────────────────────
-function clearResults() {
-  ageContent.innerHTML = '<div class="idle-state">// ootab sisendit</div>';
-  blockInfo.style.display     = 'none';
-  blockChecksum.style.display = 'none';
-}
+document.getElementById('copy-list').addEventListener('click', () => {
+  const text = lastFound.map(x => formatNumeric(x.amount, x.decimals)).join('\n');
+  copyText(document.getElementById('copy-list'), text);
+});
 
-function render() {
-  if (!state.born) { clearResults(); return; }
-  const born = state.born;
-  const ref  = state.ref;
-
-  // Validate ref is after born
-  const td = totalDays(born, ref);
-
-  // ── Age block ──
-  if (td < 0) {
-    ageContent.innerHTML =
-      '<div class="idle-state" style="color:var(--red)">// arvutuskuupäev on enne sünnikuupäeva</div>';
-  } else {
-    const age = calcAge(born, ref);
-    const isToday = (ref.y === todayDMY().y && ref.m === todayDMY().m && ref.d === todayDMY().d);
-    const refLabel = isToday ? 'täna' : fmtDMY(ref);
-
-    // Birthday check
-    const isBirthday = (ref.m === born.m && ref.d === born.d);
-    const nextBirthday = (() => {
-      let ny = ref.y;
-      const thisBD = new Date(ref.y, born.m - 1, born.d);
-      const refDt  = new Date(ref.y, ref.m - 1, ref.d);
-      if (thisBD <= refDt && !isBirthday) ny++;
-      else if (isBirthday) ny++;
-      const bd = new Date(ny, born.m - 1, born.d);
-      const daysUntil = Math.floor((bd - refDt) / 86400000);
-      return { date: { y: ny, m: born.m, d: born.d }, daysUntil };
-    })();
-
-    // Estonian inflection: 1 aasta/kuu/päev, else aastat/kuud/päeva
-    function infl(n, one, many) { return n + ' ' + (n === 1 ? one : many); }
-    const ageStr = infl(age.years, 'aasta', 'aastat') + '  ' +
-                   infl(age.months, 'kuu', 'kuud') + '  ' +
-                   infl(age.days, 'päev', 'päeva');
-    const refNote = isToday ? '' : ' <span style="color:var(--dim);font-size:14px;font-weight:400">(' + refLabel + ')</span>';
-
-    let bdNote = '';
-    if (isBirthday) {
-      bdNote = '<div class="age-detail" style="color:var(--amber)">// sünnipäev</div>';
-    } else {
-      bdNote = '<div class="age-detail" style="color:var(--dim)">järgmine sünnipäev: ' +
-        fmtDMY(nextBirthday.date) + ' (' + (nextBirthday.daysUntil === 1 ? '1 päev' : nextBirthday.daysUntil + ' päeva') + ' pärast)</div>';
-    }
-
-    ageContent.innerHTML = '<div class="age-main">' + ageStr + refNote + '</div>' + bdNote;
-  }
-
-  // ── Info block (only for ID code) ──
-  if (state.idParsed) {
-    const p = state.idParsed;
-    const sexLabel = p.sex === 'M' ? 'mees' : 'naine';
-    const rows = [
-      { k: 'Sünniaeg',    v: fmtDMY(born),                      cls: '' },
-      { k: 'Sugu',        v: sexLabel,                           cls: '' },
-      { k: 'Sajand',      v: p.century + '–' + (p.century+99),  cls: 'muted' },
-      { k: 'Järjenumber', v: String(p.seq).padStart(3, '0'),     cls: 'muted' },
-      { k: 'Kontrollnr',  v: p.chk + (p.checksumOk ? ' ✓' : ' ✗ — oodati ' +
-          (p.checkSum % 11 < 10 ? p.checkSum % 11 : 0)),
-        cls: p.checksumOk ? 'amber' : 'err' },
-    ];
-    infoRows.innerHTML = rows.map(r =>
-      '<div class="info-row">' +
-        '<span class="info-key">' + r.k + '</span>' +
-        '<span class="info-val ' + r.cls + '">' + r.v + '</span>' +
-      '</div>'
-    ).join('');
-    blockInfo.style.display = '';
-
-    // ── Checksum block ──
-    const p10 = p.digits.slice(0, 10);
-    const wts = p.usedWeights;
-    const prods = p.checkProducts;
-    const sum  = p.checkSum;
-    const rem  = sum % 11;
-    const finalChk = rem < 10 ? rem : 0;
-
-    let thHtml = '<tr>' + p10.map((_, i) =>
-      '<th>' + (i + 1) + '</th>').join('') + '<th>—</th></tr>';
-    let digitHtml = '<tr class="row-digit">' + p10.map(d =>
-      '<td>' + d + '</td>').join('') +
-      '<td class="cell-check">' + p.chk + '</td></tr>';
-    let weightHtml = '<tr class="row-weight">' + wts.map(w =>
-      '<td>×' + w + '</td>').join('') + '<td></td></tr>';
-    let prodHtml = '<tr class="row-prod">' + prods.map(pr =>
-      '<td>' + pr + '</td>').join('') + '<td></td></tr>';
-
-    const weightsLabel = (p.usedWeights === [1,2,3,4,5,6,7,8,9,1] ? '1. kaal' : '2. kaal');
-    checksumContent.innerHTML =
-      '<table class="checksum-table">' + thHtml + digitHtml + weightHtml + prodHtml + '</table>' +
-      '<div class="checksum-sum">∑ = ' + prods.join('+') + ' = <span>' + sum +
-      '</span> · ' + sum + ' mod 11 = <span>' + rem + '</span>' +
-      (rem >= 10 ? ' → 0' : '') +
-      ' → kontrollnumber = <span class="' + (p.checksumOk ? 'ok' : 'err') + '">' + finalChk + '</span>' +
-      (p.checksumOk ? '' : ' (tegelik: ' + p.chk + ')') + '</div>';
-
-    blockChecksum.style.display = '';
-  } else {
-    blockInfo.style.display     = 'none';
-    blockChecksum.style.display = 'none';
-  }
-}
-
-// ── Bootstrap ─────────────────────────────────────────────────────────────────
+// ── Bootstrap ───────────────────────────────────────────────────────────────
 document.querySelectorAll('.footer-year').forEach(el => el.textContent = new Date().getFullYear());
-// Pre-fill reference date display
-refInput.placeholder = fmtDMY(todayDMY());
+
+// ── Test data ────────────────────────────────────────────────────────────────
+// Access via: rehkendajaTest.run() or rehkendajaTest.text in browser console
+window.rehkendajaTest = {
+  text: [
+    'Kohtuasi nr 1-23/456. Konfiskeeriti 0,5g heroiini ja 1.2g kokaiini.',
+    'Täiendavalt leiti 12 grammi amfetamiini ning 0,0002g fentanüüli.',
+    'Varalise kahju suurus on 1 234,56 € ning lisaks 89.50 € kulud.',
+    'Trahv määrati summas EUR 500 ja täiendav makse 75,00 eurot.',
+    'Analüüsi tulemus: 1 000,001g ainet kogumassiga, sh 3.14g lisainet.',
+    'Väärtus oli €350 ja veel 1.234,56 EUR (kokku kaks summat).',
+    'Leitud kogused: 7g, 0.003g ja 2 500g pulbrit.',
+    'Protokollis märgitud arvud: 42, 1 000, 3,14 ja 0,0002.',
+  ].join('\n'),
+
+  expected: {
+    eur: {
+      items:  ['1 234,56', '89.50', '500', '75,00', '350', '1.234,56'],
+      values: [1234.56,     89.50,  500,   75.00,   350,   1234.56],
+      sum:    3483.62,
+      count:  6,
+      note:   'Sum: 1234.56 + 89.50 + 500 + 75.00 + 350 + 1234.56 = 3 483,62 €',
+    },
+    g: {
+      items:  ['0,5', '1.2', '12', '0,0002', '1 000,001', '3.14', '7', '0.003', '2 500'],
+      values: [0.5,   1.2,   12,   0.0002,   1000.001,    3.14,   7,   0.003,   2500  ],
+      sum:    3523.8442,
+      count:  9,
+      note:   'Sum: 0.5+1.2+12+0.0002+1000.001+3.14+7+0.003+2500 = 3 523,8442 g',
+    },
+    n: {
+      note: 'Catches all standalone numbers — sum is not semantically meaningful.',
+    },
+  },
+
+  // Pastes test text into the input and runs detection in the current mode.
+  run() {
+    const ta = document.getElementById('input-text');
+    ta.value = this.text;
+    ta.dispatchEvent(new Event('input'));
+    const exp = this.expected[mode];
+    if (exp && exp.sum !== undefined) {
+      console.group('rehkendajaTest — mode: ' + mode);
+      console.log('Expected sum:  ', exp.sum);
+      console.log('Expected count:', exp.count);
+      console.log('Expected items:', exp.items);
+      console.log('Note:', exp.note);
+      console.log('Detected:', lastFound.map(x => x.raw + ' → ' + x.amount));
+      const detectedSum = Math.round(lastFound.reduce((a,x) => a + x.amount, 0) * 1e10) / 1e10;
+      console.log('Detected sum:  ', detectedSum);
+      console.log(detectedSum === exp.sum ? '✓ PASS' : '✗ FAIL — expected ' + exp.sum + ', got ' + detectedSum);
+      console.groupEnd();
+    } else {
+      console.log('rehkendajaTest.run() — mode "' + mode + '": no expected sum defined.');
+      console.log('Detected:', lastFound.map(x => x.raw + ' → ' + x.amount));
+    }
+  },
+};
 </script>
 </body>
 </html>
