@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { sigil: '01', label: 'Narkonimekirjad I–VI', href: 'index.html'      },
   { sigil: '02', label: 'Rehkendaja',           href: 'rehkendaja.html' },
   { sigil: '03', label: 'Isikukood ja vanus',   href: 'isikukood.html'  },
+  { sigil: '04', label: 'IBAN',                 href: 'iban.html'       },
 ];
 
 const NAV_BRAND = 'Tööriistad';
