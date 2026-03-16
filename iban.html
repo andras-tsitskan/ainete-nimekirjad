@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IBAN — Tööriistad</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css">
+<link rel="stylesheet" href="noir.css">
+<style>
+/* ── Page layout ── */
+.tool-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .tool-wrap { grid-template-columns: 1fr; }
+}
+
+/* ── Input panel ── */
+.panel {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+}
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+  background: var(--deep);
+}
+
+.iban-input-wrap {
+  padding: 20px;
+}
+#iban-input {
+  width: 100%;
+  background: var(--lift);
+  border: 1px solid var(--border);
+  color: var(--text);
+  caret-color: var(--amber);
+  font-family: var(--mono);
+  font-size: 20px;
+  letter-spacing: 0.14em;
+  padding: 12px 14px;
+  outline: none;
+  transition: border-color 0.15s;
+  text-transform: uppercase;
+}
+#iban-input:focus  { border-color: var(--line); }
+#iban-input.valid  { border-color: var(--amber); }
+#iban-input.error  { border-color: var(--red); }
+#iban-input::placeholder { color: var(--dim); opacity: 0.5; font-size: 14px; letter-spacing: 0.06em; text-transform: none; }
+
+.iban-hint {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 0.04em;
+}
+
+/* ── Results panel ── */
+.results-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.result-block {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  overflow: hidden;
+}
+.result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--deep);
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+}
+.result-label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+/* Status line */
+.status-row {
+  padding: 16px 18px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.status-valid  { color: var(--amber); }
+.status-valid .status-dot  { background: var(--amber); animation: pulse 1.4s step-start infinite; }
+.status-error  { color: var(--red); }
+.status-error .status-dot  { background: var(--red); }
+.status-idle   { color: var(--dim); }
+.status-idle .status-dot   { background: var(--dim); opacity: 0.4; }
+
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+/* Info rows */
+.info-rows { padding: 4px 0; }
+.info-row {
+  display: flex;
+  align-items: baseline;
+  padding: 7px 18px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  gap: 0;
+}
+.info-row:last-child { border-bottom: none; }
+.info-key {
+  color: var(--dim);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  width: 140px;
+  flex-shrink: 0;
+}
+.info-val       { color: var(--text); }
+.info-val.amber { color: var(--amber); letter-spacing: 0.1em; }
+.info-val.red   { color: var(--red); }
+.info-val.green { color: var(--amber); }
+
+/* Error message */
+.error-body {
+  padding: 14px 18px;
+  font-size: 13px;
+  color: var(--red);
+  line-height: 1.6;
+}
+
+/* MOD-97 steps */
+.steps-wrap {
+  padding: 12px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.step-row {
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.step-n {
+  color: var(--dim);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  width: 20px;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+.step-v { color: var(--muted); word-break: break-all; }
+.step-v em { color: var(--amber); font-style: normal; }
+.step-v em.red { color: var(--red); }
+
+/* Spinner */
+.spinner {
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--border);
+  border-top-color: var(--amber);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.bank-loading {
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--dim);
+}
+
+/* ── Reference table ── */
+.ref-block {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  overflow: hidden;
+}
+.ref-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--deep);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.12s;
+  gap: 12px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.ref-toggle:hover { background: var(--lift); color: var(--text); }
+.ref-toggle:hover .ref-chevron { color: var(--amber); }
+.ref-chevron {
+  color: var(--dim);
+  font-size: 12px;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.ref-chevron.open { transform: rotate(180deg); }
+
+#country-table-wrap {
+  display: none;
+  max-height: 320px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+#country-table-wrap.open { display: block; }
+
+.ref-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.ref-table thead th {
+  background: var(--deep);
+  padding: 8px 14px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dim);
+  text-align: left;
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid var(--border);
+}
+.ref-table thead th:nth-child(3),
+.ref-table thead th:nth-child(4) { border-left: 1px solid var(--border); }
+.ref-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.08s; }
+.ref-table tbody tr:last-child { border-bottom: none; }
+.ref-table tbody tr:hover { background: var(--lift); }
+.ref-table tbody td { padding: 7px 14px; font-size: 13px; color: var(--muted); }
+.ref-table tbody td:first-child { color: var(--amber); font-weight: 700; width: 54px; }
+.ref-table tbody td:nth-child(2) { color: var(--text); }
+.ref-table tbody td:nth-child(3),
+.ref-table tbody td:nth-child(4) { border-left: 1px solid var(--border); font-size: 12px; }
+
+/* Idle state */
+.idle-state {
+  padding: 24px 18px;
+  font-size: 12px;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<div class="app-shell">
+
+  <nav class="sidebar" id="sidebar"></nav>
+
+  <div class="page-content">
+
+    <div class="topbar">
+      <div class="header-chrome"></div>
+      <div class="header-main">
+        <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Ava menüü">☰</button>
+        <div class="title-block">
+          <h1>IBAN</h1>
+          <div class="subtitle">
+            <span class="subtitle-label">ISO 13616 · MOD-97 · SEPA riigid</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main>
+      <div class="tool-wrap">
+
+        <!-- ── INPUT + REFERENCE ── -->
+        <div style="display:flex;flex-direction:column;gap:16px">
+
+          <!-- Input panel -->
+          <div class="panel">
+            <div class="panel-header">// Sisesta IBAN</div>
+            <div class="iban-input-wrap">
+              <input type="text" id="iban-input"
+                     placeholder="EE38 2200 2210 0123 4567"
+                     maxlength="39" autocomplete="off" spellcheck="false">
+              <div class="iban-hint">Tühikud eemaldatakse automaatselt. Vajuta Enter valideerimiseks.</div>
+            </div>
+          </div>
+
+          <!-- Reference table -->
+          <div class="ref-block">
+            <div class="ref-toggle" id="ref-toggle" onclick="toggleTable()">
+              <span>// SEPA riikide viitetabel (36 riiki)</span>
+              <span class="ref-chevron" id="ref-chevron">▾</span>
+            </div>
+            <div id="country-table-wrap">
+              <table class="ref-table">
+                <thead>
+                  <tr>
+                    <th>Kood</th>
+                    <th>Riik</th>
+                    <th>Pikkus</th>
+                    <th>Struktuur</th>
+                  </tr>
+                </thead>
+                <tbody id="country-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ── RESULTS ── -->
+        <div class="results-panel" id="results-panel">
+
+          <!-- Status -->
+          <div class="result-block" id="block-status">
+            <div class="result-header">
+              <span class="result-label">// Staatus</span>
+            </div>
+            <div id="status-content">
+              <div class="idle-state">// ootab sisendit</div>
+            </div>
+          </div>
+
+          <!-- Details -->
+          <div class="result-block" id="block-details" style="display:none">
+            <div class="result-header">
+              <span class="result-label">// Andmed</span>
+            </div>
+            <div class="info-rows" id="details-content"></div>
+          </div>
+
+          <!-- MOD-97 steps -->
+          <div class="result-block" id="block-mod97" style="display:none">
+            <div class="result-header">
+              <span class="result-label">// MOD-97 kontroll</span>
+            </div>
+            <div class="steps-wrap" id="mod97-content"></div>
+          </div>
+
+          <!-- Bank lookup -->
+          <div class="result-block" id="block-bank" style="display:none">
+            <div class="result-header">
+              <span class="result-label">// Pank · openiban.com</span>
+            </div>
+            <div id="bank-content"></div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <span>MOD-97 kontrollsumma ISO 13616 · pangaandmed openiban.com kaudu</span>
+    </footer>
+
+  </div>
+</div>
+
+<script src="nav.js"></script>
+<script>
+document.querySelectorAll('.footer-year').forEach(el => el.textContent = new Date().getFullYear());
+
+// ── SEPA country data ─────────────────────────────────────────────────────────
+const COUNTRIES = [
+  ['AD','Andorra',24,'4n 4n 12c'],
+  ['AT','Austria',20,'5n 11n'],
+  ['BE','Belgium',16,'3n 7n 2n'],
+  ['BG','Bulgaria',22,'4a 4n 2n 8c'],
+  ['CH','Switzerland',21,'5n 12c'],
+  ['CY','Cyprus',28,'3n 5n 16c'],
+  ['CZ','Czech Republic',24,'4n 6n 10n'],
+  ['DE','Germany',22,'8n 10n'],
+  ['DK','Denmark',18,'4n 9n 1n'],
+  ['EE','Estonia',20,'2n 2n 11n 1n'],
+  ['ES','Spain',24,'4n 4n 1n 1n 10n'],
+  ['FI','Finland',18,'6n 7n 1n'],
+  ['FR','France',27,'5n 5n 11c 2n'],
+  ['GB','United Kingdom',22,'4a 6n 8n'],
+  ['GI','Gibraltar',23,'4a 15c'],
+  ['GR','Greece',27,'3n 4n 16c'],
+  ['HR','Croatia',21,'7n 10n'],
+  ['HU','Hungary',28,'3n 4n 1n 15n 1n'],
+  ['IE','Ireland',22,'4a 6n 8n'],
+  ['IS','Iceland',26,'4n 2n 6n 10n'],
+  ['IT','Italy',27,'1a 5n 5n 12c'],
+  ['LI','Liechtenstein',21,'5n 12c'],
+  ['LT','Lithuania',20,'5n 11n'],
+  ['LU','Luxembourg',20,'3n 13c'],
+  ['LV','Latvia',21,'4a 13c'],
+  ['MC','Monaco',27,'5n 5n 11c 2n'],
+  ['MT','Malta',31,'4a 5n 18c'],
+  ['NL','Netherlands',18,'4a 10n'],
+  ['NO','Norway',15,'4n 6n 1n'],
+  ['PL','Poland',28,'8n 16n'],
+  ['PT','Portugal',25,'4n 4n 11n 2n'],
+  ['RO','Romania',24,'4a 16c'],
+  ['SE','Sweden',24,'3n 16n 1n'],
+  ['SI','Slovenia',19,'5n 8n 2n'],
+  ['SK','Slovakia',24,'4n 6n 10n'],
+  ['SM','San Marino',27,'1a 5n 5n 12c'],
+];
+
+const COUNTRY_MAP = {};
+COUNTRIES.forEach(([code,,len]) => COUNTRY_MAP[code] = len);
+
+// Populate reference table
+const tbody = document.getElementById('country-tbody');
+COUNTRIES.forEach(([code, name, len, fmt]) => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>${code}</td><td>${name}</td><td>${len}</td><td>${fmt}</td>`;
+  tbody.appendChild(tr);
+});
+
+// ── Core IBAN functions ───────────────────────────────────────────────────────
+function clean(raw) {
+  return raw.replace(/\s+/g, '').toUpperCase();
+}
+function letterToDigits(ch) {
+  return (ch.charCodeAt(0) - 55).toString(); // A=10 … Z=35
+}
+function mod97(str) {
+  let remainder = '';
+  for (let i = 0; i < str.length; i++) {
+    remainder = (remainder + str[i]);
+    if (remainder.length > 9) {
+      remainder = (parseInt(remainder, 10) % 97).toString();
+    }
+  }
+  return parseInt(remainder, 10) % 97;
+}
+function ibanToNumeric(iban) {
+  const rearranged = iban.slice(4) + iban.slice(0, 4);
+  let numeric = '';
+  for (const ch of rearranged) {
+    numeric += /[A-Z]/.test(ch) ? letterToDigits(ch) : ch;
+  }
+  return numeric;
+}
+function formatIBAN(iban) {
+  return iban.match(/.{1,4}/g).join(' ');
+}
+
+// ── DOM refs ─────────────────────────────────────────────────────────────────
+const ibanInput      = document.getElementById('iban-input');
+const statusContent  = document.getElementById('status-content');
+const blockDetails   = document.getElementById('block-details');
+const detailsContent = document.getElementById('details-content');
+const blockMod97     = document.getElementById('block-mod97');
+const mod97Content   = document.getElementById('mod97-content');
+const blockBank      = document.getElementById('block-bank');
+const bankContent    = document.getElementById('bank-content');
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function infoRow(key, val, cls = '') {
+  return `<div class="info-row">
+    <span class="info-key">${key}</span>
+    <span class="info-val ${cls}">${val}</span>
+  </div>`;
+}
+
+function clearResults() {
+  statusContent.innerHTML  = '<div class="idle-state">// ootab sisendit</div>';
+  blockDetails.style.display  = 'none';
+  blockMod97.style.display    = 'none';
+  blockBank.style.display     = 'none';
+  ibanInput.classList.remove('valid', 'error');
+}
+
+function showError(msg) {
+  statusContent.innerHTML =
+    `<div class="status-row status-error">
+      <span class="status-dot"></span> VIGANE
+    </div>
+    <div class="error-body">${msg}</div>`;
+  blockDetails.style.display  = 'none';
+  blockMod97.style.display    = 'none';
+  blockBank.style.display     = 'none';
+  ibanInput.classList.add('error');
+  ibanInput.classList.remove('valid');
+}
+
+// ── Validate ─────────────────────────────────────────────────────────────────
+function validate() {
+  const raw  = ibanInput.value;
+  const iban = clean(raw);
+
+  if (!iban) { clearResults(); return; }
+
+  // Structural checks
+  if (iban.length < 5) {
+    showError('IBAN on liiga lühike.'); return;
+  }
+  const countryCode = iban.slice(0, 2);
+  const checkDigits = iban.slice(2, 4);
+
+  if (!/^[A-Z]{2}$/.test(countryCode)) {
+    showError('Kaks esimest tähemärki peavad olema riigikood (tähed).'); return;
+  }
+  if (!/^\d{2}$/.test(checkDigits)) {
+    showError('3.–4. tähemärk peab olema numbriline kontrollnumber.'); return;
+  }
+  if (!/^[A-Z0-9]+$/.test(iban)) {
+    showError('IBAN tohib sisaldada ainult tähti ja numbreid.'); return;
+  }
+
+  const expectedLen = COUNTRY_MAP[countryCode];
+  const countryName = (COUNTRIES.find(c => c[0] === countryCode) || [])[1] || null;
+
+  if (!expectedLen) {
+    showError(`Riigikood <strong>${countryCode}</strong> ei ole SEPA IBAN-registris.`); return;
+  }
+  if (iban.length !== expectedLen) {
+    showError(`Pikkuse viga: ${countryCode} IBAN peab olema täpselt ${expectedLen} tähemärki, sisestasid ${iban.length}.`); return;
+  }
+
+  // MOD-97
+  const numeric   = ibanToNumeric(iban);
+  const remainder = mod97(numeric);
+  const valid     = remainder === 1;
+
+  // Build numeric display string
+  const rearranged = iban.slice(4) + iban.slice(0, 4);
+  let numericDisplay = '';
+  for (const ch of rearranged) {
+    numericDisplay += /[A-Z]/.test(ch) ? `[${letterToDigits(ch)}]` : ch;
+  }
+
+  // ── Status block ──
+  if (valid) {
+    statusContent.innerHTML =
+      `<div class="status-row status-valid">
+        <span class="status-dot"></span> KEHTIV IBAN
+      </div>`;
+    ibanInput.classList.add('valid');
+    ibanInput.classList.remove('error');
+  } else {
+    statusContent.innerHTML =
+      `<div class="status-row status-error">
+        <span class="status-dot"></span> KEHTETU IBAN
+      </div>
+      <div class="error-body">MOD-97 kontrollsumma viga: jääk on <strong>${remainder}</strong>, oodati <strong>1</strong>.</div>`;
+    ibanInput.classList.add('error');
+    ibanInput.classList.remove('valid');
+  }
+
+  // ── Details block ──
+  detailsContent.innerHTML =
+    infoRow('Vormindatud', formatIBAN(iban), 'amber') +
+    infoRow('Riik', countryName ? `${countryName} (${countryCode})` : countryCode) +
+    infoRow('Kontrollnumbrid', checkDigits) +
+    infoRow('Pikkus', `${iban.length} / ${expectedLen}`) +
+    infoRow('MOD-97 jääk', valid
+      ? `<span style="color:var(--amber)">1 ✓</span>`
+      : `<span style="color:var(--red)">${remainder} ✗</span>`);
+  blockDetails.style.display = '';
+
+  // ── MOD-97 steps ──
+  mod97Content.innerHTML =
+    `<div class="step-row">
+      <span class="step-n">1.</span>
+      <span class="step-v">Liiguta 4 esimest tähemärki lõppu → <em>${rearranged}</em></span>
+    </div>
+    <div class="step-row">
+      <span class="step-n">2.</span>
+      <span class="step-v">Asenda tähed numbritega (A=10…Z=35) → <em>${numericDisplay}</em></span>
+    </div>
+    <div class="step-row">
+      <span class="step-n">3.</span>
+      <span class="step-v">Arvuta MOD 97 → <em class="${valid ? '' : 'red'}">${remainder}</em> (peab olema 1)</span>
+    </div>`;
+  blockMod97.style.display = '';
+
+  // ── Bank lookup (valid only) ──
+  if (valid) {
+    blockBank.style.display = '';
+    bankContent.innerHTML =
+      `<div class="bank-loading"><span class="spinner"></span> Päriv pangaregistrit…</div>`;
+    lookupBank(iban);
+  } else {
+    blockBank.style.display = 'none';
+  }
+}
+
+// ── Bank lookup ───────────────────────────────────────────────────────────────
+async function lookupBank(iban) {
+  try {
+    const resp = await fetch(
+      `https://openiban.com/validate/${encodeURIComponent(iban)}?getBIC=true&validateBankCode=true`
+    );
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+
+    const bi         = data.bankData || {};
+    const bic        = bi.bic     || null;
+    const bankName   = bi.name    || null;
+    const bankCity   = bi.city    || null;
+    const bankZip    = bi.zip     || null;
+    const bankStreet = bi.address || null;
+
+    if (!bankName && !bic) {
+      bankContent.innerHTML =
+        `<div class="error-body" style="color:var(--dim)">Selle IBAN-i kohta ei leitud pangateavet.</div>`;
+      return;
+    }
+
+    let rows = '';
+    if (bankName)            rows += infoRow('Pank', bankName);
+    if (bic)                 rows += infoRow('BIC / SWIFT', bic, 'amber');
+    if (bankStreet)          rows += infoRow('Aadress', bankStreet);
+    if (bankZip || bankCity) rows += infoRow('Linn', [bankZip, bankCity].filter(Boolean).join(' '));
+
+    bankContent.innerHTML = `<div class="info-rows">${rows}</div>`;
+
+  } catch (e) {
+    bankContent.innerHTML =
+      `<div class="error-body" style="color:var(--dim)">Panka ei õnnestunud pärida: ${e.message}</div>`;
+  }
+}
+
+// ── Reference table toggle ────────────────────────────────────────────────────
+function toggleTable() {
+  const wrap    = document.getElementById('country-table-wrap');
+  const chevron = document.getElementById('ref-chevron');
+  const open    = wrap.classList.toggle('open');
+  chevron.classList.toggle('open', open);
+}
+
+// ── Input events ──────────────────────────────────────────────────────────────
+ibanInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') validate();
+});
+
+ibanInput.addEventListener('input', function () {
+  // Auto-format with spaces (visual only)
+  const pos = this.selectionStart;
+  const raw = this.value.replace(/\s/g, '').toUpperCase();
+  const formatted = raw.match(/.{1,4}/g)?.join(' ') || raw;
+  if (formatted !== this.value) {
+    this.value = formatted;
+    const spaces = (formatted.slice(0, pos + Math.floor(pos / 5)).match(/ /g) || []).length;
+    this.setSelectionRange(pos + spaces, pos + spaces);
+  }
+  // Live validate while typing once input is long enough to be structurally testable
+  if (clean(this.value).length >= 4) validate();
+  else if (!this.value.trim()) clearResults();
+});
+</script>
+</body>
+</html>
