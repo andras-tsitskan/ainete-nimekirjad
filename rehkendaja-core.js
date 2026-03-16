@@ -92,15 +92,22 @@ function extractAmounts(text) {
 }
 
 // ── Formatting ────────────────────────────────────────────────────────────────
+// Shared inner formatter — returns a localised string without any unit suffix.
+function _formatNumber(n, decimals) {
+  if (mode === 'eur') {
+    return n.toLocaleString('et-EE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  const d = (decimals !== undefined) ? Math.min(decimals, 10) : 10;
+  return n.toLocaleString('et-EE', { minimumFractionDigits: 0, maximumFractionDigits: d });
+}
+
 // Formats a number for display with the correct unit and locale.
 // `decimals` controls precision for g and n modes (capped at 10).
 function formatValue(n, decimals) {
-  if (mode === 'eur') {
-    return n.toLocaleString('et-EE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
-  }
-  const d = (decimals !== undefined) ? Math.min(decimals, 10) : 10;
-  const s = n.toLocaleString('et-EE', { minimumFractionDigits: 0, maximumFractionDigits: d });
-  return mode === 'g' ? s + ' g' : s;
+  const s = _formatNumber(n, decimals);
+  if (mode === 'eur') return s + ' €';
+  if (mode === 'g')   return s + ' g';
+  return s;
 }
 
 // Returns the unit symbol for the zero/empty state.
@@ -112,9 +119,5 @@ function unitShort() {
 
 // Formats a number for clipboard copy (no unit symbol).
 function formatNumeric(n, decimals) {
-  if (mode === 'eur') {
-    return n.toLocaleString('et-EE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
-  const d = (decimals !== undefined) ? Math.min(decimals, 10) : 10;
-  return n.toLocaleString('et-EE', { minimumFractionDigits: 0, maximumFractionDigits: d });
+  return _formatNumber(n, decimals);
 }

@@ -1,1200 +1,893 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="et">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Isikukood ja vanus — Tööriistad</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css"
-    />
-    <link rel="stylesheet" href="noir.css" />
-    <style>
-      /* ── Page layout ── */
-      .tool-wrap {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 28px;
-        align-items: start;
-      }
-      @media (max-width: 900px) {
-        .tool-wrap {
-          grid-template-columns: 1fr;
-        }
-      }
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isikukood ja vanus — Tööriistad</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css">
+<link rel="stylesheet" href="noir.css">
+<style>
+/* ── Page layout ── */
+.tool-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .tool-wrap { grid-template-columns: 1fr; }
+}
 
-      /* ── Input panel ── */
-      .panel {
-        border: 1px solid var(--border);
-        background: var(--surface);
-        display: flex;
-        flex-direction: column;
-      }
-      .panel-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        padding: 10px 16px;
-        border-bottom: 1px solid var(--border);
-        font-size: 10px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--dim);
-        background: var(--deep);
-      }
+/* ── Input panel ── */
+.panel {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+}
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+  background: var(--deep);
+}
 
-      /* ── Input field ── */
-      .input-section {
-        padding: 20px 20px 0 20px;
-      }
-      .field-label {
-        font-size: 10px;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        color: var(--dim);
-        margin-bottom: 8px;
-      }
-      .code-input-wrap {
-        position: relative;
-        display: flex;
-        align-items: center;
-      }
-      .code-display {
-        position: absolute;
-        inset: 0;
-        padding: 12px 44px 12px 14px;
-        font-family: var(--mono);
-        font-size: 22px;
-        letter-spacing: 0.12em;
-        color: transparent;
-        pointer-events: none;
-        display: flex;
-        align-items: center;
-        white-space: pre;
-        z-index: 1;
-      }
-      .code-display .cd-digit {
-        color: var(--text);
-      }
-      .code-display .cd-dim {
-        color: var(--dim);
-        opacity: 0.5;
-      }
-      .code-display .cd-sep {
-        color: var(--border);
-      }
-      .code-display .cd-valid {
-        color: var(--amber);
-      }
-      .code-display .cd-err {
-        color: var(--red);
-      }
+/* ── Input field ── */
+.input-section {
+  padding: 20px 20px 0 20px;
+}
+.field-label {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 8px;
+}
+.code-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+/* Dim suffix hint — shows remaining digits after the cursor */
+.code-suffix {
+  position: absolute;
+  pointer-events: none;
+  font-family: var(--mono);
+  font-size: 22px;
+  letter-spacing: 0.12em;
+  color: var(--dim);
+  opacity: 0.35;
+  white-space: pre;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+}
 
-      #code-input {
-        width: 100%;
-        background: var(--lift);
-        border: 1px solid var(--border);
-        color: transparent;
-        caret-color: var(--amber);
-        font-family: var(--mono);
-        font-size: 22px;
-        letter-spacing: 0.12em;
-        padding: 12px 44px 12px 14px;
-        outline: none;
-        transition: border-color 0.15s;
-        position: relative;
-        z-index: 2;
-      }
-      #code-input:focus {
-        border-color: var(--line);
-      }
-      #code-input.is-valid {
-        border-color: var(--amber);
-      }
-      #code-input.is-error {
-        border-color: var(--red);
-      }
-      #code-input::placeholder {
-        color: var(--dim);
-        opacity: 0.5;
-        letter-spacing: 0.06em;
-        font-size: 14px;
-      }
+#code-input {
+  width: 100%;
+  background: var(--lift);
+  border: 1px solid var(--border);
+  color: var(--text);
+  caret-color: var(--amber);
+  font-family: var(--mono);
+  font-size: 22px;
+  letter-spacing: 0.12em;
+  padding: 12px 44px 12px 14px;
+  outline: none;
+  transition: border-color 0.15s;
+  position: relative;
+  z-index: 2;
+}
+#code-input:focus { border-color: var(--line); }
+#code-input.is-valid  { border-color: var(--amber); }
+#code-input.is-error  { border-color: var(--red); }
+#code-input::placeholder { color: var(--dim); opacity: 0.5; letter-spacing: 0.06em; font-size: 14px; }
 
-      .input-clear {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-family: var(--mono);
-        font-size: 16px;
-        color: var(--dim);
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 4px 6px;
-        line-height: 1;
-        z-index: 3;
-        display: none;
-        transition: color 0.12s;
-      }
-      .input-clear:hover {
-        color: var(--text);
-      }
-      .input-clear.visible {
-        display: block;
-      }
+.input-clear {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--mono);
+  font-size: 16px;
+  color: var(--dim);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  line-height: 1;
+  z-index: 3;
+  display: none;
+  transition: color 0.12s;
+}
+.input-clear:hover { color: var(--text); }
+.input-clear.visible { display: block; }
 
-      .input-hint {
-        margin-top: 8px;
-        font-size: 11px;
-        color: var(--dim);
-        letter-spacing: 0.04em;
-        min-height: 18px;
-      }
-      .input-hint.err {
-        color: var(--red);
-      }
+.input-hint {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 0.04em;
+  min-height: 18px;
+}
+.input-hint.err { color: var(--red); }
 
-      /* ── Date separator ── */
-      .or-separator {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin: 20px 0 0 0;
-        padding: 0 20px;
-        font-size: 10px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--dim);
-      }
-      .or-separator::before,
-      .or-separator::after {
-        content: "";
-        flex: 1;
-        height: 1px;
-        background: var(--border);
-      }
+/* ── Date separator ── */
+.or-separator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0 0 0;
+  padding: 0 20px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.or-separator::before,
+.or-separator::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
 
-      /* ── DOB input ── */
-      .dob-section {
-        padding: 16px 20px 0 20px;
-      }
-      #dob-input {
-        width: 100%;
-        background: var(--lift);
-        border: 1px solid var(--border);
-        color: var(--text);
-        caret-color: var(--amber);
-        font-family: var(--mono);
-        font-size: 16px;
-        letter-spacing: 0.08em;
-        padding: 10px 14px;
-        outline: none;
-        transition: border-color 0.15s;
-      }
-      #dob-input:focus {
-        border-color: var(--line);
-      }
-      #dob-input.is-valid {
-        border-color: var(--amber);
-      }
-      #dob-input.is-error {
-        border-color: var(--red);
-      }
-      #dob-input::placeholder {
-        color: var(--dim);
-        opacity: 0.5;
-        letter-spacing: 0.04em;
-        font-size: 13px;
-      }
+/* ── DOB input ── */
+.dob-section {
+  padding: 16px 20px 0 20px;
+}
+#dob-input {
+  width: 100%;
+  background: var(--lift);
+  border: 1px solid var(--border);
+  color: var(--text);
+  caret-color: var(--amber);
+  font-family: var(--mono);
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+#dob-input:focus { border-color: var(--line); }
+#dob-input.is-valid { border-color: var(--amber); }
+#dob-input.is-error { border-color: var(--red); }
+#dob-input::placeholder { color: var(--dim); opacity: 0.5; letter-spacing: 0.04em; font-size: 13px; }
 
-      /* ── Reference date ── */
-      .ref-section {
-        padding: 20px 20px 20px 20px;
-        border-top: 1px solid var(--border);
-        margin-top: 20px;
-      }
-      .ref-row {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-      .ref-label {
-        font-size: 10px;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--dim);
-        flex-shrink: 0;
-      }
-      #ref-input {
-        flex: 1;
-        background: var(--lift);
-        border: 1px solid var(--border);
-        color: var(--text);
-        caret-color: var(--amber);
-        font-family: var(--mono);
-        font-size: 14px;
-        letter-spacing: 0.08em;
-        padding: 7px 12px;
-        outline: none;
-        transition: border-color 0.15s;
-      }
-      #ref-input:focus {
-        border-color: var(--line);
-      }
-      #ref-input.is-valid {
-        border-color: var(--line);
-      }
-      .ref-today-btn {
-        font-family: var(--mono);
-        font-size: 11px;
-        letter-spacing: 0.08em;
-        color: var(--dim);
-        background: none;
-        border: 1px solid var(--border);
-        padding: 7px 12px;
-        cursor: pointer;
-        white-space: nowrap;
-        transition:
-          background 0.12s,
-          color 0.12s;
-        flex-shrink: 0;
-      }
-      .ref-today-btn:hover {
-        background: var(--lift);
-        color: var(--text);
-      }
-      .ref-today-btn.active {
-        color: var(--amber);
-        border-color: var(--line);
-      }
-      #ref-calendar {
-        background: var(--lift);
-        border: 1px solid var(--border);
-        color: var(--text);
-        font-family: var(--mono);
-        font-size: 14px;
-        padding: 7px 8px;
-        outline: none;
-        cursor: pointer;
-        transition: border-color 0.15s;
-        flex-shrink: 0;
-        color-scheme: dark;
-      }
-      #ref-calendar:focus,
-      #ref-calendar:hover {
-        border-color: var(--line);
-      }
-      #ref-calendar::-webkit-calendar-picker-indicator {
-        filter: invert(0.55) sepia(1) saturate(3) hue-rotate(5deg)
-          brightness(1.1);
-        cursor: pointer;
-        padding: 0;
-        margin: 0;
-      }
+/* ── Reference date ── */
+.ref-section {
+  padding: 20px 20px 20px 20px;
+  border-top: 1px solid var(--border);
+  margin-top: 20px;
+}
+.ref-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ref-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+  flex-shrink: 0;
+}
+#ref-input {
+  flex: 1;
+  background: var(--lift);
+  border: 1px solid var(--border);
+  color: var(--text);
+  caret-color: var(--amber);
+  font-family: var(--mono);
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  padding: 7px 12px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+#ref-input:focus { border-color: var(--line); }
+#ref-input.is-valid { border-color: var(--line); }
+.ref-today-btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+  background: none;
+  border: 1px solid var(--border);
+  padding: 7px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s;
+  flex-shrink: 0;
+}
+.ref-today-btn:hover { background: var(--lift); color: var(--text); }
+.ref-today-btn.active { color: var(--amber); border-color: var(--line); }
+#ref-calendar {
+  background: var(--lift);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 14px;
+  padding: 7px 8px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  flex-shrink: 0;
+  color-scheme: dark;
+}
+#ref-calendar:focus, #ref-calendar:hover { border-color: var(--line); }
+#ref-calendar::-webkit-calendar-picker-indicator {
+  filter: invert(0.55) sepia(1) saturate(3) hue-rotate(5deg) brightness(1.1);
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
 
-      /* ── Results panel ── */
-      .results-panel {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-      }
+/* ── Results panel ── */
+.results-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 
-      .result-block {
-        border: 1px solid var(--border);
-        background: var(--surface);
-        overflow: hidden;
-      }
+.result-block {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  overflow: hidden;
+}
 
-      .result-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 16px;
-        background: var(--deep);
-        border-bottom: 1px solid var(--border);
-        gap: 12px;
-      }
-      .result-label {
-        font-size: 10px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--dim);
-      }
+.result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--deep);
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+}
+.result-label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
 
-      /* Age display */
-      .age-main {
-        padding: 18px 18px 14px 18px;
-        font-size: 22px;
-        font-weight: 700;
-        color: var(--amber);
-        letter-spacing: -0.01em;
-        line-height: 1.5;
-      }
-      .age-detail {
-        padding: 0 18px 16px 18px;
-        font-size: 13px;
-        color: var(--muted);
-        letter-spacing: 0.04em;
-      }
+/* Age display */
+.age-main {
+  padding: 18px 18px 14px 18px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--amber);
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+}
+.age-detail {
+  padding: 0 18px 16px 18px;
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
 
-      /* Info rows */
-      .info-rows {
-        padding: 4px 0;
-      }
-      .info-row {
-        display: flex;
-        align-items: baseline;
-        gap: 0;
-        padding: 8px 18px;
-        border-bottom: 1px solid var(--border);
-        font-size: 13px;
-      }
-      .info-row:last-child {
-        border-bottom: none;
-      }
-      .info-key {
-        color: var(--dim);
-        font-size: 11px;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        width: 130px;
-        flex-shrink: 0;
-      }
-      .info-val {
-        color: var(--text);
-      }
-      .info-val.amber {
-        color: var(--amber);
-      }
-      .info-val.muted {
-        color: var(--muted);
-      }
+/* Info rows */
+.info-rows {
+  padding: 4px 0;
+}
+.info-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+  padding: 8px 18px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.info-row:last-child { border-bottom: none; }
+.info-key {
+  color: var(--dim);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  width: 130px;
+  flex-shrink: 0;
+}
+.info-val {
+  color: var(--text);
+}
+.info-val.amber { color: var(--amber); }
+.info-val.muted { color: var(--muted); }
 
-      /* Checksum breakdown */
-      .checksum-wrap {
-        padding: 12px 18px;
-        overflow-x: auto;
-      }
-      .checksum-table {
-        border-collapse: collapse;
-        font-size: 12px;
-        font-family: var(--mono);
-        width: 100%;
-      }
-      .checksum-table th {
-        color: var(--dim);
-        font-size: 10px;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        padding: 0 0 6px 0;
-        text-align: center;
-        font-weight: 400;
-        border-bottom: 1px solid var(--border);
-      }
-      .checksum-table td {
-        text-align: center;
-        padding: 6px 4px;
-        color: var(--muted);
-        border-right: 1px solid var(--border);
-        min-width: 28px;
-      }
-      .checksum-table td:last-child {
-        border-right: none;
-      }
-      .checksum-table tr.row-digit td {
-        color: var(--text);
-      }
-      .checksum-table tr.row-weight td {
-        color: var(--dim);
-      }
-      .checksum-table tr.row-prod td {
-        color: var(--muted);
-      }
-      .checksum-table .cell-check {
-        color: var(--amber);
-        font-weight: 700;
-      }
-      .checksum-sum {
-        margin-top: 8px;
-        font-size: 11px;
-        color: var(--dim);
-        letter-spacing: 0.06em;
-      }
-      .checksum-sum span {
-        color: var(--muted);
-      }
-      .checksum-sum .ok {
-        color: var(--amber);
-      }
-      .checksum-sum .err {
-        color: var(--red);
-      }
+/* Checksum breakdown */
+.checksum-wrap {
+  padding: 12px 18px;
+  overflow-x: auto;
+}
+.checksum-table {
+  border-collapse: collapse;
+  font-size: 12px;
+  font-family: var(--mono);
+  width: 100%;
+}
+.checksum-table th {
+  color: var(--dim);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0 0 6px 0;
+  text-align: center;
+  font-weight: 400;
+  border-bottom: 1px solid var(--border);
+}
+.checksum-table td {
+  text-align: center;
+  padding: 6px 4px;
+  color: var(--muted);
+  border-right: 1px solid var(--border);
+  min-width: 28px;
+}
+.checksum-table td:last-child { border-right: none; }
+.checksum-table tr.row-digit td { color: var(--text); }
+.checksum-table tr.row-weight td { color: var(--dim); }
+.checksum-table tr.row-prod td  { color: var(--muted); }
+.checksum-table .cell-check { color: var(--amber); font-weight: 700; }
+.checksum-sum {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 0.06em;
+}
+.checksum-sum span { color: var(--muted); }
+.checksum-sum .ok  { color: var(--amber); }
+.checksum-sum .err { color: var(--red); }
 
-      /* Idle placeholder */
-      .idle-state {
-        padding: 28px 18px;
-        font-size: 12px;
-        color: var(--dim);
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+/* Idle placeholder */
+.idle-state {
+  padding: 28px 18px;
+  font-size: 12px;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+</style>
+</head>
+<body>
 
-    <div class="app-shell">
-      <!-- ── SIDEBAR ── -->
-      <nav class="sidebar" id="sidebar">
-        <a class="sidebar-brand" href="index.html">
-          <div class="brand-mark"></div>
-          <div class="brand-name">Tööriistad</div>
-        </a>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-        <div class="nav-section-label"></div>
+<div class="app-shell">
 
-        <a class="nav-item" href="index.html">
-          <span class="nav-sigil">01</span>
-          Narkonimekirjad I–VI
-        </a>
+  <!-- ── SIDEBAR ── -->
+  <nav class="sidebar" id="sidebar"></nav>
 
-        <a class="nav-item" href="rehkendaja.html">
-          <span class="nav-sigil">02</span>
-          Rehkendaja
-        </a>
+  <!-- ── PAGE CONTENT ── -->
+  <div class="page-content">
 
-        <a class="nav-item active" href="isikukood.html">
-          <span class="nav-sigil">03</span>
-          Isikukood ja vanus
-        </a>
-
-        <div class="sidebar-foot">
-          © Andraš Tšitškan&nbsp;<span class="footer-year"></span>
-        </div>
-      </nav>
-
-      <!-- ── PAGE CONTENT ── -->
-      <div class="page-content">
-        <div class="topbar">
-          <div class="header-chrome"></div>
-          <div class="header-main">
-            <button
-              class="sidebar-toggle"
-              id="sidebar-toggle"
-              aria-label="Ava menüü"
-            >
-              ☰
-            </button>
-            <div class="title-block">
-              <h1>Isikukood ja vanus</h1>
-              <div class="subtitle">
-                <span class="subtitle-label"
-                  >Tuvastab isikukoodi andmed ja arvutab vanuse</span
-                >
-              </div>
-            </div>
+    <div class="topbar">
+      <div class="header-chrome"></div>
+      <div class="header-main">
+        <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Ava menüü">☰</button>
+        <div class="title-block">
+          <h1>Isikukood ja vanus</h1>
+          <div class="subtitle">
+            <span class="subtitle-label">Tuvastab isikukoodi andmed ja arvutab vanuse</span>
           </div>
         </div>
-
-        <main>
-          <div class="tool-wrap">
-            <!-- ── INPUT PANEL ── -->
-            <div class="panel">
-              <div class="panel-header">
-                <span>// Sisend</span>
-              </div>
-
-              <!-- ID code -->
-              <div class="input-section">
-                <div class="field-label">// Isikukood</div>
-                <div class="code-input-wrap">
-                  <div
-                    class="code-display"
-                    id="code-display"
-                    aria-hidden="true"
-                  ></div>
-                  <input
-                    type="text"
-                    id="code-input"
-                    maxlength="11"
-                    placeholder="37605030000"
-                    autocomplete="off"
-                    spellcheck="false"
-                    tabindex="1"
-                  />
-                  <button
-                    class="input-clear"
-                    id="code-clear"
-                    tabindex="-1"
-                    aria-label="Kustuta"
-                  >
-                    ×
-                  </button>
-                </div>
-                <div class="input-hint" id="code-hint">
-                  11-kohaline isikukood
-                </div>
-              </div>
-
-              <!-- OR separator -->
-              <div class="or-separator">või</div>
-
-              <!-- Date of birth -->
-              <div class="dob-section">
-                <div class="field-label">// Sünniaeg</div>
-                <input
-                  type="text"
-                  id="dob-input"
-                  maxlength="10"
-                  placeholder="PP.KK.AAAA"
-                  autocomplete="off"
-                  spellcheck="false"
-                  tabindex="2"
-                />
-                <div class="input-hint" id="dob-hint">
-                  kuupäev kujul PP.KK.AAAA
-                </div>
-              </div>
-
-              <!-- Reference date -->
-              <div class="ref-section">
-                <div class="field-label" style="margin-bottom: 10px">
-                  // Arvutuskuupäev
-                </div>
-                <div class="ref-row">
-                  <input
-                    type="text"
-                    id="ref-input"
-                    maxlength="10"
-                    placeholder="PP.KK.AAAA"
-                    autocomplete="off"
-                    spellcheck="false"
-                    tabindex="3"
-                  />
-                  <input
-                    type="date"
-                    id="ref-calendar"
-                    tabindex="4"
-                    title="Vali kuupäev"
-                  />
-                  <button
-                    class="ref-today-btn active"
-                    id="ref-today-btn"
-                    tabindex="5"
-                  >
-                    Täna
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- ── RESULTS PANEL ── -->
-            <div class="results-panel" id="results-panel">
-              <!-- Age -->
-              <div class="result-block" id="block-age">
-                <div class="result-header">
-                  <span class="result-label">// Vanus</span>
-                </div>
-                <div id="age-content">
-                  <div class="idle-state">// ootab sisendit</div>
-                </div>
-              </div>
-
-              <!-- Personal info (from ID code) -->
-              <div class="result-block" id="block-info" style="display: none">
-                <div class="result-header">
-                  <span class="result-label">// Isikukoodi andmed</span>
-                </div>
-                <div class="info-rows" id="info-rows"></div>
-              </div>
-
-              <!-- Checksum breakdown -->
-              <div
-                class="result-block"
-                id="block-checksum"
-                style="display: none"
-              >
-                <div class="result-header">
-                  <span class="result-label">// Kontrollnumber</span>
-                </div>
-                <div class="checksum-wrap" id="checksum-content"></div>
-              </div>
-            </div>
-          </div>
-        </main>
-
-        <footer></footer>
       </div>
     </div>
 
-    <script>
-      // ── Sidebar ──────────────────────────────────────────────────────────────────
-      const sidebar = document.getElementById("sidebar");
-      const overlay = document.getElementById("sidebar-overlay");
-      const togBtn = document.getElementById("sidebar-toggle");
-      function openSidebar() {
-        sidebar.classList.add("open");
-        overlay.classList.add("visible");
-      }
-      function closeSidebar() {
-        sidebar.classList.remove("open");
-        overlay.classList.remove("visible");
-      }
-      togBtn.addEventListener("click", () =>
-        sidebar.classList.contains("open") ? closeSidebar() : openSidebar(),
-      );
-      overlay.addEventListener("click", closeSidebar);
+    <main>
+      <div class="tool-wrap">
 
-      // ── Utilities ────────────────────────────────────────────────────────────────
-      function pad2(n) {
-        return String(n).padStart(2, "0");
-      }
+        <!-- ── INPUT PANEL ── -->
+        <div class="panel">
+          <div class="panel-header">
+            <span>// Sisend</span>
+          </div>
 
-      // Parse "DD.MM.YYYY" → { y, m, d } or null
-      function parseDMY(s) {
-        const m = s.trim().match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
-        if (!m) return null;
-        const d = parseInt(m[1], 10),
-          mo = parseInt(m[2], 10),
-          y = parseInt(m[3], 10);
-        if (mo < 1 || mo > 12 || d < 1 || d > 31) return null;
-        const dt = new Date(y, mo - 1, d);
-        if (
-          dt.getFullYear() !== y ||
-          dt.getMonth() !== mo - 1 ||
-          dt.getDate() !== d
-        )
-          return null;
-        return { y, m: mo, d };
-      }
+          <!-- ID code -->
+          <div class="input-section">
+            <div class="field-label">// Isikukood</div>
+            <div class="code-input-wrap">
+              <span class="code-suffix" id="code-suffix" aria-hidden="true"></span>
+              <input type="text" id="code-input" maxlength="11"
+                     placeholder="37605030000"
+                     autocomplete="off" spellcheck="false" tabindex="1">
+              <button class="input-clear" id="code-clear" tabindex="-1" aria-label="Kustuta">×</button>
+            </div>
+            <div class="input-hint" id="code-hint">11-kohaline isikukood</div>
+          </div>
 
-      function todayDMY() {
-        const t = new Date();
-        return { y: t.getFullYear(), m: t.getMonth() + 1, d: t.getDate() };
-      }
+          <!-- OR separator -->
+          <div class="or-separator">või</div>
 
-      function fmtDMY({ y, m, d }) {
-        return pad2(d) + "." + pad2(m) + "." + y;
-      }
+          <!-- Date of birth -->
+          <div class="dob-section">
+            <div class="field-label">// Sünniaeg</div>
+            <input type="text" id="dob-input" maxlength="10"
+                   placeholder="PP.KK.AAAA"
+                   autocomplete="off" spellcheck="false" tabindex="2">
+            <div class="input-hint" id="dob-hint">kuupäev kujul PP.KK.AAAA</div>
+          </div>
 
-      // Calculate full age between two {y,m,d} objects
-      function calcAge(born, ref) {
-        let years = ref.y - born.y;
-        let months = ref.m - born.m;
-        let days = ref.d - born.d;
-        if (days < 0) {
-          months--;
-          const prevMonth = new Date(ref.y, ref.m - 1, 0); // last day of prev month
-          days += prevMonth.getDate();
-        }
-        if (months < 0) {
-          years--;
-          months += 12;
-        }
-        return { years, months, days };
-      }
+          <!-- Reference date -->
+          <div class="ref-section">
+            <div class="field-label" style="margin-bottom:10px">// Arvutuskuupäev</div>
+            <div class="ref-row">
+              <input type="text" id="ref-input" maxlength="10"
+                     placeholder="PP.KK.AAAA"
+                     autocomplete="off" spellcheck="false" tabindex="3">
+              <input type="date" id="ref-calendar" tabindex="4" title="Vali kuupäev">
+              <button class="ref-today-btn active" id="ref-today-btn" tabindex="5">Täna</button>
+            </div>
+          </div>
+        </div>
 
-      // Total days between two dates (ref - born)
-      function totalDays(born, ref) {
-        const a = new Date(born.y, born.m - 1, born.d);
-        const b = new Date(ref.y, ref.m - 1, ref.d);
-        return Math.floor((b - a) / 86400000);
-      }
+        <!-- ── RESULTS PANEL ── -->
+        <div class="results-panel" id="results-panel">
 
-      // ── ID code logic ─────────────────────────────────────────────────────────────
-      const CENTURY_MAP = {
-        1: { century: 1800, sex: "M" },
-        2: { century: 1800, sex: "N" },
-        3: { century: 1900, sex: "M" },
-        4: { century: 1900, sex: "N" },
-        5: { century: 2000, sex: "M" },
-        6: { century: 2000, sex: "N" },
-      };
+          <!-- Age -->
+          <div class="result-block" id="block-age">
+            <div class="result-header">
+              <span class="result-label">// Vanus</span>
+            </div>
+            <div id="age-content">
+              <div class="idle-state">// ootab sisendit</div>
+            </div>
+          </div>
 
-      function parseIdCode(code) {
-        if (!/^\d{11}$/.test(code))
-          return { valid: false, error: "Isikukood peab olema 11 numbrit" };
+          <!-- Personal info (from ID code) -->
+          <div class="result-block" id="block-info" style="display:none">
+            <div class="result-header">
+              <span class="result-label">// Isikukoodi andmed</span>
+            </div>
+            <div class="info-rows" id="info-rows"></div>
+          </div>
 
-        const digits = code.split("").map(Number);
-        const g = digits[0];
-        const cm = CENTURY_MAP[g];
-        if (!cm)
-          return { valid: false, error: "Esimene number peab olema 1–6" };
+          <!-- Checksum breakdown -->
+          <div class="result-block" id="block-checksum" style="display:none">
+            <div class="result-header">
+              <span class="result-label">// Kontrollnumber</span>
+            </div>
+            <div class="checksum-wrap" id="checksum-content"></div>
+          </div>
 
-        const yy = parseInt(code.slice(1, 3), 10);
-        const mo = parseInt(code.slice(3, 5), 10);
-        const dd = parseInt(code.slice(5, 7), 10);
-        const seq = parseInt(code.slice(7, 10), 10);
-        const chk = digits[10];
-        const year = cm.century + yy;
+        </div>
+      </div>
+    </main>
 
-        // Validate date
-        const dt = new Date(year, mo - 1, dd);
-        if (
-          mo < 1 ||
-          mo > 12 ||
-          dd < 1 ||
-          dd > 31 ||
-          dt.getFullYear() !== year ||
-          dt.getMonth() !== mo - 1 ||
-          dt.getDate() !== dd
-        ) {
-          return { valid: false, error: "Isikukoodi kuupäev on vigane" };
-        }
+    <footer></footer>
 
-        // Checksum
-        const w1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1];
-        const w2 = [3, 4, 5, 6, 7, 8, 9, 1, 2, 3];
-        const sum1 = digits.slice(0, 10).reduce((s, d, i) => s + d * w1[i], 0);
-        let rem = sum1 % 11;
-        let usedWeights = w1,
-          checksumOk;
-        if (rem < 10) {
-          checksumOk = rem === chk;
-        } else {
-          const sum2 = digits
-            .slice(0, 10)
-            .reduce((s, d, i) => s + d * w2[i], 0);
-          rem = sum2 % 11;
-          usedWeights = w2;
-          checksumOk = rem < 10 ? rem === chk : chk === 0;
-          if (rem >= 10) rem = 0;
-        }
+  </div>
+</div>
 
-        return {
-          valid: true,
-          checksumOk,
-          born: { y: year, m: mo, d: dd },
-          sex: cm.sex,
-          century: cm.century,
-          seq,
-          chk,
-          digits,
-          usedWeights,
-          checkProducts: digits.slice(0, 10).map((d, i) => d * usedWeights[i]),
-          checkSum: digits
-            .slice(0, 10)
-            .reduce((s, d, i) => s + d * usedWeights[i], 0),
-        };
-      }
+<script src="nav.js"></script>
+<script>
+// ── Utilities ────────────────────────────────────────────────────────────────
+function pad2(n) { return String(n).padStart(2, '0'); }
 
-      // ── DOM refs ──────────────────────────────────────────────────────────────────
-      const codeInput = document.getElementById("code-input");
-      const codeDisplay = document.getElementById("code-display");
-      const codeClear = document.getElementById("code-clear");
-      const codeHint = document.getElementById("code-hint");
-      const dobInput = document.getElementById("dob-input");
-      const dobHint = document.getElementById("dob-hint");
-      const refInput = document.getElementById("ref-input");
-      const refTodayBtn = document.getElementById("ref-today-btn");
-      const ageContent = document.getElementById("age-content");
-      const blockInfo = document.getElementById("block-info");
-      const infoRows = document.getElementById("info-rows");
-      const blockChecksum = document.getElementById("block-checksum");
-      const checksumContent = document.getElementById("checksum-content");
+// Parse "DD.MM.YYYY" → { y, m, d } or null
+function parseDMY(s) {
+  const m = s.trim().match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+  if (!m) return null;
+  const d = parseInt(m[1], 10), mo = parseInt(m[2], 10), y = parseInt(m[3], 10);
+  if (mo < 1 || mo > 12 || d < 1 || d > 31) return null;
+  const dt = new Date(y, mo - 1, d);
+  if (dt.getFullYear() !== y || dt.getMonth() !== mo - 1 || dt.getDate() !== d) return null;
+  return { y, m: mo, d };
+}
 
-      // ── State ─────────────────────────────────────────────────────────────────────
-      let state = {
-        source: null, // 'code' | 'dob'
-        born: null, // {y,m,d}
-        ref: todayDMY(),
-        idParsed: null,
-      };
+function todayDMY() {
+  const t = new Date();
+  return { y: t.getFullYear(), m: t.getMonth() + 1, d: t.getDate() };
+}
 
-      // ── Reference date ────────────────────────────────────────────────────────────
-      function setRefToday() {
-        state.ref = todayDMY();
-        refInput.value = "";
-        refInput.classList.remove("is-valid", "is-error");
-        refTodayBtn.classList.add("active");
-        document.getElementById("ref-calendar").value = "";
-        render();
-      }
+function fmtDMY({ y, m, d }) {
+  return pad2(d) + '.' + pad2(m) + '.' + y;
+}
 
-      refTodayBtn.addEventListener("click", setRefToday);
+// Calculate full age between two {y,m,d} objects
+function calcAge(born, ref) {
+  let years  = ref.y - born.y;
+  let months = ref.m - born.m;
+  let days   = ref.d - born.d;
+  if (days < 0) {
+    months--;
+    const prevMonth = new Date(ref.y, ref.m - 1, 0); // last day of prev month
+    days += prevMonth.getDate();
+  }
+  if (months < 0) { years--; months += 12; }
+  return { years, months, days };
+}
 
-      // Calendar picker — sync bidirectionally with text input
-      const refCalendar = document.getElementById("ref-calendar");
-      function pad2c(n) {
-        return String(n).padStart(2, "0");
-      }
-      function setCalendarValue(p) {
-        refCalendar.value = p.y + "-" + pad2c(p.m) + "-" + pad2c(p.d);
-      }
-      refCalendar.addEventListener("change", () => {
-        const v = refCalendar.value;
-        if (!v) {
-          setRefToday();
-          return;
-        }
-        const [y, mo, d] = v.split("-").map(Number);
-        state.ref = { y, m: mo, d };
-        refInput.value = pad2c(d) + "." + pad2c(mo) + "." + y;
-        refInput.classList.add("is-valid");
-        refInput.classList.remove("is-error");
-        refTodayBtn.classList.remove("active");
-        render();
-      });
+// Total days between two dates (ref - born)
+function totalDays(born, ref) {
+  const a = new Date(born.y, born.m - 1, born.d);
+  const b = new Date(ref.y,  ref.m  - 1, ref.d);
+  return Math.floor((b - a) / 86400000);
+}
 
-      refInput.addEventListener("input", () => {
-        const v = refInput.value.trim();
-        if (!v) {
-          setRefToday();
-          return;
-        }
-        const p = parseDMY(v);
-        if (p) {
-          state.ref = p;
-          refInput.classList.add("is-valid");
-          refInput.classList.remove("is-error");
-          refTodayBtn.classList.remove("active");
-          setCalendarValue(p);
-        } else {
-          refInput.classList.add("is-error");
-          refInput.classList.remove("is-valid");
-          refTodayBtn.classList.remove("active");
-        }
-        render();
-      });
+// ── ID code logic ─────────────────────────────────────────────────────────────
+const CENTURY_MAP = {
+  1: { century: 1800, sex: 'M' }, 2: { century: 1800, sex: 'N' },
+  3: { century: 1900, sex: 'M' }, 4: { century: 1900, sex: 'N' },
+  5: { century: 2000, sex: 'M' }, 6: { century: 2000, sex: 'N' },
+};
 
-      // ── Code input ────────────────────────────────────────────────────────────────
-      codeInput.addEventListener("input", () => {
-        // Strip non-digits
-        const raw = codeInput.value.replace(/\D/g, "").slice(0, 11);
-        codeInput.value = raw;
+function parseIdCode(code) {
+  if (!/^\d{11}$/.test(code)) return { valid: false, error: 'Isikukood peab olema 11 numbrit' };
 
-        codeClear.classList.toggle("visible", raw.length > 0);
+  const digits = code.split('').map(Number);
+  const g = digits[0];
+  const cm = CENTURY_MAP[g];
+  if (!cm) return { valid: false, error: 'Esimene number peab olema 1–6' };
 
-        if (raw.length === 0) {
-          clearCodeState();
-          if (!dobInput.value.trim()) clearResults();
-          return;
-        }
+  const yy  = parseInt(code.slice(1, 3), 10);
+  const mo  = parseInt(code.slice(3, 5), 10);
+  const dd  = parseInt(code.slice(5, 7), 10);
+  const seq = parseInt(code.slice(7, 10), 10);
+  const chk = digits[10];
+  const year = cm.century + yy;
 
-        // If typing into code, clear DOB
-        if (raw.length > 0) {
-          dobInput.value = "";
-          dobInput.classList.remove("is-valid", "is-error");
-          dobHint.textContent = "kuupäev kujul PP.KK.AAAA";
-          dobHint.classList.remove("err");
-        }
+  // Validate date
+  const dt = new Date(year, mo - 1, dd);
+  if (mo < 1 || mo > 12 || dd < 1 || dd > 31 ||
+      dt.getFullYear() !== year || dt.getMonth() !== mo - 1 || dt.getDate() !== dd) {
+    return { valid: false, error: 'Isikukoodi kuupäev on vigane' };
+  }
 
-        updateCodeDisplay(raw);
+  // Checksum
+  const w1 = [1,2,3,4,5,6,7,8,9,1];
+  const w2 = [3,4,5,6,7,8,9,1,2,3];
+  const sum1 = digits.slice(0,10).reduce((s, d, i) => s + d * w1[i], 0);
+  let rem = sum1 % 11;
+  let usedWeights = w1, checksumOk;
+  if (rem < 10) {
+    checksumOk = (rem === chk);
+  } else {
+    const sum2 = digits.slice(0,10).reduce((s, d, i) => s + d * w2[i], 0);
+    rem = sum2 % 11;
+    usedWeights = w2;
+    checksumOk = (rem < 10 ? rem === chk : chk === 0);
+    if (rem >= 10) rem = 0;
+  }
 
-        if (raw.length < 11) {
-          codeInput.classList.remove("is-valid", "is-error");
-          codeHint.textContent = 11 - raw.length + " numbrit puudu";
-          codeHint.classList.remove("err");
-          state.source = null;
-          state.born = null;
-          state.idParsed = null;
-          clearResults();
-          return;
-        }
+  return {
+    valid: true,
+    checksumOk,
+    born: { y: year, m: mo, d: dd },
+    sex: cm.sex,
+    century: cm.century,
+    seq,
+    chk,
+    digits,
+    usedWeights,
+    checkProducts: digits.slice(0,10).map((d, i) => d * usedWeights[i]),
+    checkSum: digits.slice(0,10).reduce((s, d, i) => s + d * usedWeights[i], 0),
+  };
+}
 
-        // Full 11 digits
-        const parsed = parseIdCode(raw);
-        if (!parsed.valid) {
-          codeInput.classList.add("is-error");
-          codeInput.classList.remove("is-valid");
-          codeHint.textContent = parsed.error;
-          codeHint.classList.add("err");
-          state.source = null;
-          state.born = null;
-          state.idParsed = null;
-          clearResults();
-          return;
-        }
+// ── DOM refs ──────────────────────────────────────────────────────────────────
+const codeInput     = document.getElementById('code-input');
+const codeSuffix    = document.getElementById('code-suffix');
+const codeClear     = document.getElementById('code-clear');
+const codeHint      = document.getElementById('code-hint');
+const dobInput      = document.getElementById('dob-input');
+const dobHint       = document.getElementById('dob-hint');
+const refInput      = document.getElementById('ref-input');
+const refTodayBtn   = document.getElementById('ref-today-btn');
+const ageContent    = document.getElementById('age-content');
+const blockInfo     = document.getElementById('block-info');
+const infoRows      = document.getElementById('info-rows');
+const blockChecksum = document.getElementById('block-checksum');
+const checksumContent = document.getElementById('checksum-content');
 
-        codeInput.classList.add("is-valid");
-        codeInput.classList.remove("is-error");
-        codeHint.textContent = parsed.checksumOk
-          ? "Kontrollnumber korrektne"
-          : "Kontrollnumber vale";
-        codeHint.classList.toggle("err", !parsed.checksumOk);
+// ── State ─────────────────────────────────────────────────────────────────────
+let state = {
+  source:   null,   // 'code' | 'dob'
+  born:     null,   // {y,m,d}
+  ref:      todayDMY(),
+  idParsed: null,
+};
 
-        state.source = "code";
-        state.born = parsed.born;
-        state.idParsed = parsed;
-        render();
-      });
+// ── Reference date ────────────────────────────────────────────────────────────
+function setRefToday() {
+  state.ref = todayDMY();
+  refInput.value = '';
+  refInput.classList.remove('is-valid', 'is-error');
+  refTodayBtn.classList.add('active');
+  document.getElementById('ref-calendar').value = '';
+  render();
+}
 
-      codeClear.addEventListener("click", () => {
-        codeInput.value = "";
-        codeInput.classList.remove("is-valid", "is-error");
-        codeHint.textContent = "11-kohaline isikukood";
-        codeHint.classList.remove("err");
-        codeDisplay.innerHTML = "";
-        codeClear.classList.remove("visible");
-        clearCodeState();
-        clearResults();
-      });
+refTodayBtn.addEventListener('click', setRefToday);
 
-      function clearCodeState() {
-        state.source = null;
-        state.born = null;
-        state.idParsed = null;
-        blockInfo.style.display = "none";
-        blockChecksum.style.display = "none";
-      }
+// Calendar picker — sync bidirectionally with text input
+const refCalendar = document.getElementById('ref-calendar');
+function setCalendarValue(p) {
+  refCalendar.value = p.y + '-' + pad2(p.m) + '-' + pad2(p.d);
+}
+refCalendar.addEventListener('change', () => {
+  const v = refCalendar.value;
+  if (!v) { setRefToday(); return; }
+  const [y, mo, d] = v.split('-').map(Number);
+  state.ref = { y, m: mo, d };
+  refInput.value = pad2(d) + '.' + pad2(mo) + '.' + y;
+  refInput.classList.add('is-valid');
+  refInput.classList.remove('is-error');
+  refTodayBtn.classList.remove('active');
+  render();
+});
 
-      // Coloured overlay: dim untyped positions
-      function updateCodeDisplay(raw) {
-        // Segment boundaries for visual grouping: [1][2][2][2][3][1]
-        // Positions: 0 | 1-2 | 3-4 | 5-6 | 7-9 | 10
-        const PLACEHOLDER = "37605030000";
-        let html = "";
-        for (let i = 0; i < 11; i++) {
-          if (i < raw.length) {
-            html += '<span class="cd-digit">' + raw[i] + "</span>";
-          } else {
-            html += '<span class="cd-dim">' + PLACEHOLDER[i] + "</span>";
-          }
-          // Visual separators
-          if (i === 0 || i === 2 || i === 4 || i === 6 || i === 9) {
-            html += '<span class="cd-sep"> </span>';
-          }
-        }
-        codeDisplay.innerHTML = html;
-      }
+refInput.addEventListener('input', () => {
+  const v = refInput.value.trim();
+  if (!v) { setRefToday(); return; }
+  const p = parseDMY(v);
+  if (p) {
+    state.ref = p;
+    refInput.classList.add('is-valid');
+    refInput.classList.remove('is-error');
+    refTodayBtn.classList.remove('active');
+    setCalendarValue(p);
+  } else {
+    refInput.classList.add('is-error');
+    refInput.classList.remove('is-valid');
+    refTodayBtn.classList.remove('active');
+  }
+  render();
+});
 
-      // ── DOB input ─────────────────────────────────────────────────────────────────
-      dobInput.addEventListener("input", () => {
-        const v = dobInput.value.trim();
+// ── Code input ────────────────────────────────────────────────────────────────
+codeInput.addEventListener('input', () => {
+  // Strip non-digits
+  const raw = codeInput.value.replace(/\D/g, '').slice(0, 11);
+  codeInput.value = raw;
 
-        if (v.length === 0) {
-          dobInput.classList.remove("is-valid", "is-error");
-          dobHint.textContent = "kuupäev kujul PP.KK.AAAA";
-          dobHint.classList.remove("err");
-          state.source = null;
-          state.born = null;
-          clearResults();
-          return;
-        }
+  codeClear.classList.toggle('visible', raw.length > 0);
 
-        // Clear code input if typing DOB
-        codeInput.value = "";
-        codeInput.classList.remove("is-valid", "is-error");
-        codeHint.textContent = "11-kohaline isikukood";
-        codeHint.classList.remove("err");
-        codeDisplay.innerHTML = "";
-        codeClear.classList.remove("visible");
-        state.idParsed = null;
-        blockInfo.style.display = "none";
-        blockChecksum.style.display = "none";
+  if (raw.length === 0) {
+    clearCodeState();
+    if (!dobInput.value.trim()) clearResults();
+    return;
+  }
 
-        const p = parseDMY(v);
-        if (p) {
-          dobInput.classList.add("is-valid");
-          dobInput.classList.remove("is-error");
-          dobHint.textContent = "kuupäev tuvastatud";
-          dobHint.classList.remove("err");
-          state.source = "dob";
-          state.born = p;
-          render();
-        } else {
-          dobInput.classList.add("is-error");
-          dobInput.classList.remove("is-valid");
-          dobHint.textContent = "kuupäev kujul PP.KK.AAAA · nt 03.05.1990";
-          dobHint.classList.add("err");
-          state.source = null;
-          state.born = null;
-          clearResults();
-        }
-      });
+  // If typing into code, clear DOB
+  dobInput.value = '';
+  dobInput.classList.remove('is-valid', 'is-error');
+  dobHint.textContent = 'kuupäev kujul PP.KK.AAAA';
+  dobHint.classList.remove('err');
 
-      // ── Render ────────────────────────────────────────────────────────────────────
-      function clearResults() {
-        ageContent.innerHTML =
-          '<div class="idle-state">// ootab sisendit</div>';
-        blockInfo.style.display = "none";
-        blockChecksum.style.display = "none";
-      }
+  updateCodeDisplay(raw);
 
-      function render() {
-        if (!state.born) {
-          clearResults();
-          return;
-        }
-        const born = state.born;
-        const ref = state.ref;
+  if (raw.length < 11) {
+    codeInput.classList.remove('is-valid', 'is-error');
+    codeHint.textContent = (11 - raw.length) + ' numbrit puudu';
+    codeHint.classList.remove('err');
+    state.source = null; state.born = null; state.idParsed = null;
+    clearResults();
+    return;
+  }
 
-        // Validate ref is after born
-        const td = totalDays(born, ref);
+  // Full 11 digits
+  const parsed = parseIdCode(raw);
+  if (!parsed.valid) {
+    codeInput.classList.add('is-error');
+    codeInput.classList.remove('is-valid');
+    codeHint.textContent = parsed.error;
+    codeHint.classList.add('err');
+    state.source = null; state.born = null; state.idParsed = null;
+    clearResults();
+    return;
+  }
 
-        // ── Age block ──
-        if (td < 0) {
-          ageContent.innerHTML =
-            '<div class="idle-state" style="color:var(--red)">// arvutuskuupäev on enne sünnikuupäeva</div>';
-        } else {
-          const age = calcAge(born, ref);
-          const isToday =
-            ref.y === todayDMY().y &&
-            ref.m === todayDMY().m &&
-            ref.d === todayDMY().d;
-          const refLabel = isToday ? "täna" : fmtDMY(ref);
+  codeInput.classList.add('is-valid');
+  codeInput.classList.remove('is-error');
+  codeHint.textContent = parsed.checksumOk ? 'Kontrollnumber korrektne' : 'Kontrollnumber vale';
+  codeHint.classList.toggle('err', !parsed.checksumOk);
 
-          // Birthday check
-          const isBirthday = ref.m === born.m && ref.d === born.d;
-          const nextBirthday = (() => {
-            let ny = ref.y;
-            const thisBD = new Date(ref.y, born.m - 1, born.d);
-            const refDt = new Date(ref.y, ref.m - 1, ref.d);
-            if (thisBD <= refDt && !isBirthday) ny++;
-            else if (isBirthday) ny++;
-            const bd = new Date(ny, born.m - 1, born.d);
-            const daysUntil = Math.floor((bd - refDt) / 86400000);
-            return { date: { y: ny, m: born.m, d: born.d }, daysUntil };
-          })();
+  state.source   = 'code';
+  state.born     = parsed.born;
+  state.idParsed = parsed;
+  render();
+});
 
-          // Estonian inflection: 1 aasta/kuu/päev, else aastat/kuud/päeva
-          function infl(n, one, many) {
-            return n + " " + (n === 1 ? one : many);
-          }
-          const ageStr =
-            infl(age.years, "aasta", "aastat") +
-            "  " +
-            infl(age.months, "kuu", "kuud") +
-            "  " +
-            infl(age.days, "päev", "päeva");
-          const refNote = isToday
-            ? ""
-            : ' <span style="color:var(--dim);font-size:14px;font-weight:400">(' +
-              refLabel +
-              ")</span>";
+codeClear.addEventListener('click', () => {
+  codeInput.value = '';
+  codeInput.classList.remove('is-valid', 'is-error');
+  codeHint.textContent = '11-kohaline isikukood';
+  codeHint.classList.remove('err');
+  codeSuffix.textContent = '';
+  codeClear.classList.remove('visible');
+  clearCodeState();
+  clearResults();
+});
 
-          let bdNote = "";
-          if (isBirthday) {
-            bdNote =
-              '<div class="age-detail" style="color:var(--amber)">// sünnipäev</div>';
-          } else {
-            bdNote =
-              '<div class="age-detail" style="color:var(--dim)">järgmine sünnipäev: ' +
-              fmtDMY(nextBirthday.date) +
-              " (" +
-              (nextBirthday.daysUntil === 1
-                ? "1 päev"
-                : nextBirthday.daysUntil + " päeva") +
-              " pärast)</div>";
-          }
+function clearCodeState() {
+  state.source = null; state.born = null; state.idParsed = null;
+  blockInfo.style.display     = 'none';
+  blockChecksum.style.display = 'none';
+}
 
-          ageContent.innerHTML =
-            '<div class="age-main">' + ageStr + refNote + "</div>" + bdNote;
-        }
+// Coloured overlay: dim untyped positions
+function updateCodeDisplay(raw) {
+  const remaining = 11 - raw.length;
+  if (remaining <= 0) { codeSuffix.textContent = ''; return; }
+  // Measure char width via canvas for accurate suffix positioning
+  if (!updateCodeDisplay._ctx) {
+    updateCodeDisplay._ctx = document.createElement('canvas').getContext('2d');
+  }
+  const ctx  = updateCodeDisplay._ctx;
+  ctx.font   = '22px Hack, "Courier New", monospace';
+  const charW = ctx.measureText('0').width + 22 * 0.12; // width + letter-spacing
+  codeSuffix.style.left = (14 + raw.length * charW) + 'px';
+  codeSuffix.textContent = '_'.repeat(remaining);
+}
 
-        // ── Info block (only for ID code) ──
-        if (state.idParsed) {
-          const p = state.idParsed;
-          const sexLabel = p.sex === "M" ? "mees" : "naine";
-          const rows = [
-            { k: "Sünniaeg", v: fmtDMY(born), cls: "" },
-            { k: "Sugu", v: sexLabel, cls: "" },
-            {
-              k: "Sajand",
-              v: p.century + "–" + (p.century + 99),
-              cls: "muted",
-            },
-            {
-              k: "Järjenumber",
-              v: String(p.seq).padStart(3, "0"),
-              cls: "muted",
-            },
-            {
-              k: "Kontrollnr",
-              v:
-                p.chk +
-                (p.checksumOk
-                  ? " ✓"
-                  : " ✗ — oodati " +
-                    (p.checkSum % 11 < 10 ? p.checkSum % 11 : 0)),
-              cls: p.checksumOk ? "amber" : "err",
-            },
-          ];
-          infoRows.innerHTML = rows
-            .map(
-              (r) =>
-                '<div class="info-row">' +
-                '<span class="info-key">' +
-                r.k +
-                "</span>" +
-                '<span class="info-val ' +
-                r.cls +
-                '">' +
-                r.v +
-                "</span>" +
-                "</div>",
-            )
-            .join("");
-          blockInfo.style.display = "";
+// ── DOB input ─────────────────────────────────────────────────────────────────
+dobInput.addEventListener('input', () => {
+  const v = dobInput.value.trim();
 
-          // ── Checksum block ──
-          const p10 = p.digits.slice(0, 10);
-          const wts = p.usedWeights;
-          const prods = p.checkProducts;
-          const sum = p.checkSum;
-          const rem = sum % 11;
-          const finalChk = rem < 10 ? rem : 0;
+  if (v.length === 0) {
+    dobInput.classList.remove('is-valid', 'is-error');
+    dobHint.textContent = 'kuupäev kujul PP.KK.AAAA';
+    dobHint.classList.remove('err');
+    state.source = null; state.born = null;
+    clearResults();
+    return;
+  }
 
-          let thHtml =
-            "<tr>" +
-            p10.map((_, i) => "<th>" + (i + 1) + "</th>").join("") +
-            "<th>—</th></tr>";
-          let digitHtml =
-            '<tr class="row-digit">' +
-            p10.map((d) => "<td>" + d + "</td>").join("") +
-            '<td class="cell-check">' +
-            p.chk +
-            "</td></tr>";
-          let weightHtml =
-            '<tr class="row-weight">' +
-            wts.map((w) => "<td>×" + w + "</td>").join("") +
-            "<td></td></tr>";
-          let prodHtml =
-            '<tr class="row-prod">' +
-            prods.map((pr) => "<td>" + pr + "</td>").join("") +
-            "<td></td></tr>";
+  // Clear code input if typing DOB
+  codeInput.value = '';
+  codeInput.classList.remove('is-valid', 'is-error');
+  codeHint.textContent = '11-kohaline isikukood';
+  codeHint.classList.remove('err');
+  codeSuffix.textContent = '';
+  codeClear.classList.remove('visible');
+  state.idParsed = null;
+  blockInfo.style.display     = 'none';
+  blockChecksum.style.display = 'none';
 
-          checksumContent.innerHTML =
-            '<table class="checksum-table">' +
-            thHtml +
-            digitHtml +
-            weightHtml +
-            prodHtml +
-            "</table>" +
-            '<div class="checksum-sum">∑ = ' +
-            prods.join("+") +
-            " = <span>" +
-            sum +
-            "</span> · " +
-            sum +
-            " mod 11 = <span>" +
-            rem +
-            "</span>" +
-            (rem >= 10 ? " → 0" : "") +
-            ' → kontrollnumber = <span class="' +
-            (p.checksumOk ? "ok" : "err") +
-            '">' +
-            finalChk +
-            "</span>" +
-            (p.checksumOk ? "" : " (tegelik: " + p.chk + ")") +
-            "</div>";
+  const p = parseDMY(v);
+  if (p) {
+    dobInput.classList.add('is-valid');
+    dobInput.classList.remove('is-error');
+    dobHint.textContent = 'kuupäev tuvastatud';
+    dobHint.classList.remove('err');
+    state.source = 'dob';
+    state.born   = p;
+    render();
+  } else {
+    dobInput.classList.add('is-error');
+    dobInput.classList.remove('is-valid');
+    dobHint.textContent = 'kuupäev kujul PP.KK.AAAA · nt 03.05.1990';
+    dobHint.classList.add('err');
+    state.source = null; state.born = null;
+    clearResults();
+  }
+});
 
-          blockChecksum.style.display = "";
-        } else {
-          blockInfo.style.display = "none";
-          blockChecksum.style.display = "none";
-        }
-      }
+// ── Utilities (continued) ────────────────────────────────────────────────────
+// Estonian inflection: 1 aasta/kuu/päev, else aastat/kuud/päeva
+function infl(n, one, many) { return n + ' ' + (n === 1 ? one : many); }
 
-      // ── Bootstrap ─────────────────────────────────────────────────────────────────
-      document
-        .querySelectorAll(".footer-year")
-        .forEach((el) => (el.textContent = new Date().getFullYear()));
-      // Pre-fill reference date display
-      refInput.placeholder = fmtDMY(todayDMY());
-    </script>
-  </body>
+// ── Render ────────────────────────────────────────────────────────────────────
+function clearResults() {
+  ageContent.innerHTML = '<div class="idle-state">// ootab sisendit</div>';
+  blockInfo.style.display     = 'none';
+  blockChecksum.style.display = 'none';
+}
+
+function render() {
+  if (!state.born) { clearResults(); return; }
+  const born = state.born;
+  const ref  = state.ref;
+
+  // Validate ref is after born
+  const td = totalDays(born, ref);
+
+  // ── Age block ──
+  if (td < 0) {
+    ageContent.innerHTML =
+      '<div class="idle-state" style="color:var(--red)">// arvutuskuupäev on enne sünnikuupäeva</div>';
+  } else {
+    const age     = calcAge(born, ref);
+    const today   = todayDMY();
+    const isToday = (ref.y === today.y && ref.m === today.m && ref.d === today.d);
+    const refLabel = isToday ? 'täna' : fmtDMY(ref);
+
+    // Birthday check
+    const isBirthday = (ref.m === born.m && ref.d === born.d);
+    const nextBirthday = (() => {
+      let ny = ref.y;
+      const thisBD = new Date(ref.y, born.m - 1, born.d);
+      const refDt  = new Date(ref.y, ref.m - 1, ref.d);
+      if (thisBD <= refDt && !isBirthday) ny++;
+      else if (isBirthday) ny++;
+      const bd = new Date(ny, born.m - 1, born.d);
+      const daysUntil = Math.floor((bd - refDt) / 86400000);
+      return { date: { y: ny, m: born.m, d: born.d }, daysUntil };
+    })();
+
+    // Estonian inflection: 1 aasta/kuu/päev, else aastat/kuud/päeva
+    function infl(n, one, many) { return n + ' ' + (n === 1 ? one : many); }
+    const ageStr = infl(age.years, 'aasta', 'aastat') + '  ' +
+                   infl(age.months, 'kuu', 'kuud') + '  ' +
+                   infl(age.days, 'päev', 'päeva');
+    const refNote = isToday ? '' : ' <span style="color:var(--dim);font-size:14px;font-weight:400">(' + refLabel + ')</span>';
+
+    let bdNote = '';
+    if (isBirthday) {
+      bdNote = '<div class="age-detail" style="color:var(--amber)">// sünnipäev</div>';
+    } else {
+      bdNote = '<div class="age-detail" style="color:var(--dim)">järgmine sünnipäev: ' +
+        fmtDMY(nextBirthday.date) + ' (' + (nextBirthday.daysUntil === 1 ? '1 päev' : nextBirthday.daysUntil + ' päeva') + ' pärast)</div>';
+    }
+
+    ageContent.innerHTML = '<div class="age-main">' + ageStr + refNote + '</div>' + bdNote;
+  }
+
+  // ── Info block (only for ID code) ──
+  if (state.idParsed) {
+    const p = state.idParsed;
+    const sexLabel = p.sex === 'M' ? 'mees' : 'naine';
+    const rows = [
+      { k: 'Sünniaeg',    v: fmtDMY(born),                      cls: '' },
+      { k: 'Sugu',        v: sexLabel,                           cls: '' },
+      { k: 'Sajand',      v: p.century + '–' + (p.century+99),  cls: 'muted' },
+      { k: 'Järjenumber', v: String(p.seq).padStart(3, '0'),     cls: 'muted' },
+      { k: 'Kontrollnr',  v: p.chk + (p.checksumOk ? ' ✓' : ' ✗ — oodati ' +
+          (p.checkSum % 11 < 10 ? p.checkSum % 11 : 0)),
+        cls: p.checksumOk ? 'amber' : 'err' },
+    ];
+    infoRows.innerHTML = rows.map(r =>
+      '<div class="info-row">' +
+        '<span class="info-key">' + r.k + '</span>' +
+        '<span class="info-val ' + r.cls + '">' + r.v + '</span>' +
+      '</div>'
+    ).join('');
+    blockInfo.style.display = '';
+
+    // ── Checksum block ──
+    const p10 = p.digits.slice(0, 10);
+    const wts = p.usedWeights;
+    const prods = p.checkProducts;
+    const sum  = p.checkSum;
+    const rem  = sum % 11;
+    const finalChk = rem < 10 ? rem : 0;
+
+    let thHtml = '<tr>' + p10.map((_, i) =>
+      '<th>' + (i + 1) + '</th>').join('') + '<th>—</th></tr>';
+    let digitHtml = '<tr class="row-digit">' + p10.map(d =>
+      '<td>' + d + '</td>').join('') +
+      '<td class="cell-check">' + p.chk + '</td></tr>';
+    let weightHtml = '<tr class="row-weight">' + wts.map(w =>
+      '<td>×' + w + '</td>').join('') + '<td></td></tr>';
+    let prodHtml = '<tr class="row-prod">' + prods.map(pr =>
+      '<td>' + pr + '</td>').join('') + '<td></td></tr>';
+
+    checksumContent.innerHTML =
+      '<table class="checksum-table">' + thHtml + digitHtml + weightHtml + prodHtml + '</table>' +
+      '<div class="checksum-sum">∑ = ' + prods.join('+') + ' = <span>' + sum +
+      '</span> · ' + sum + ' mod 11 = <span>' + rem + '</span>' +
+      (rem >= 10 ? ' → 0' : '') +
+      ' → kontrollnumber = <span class="' + (p.checksumOk ? 'ok' : 'err') + '">' + finalChk + '</span>' +
+      (p.checksumOk ? '' : ' (tegelik: ' + p.chk + ')') + '</div>';
+
+    blockChecksum.style.display = '';
+  } else {
+    blockInfo.style.display     = 'none';
+    blockChecksum.style.display = 'none';
+  }
+}
+
+// ── Bootstrap ─────────────────────────────────────────────────────────────────
+document.querySelectorAll('.footer-year').forEach(el => el.textContent = new Date().getFullYear());
+// Pre-fill reference date display
+refInput.placeholder = fmtDMY(todayDMY());
+</script>
+</body>
 </html>
