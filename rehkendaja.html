@@ -110,7 +110,6 @@
   outline: none;
   caret-color: var(--amber);
   overflow: hidden;
-  pointer-events: none;  /* clicks fall through to marks in overlay */
 }
 #input-text::placeholder { color: var(--dim); }
 
@@ -401,16 +400,22 @@ function toggleExclude(idx) {
   renderResults();
 }
 
-// Delegate clicks on marks to toggleExclude
-highlightEl.addEventListener('click', e => {
-  const mark = e.target.closest('mark');
-  if (!mark) {
-    // Click landed on plain text — focus textarea so user can type
-    inputEl.focus();
-    return;
-  }
-  e.preventDefault();
-  toggleExclude(Number(mark.dataset.idx));
+// Click on textarea — toggle the match under the cursor on a plain click.
+// We track mousedown position so that drag-selects are never misread as clicks.
+let _mousedownSel = null;
+inputEl.addEventListener('mousedown', () => {
+  _mousedownSel = null;
+  // Read selection after the browser has placed the caret
+  requestAnimationFrame(() => { _mousedownSel = inputEl.selectionStart; });
+});
+inputEl.addEventListener('click', () => {
+  // Only act when the cursor didn't move between mousedown and click
+  // (i.e. no text was selected by dragging)
+  if (inputEl.selectionStart !== inputEl.selectionEnd) return;
+  if (_mousedownSel !== null && inputEl.selectionStart !== _mousedownSel) return;
+  const pos = inputEl.selectionStart;
+  const hit = lastFound.findIndex(m => pos >= m.index && pos < m.index + m.matchLen);
+  if (hit !== -1) toggleExclude(hit);
 });
 
 // ── Render ──────────────────────────────────────────────────────────────────
