@@ -110,6 +110,7 @@
   outline: none;
   caret-color: var(--amber);
   overflow: hidden;
+  pointer-events: none;  /* clicks fall through to marks in overlay */
 }
 #input-text::placeholder { color: var(--dim); }
 
@@ -403,7 +404,11 @@ function toggleExclude(idx) {
 // Delegate clicks on marks to toggleExclude
 highlightEl.addEventListener('click', e => {
   const mark = e.target.closest('mark');
-  if (!mark) return;
+  if (!mark) {
+    // Click landed on plain text — focus textarea so user can type
+    inputEl.focus();
+    return;
+  }
   e.preventDefault();
   toggleExclude(Number(mark.dataset.idx));
 });
