@@ -262,131 +262,6 @@
     <script src="mallid-andmed.js"></script>
     <script src="nav.js"></script>
     <script>
-      // ── Snippet data ──────────────────────────────────────────────────────────────
-      // Text uses \u00a0 for non-breaking spaces where legally significant.
-      // Categories map directly to legal provisions or sentence types.
-      // Tags cross-cut categories for filtering.
-
-      const SNIPPETS = [
-        // ── KarS § 73 katseaeg ────────────────────────────────────────────────────
-        {
-          id: 1,
-          category: "KarS\u00a0§\u00a073 katseaeg",
-          tags: ["katseaeg", "tingimisi", "kohustus"],
-          text: "Mõista süüdistatavale KarS\u00a0§\u00a073 lg\u00a01 alusel tingimisi karistus katseajaga [X]\u00a0aastat.",
-        },
-        {
-          id: 2,
-          category: "KarS\u00a0§\u00a073 katseaeg",
-          tags: ["katseaeg", "tingimisi", "kohustus", "allkirjastamine"],
-          text: "Panna süüdistatavale KarS\u00a0§\u00a073 lg\u00a03 alusel katseaja kestel kohustus allkirjastada kriminaalhoolduse eeskirjad ja täita neid.",
-        },
-        {
-          id: 3,
-          category: "KarS\u00a0§\u00a073 katseaeg",
-          tags: ["katseaeg", "tingimisi", "keeld", "alkohol"],
-          text: "Panna süüdistatavale katseaja kestel kohustus hoiduda alkoholi ja muude joovastava toimega ainete tarvitamisest.",
-        },
-        {
-          id: 4,
-          category: "KarS\u00a0§\u00a073 katseaeg",
-          tags: ["katseaeg", "tingimisi", "keeld", "lahkumine"],
-          text: "Keelata süüdistataval katseaja kestel Eesti Vabariigi territooriumilt lahkumine ilma kriminaalhooldusametniku loata.",
-        },
-        {
-          id: 5,
-          category: "KarS\u00a0§\u00a073 katseaeg",
-          tags: ["katseaeg", "tingimisi", "kohustus", "aruandlus"],
-          text: "Panna süüdistatavale katseaja kestel kohustus ilmuda kriminaalhooldusametniku juurde tema poolt määratud ajal ja kohas.",
-        },
-
-        // ── KarS § 74 katseaeg ────────────────────────────────────────────────────
-        {
-          id: 6,
-          category: "KarS\u00a0§\u00a074 katseaeg",
-          tags: ["katseaeg", "tingimisi", "osaline", "vangistus"],
-          text: "Mõista süüdistatavale KarS\u00a0§\u00a074 lg\u00a01 alusel [X]\u00a0aastat [Y]\u00a0kuud vangistust, millest [Z]\u00a0kuud mõista reaalselt ja ülejäänud osa tingimisi katseajaga [N]\u00a0aastat.",
-        },
-        {
-          id: 7,
-          category: "KarS\u00a0§\u00a074 katseaeg",
-          tags: ["katseaeg", "tingimisi", "osaline", "kohustus"],
-          text: "Panna süüdistatavale KarS\u00a0§\u00a074 lg\u00a03 alusel tingimisi osa katseaja kestel kohustus allkirjastada kriminaalhoolduse eeskirjad ja täita neid.",
-        },
-        {
-          id: 8,
-          category: "KarS\u00a0§\u00a074 katseaeg",
-          tags: ["katseaeg", "tingimisi", "osaline", "keeld", "alkohol"],
-          text: "Panna süüdistatavale katseaja kestel kohustus hoiduda alkoholi ja narkootiliste ainete tarvitamisest ning alluda vastavale kontrollile.",
-        },
-
-        // ── Reaalne vangistus ─────────────────────────────────────────────────────
-        {
-          id: 9,
-          category: "Reaalne vangistus",
-          tags: ["vangistus", "reaalne", "tähtaeg"],
-          text: "Mõista süüdistatavale karistuseks [X]\u00a0aastat [Y]\u00a0kuud vangistust.",
-        },
-        {
-          id: 10,
-          category: "Reaalne vangistus",
-          tags: ["vangistus", "reaalne", "tähtaeg", "eelvangistus"],
-          text: "Lugeda süüdistatava vahi all viibitud aeg [KP.KK.AAAA]–[KP.KK.AAAA] karistusaega arvatuks.",
-        },
-        {
-          id: 11,
-          category: "Reaalne vangistus",
-          tags: ["vangistus", "reaalne", "liitkaristus"],
-          text: "Liita KarS\u00a0§\u00a065 lg\u00a01 alusel käesoleva kohtuotsusega mõistetud karistus süüdistatavale [kohtuotsus] alusel mõistetud karistusega ning mõista lõplikuks karistuseks [X]\u00a0aastat [Y]\u00a0kuud vangistust.",
-        },
-        {
-          id: 12,
-          category: "Reaalne vangistus",
-          tags: ["vangistus", "reaalne", "tähtaeg", "algus"],
-          text: "Karistuse kandmist alustada kohtuotsuse jõustumisest.",
-        },
-
-        // ── Rahaline karistus ─────────────────────────────────────────────────────
-        {
-          id: 13,
-          category: "Rahaline karistus",
-          tags: ["rahaline", "trahv", "päevamäär"],
-          text: "Mõista süüdistatavale karistuseks [X]\u00a0päevamäära suurune rahaline karistus, arvestades päevamääraks [Y]\u00a0eurot, kokku [Z]\u00a0eurot.",
-        },
-        {
-          id: 14,
-          category: "Rahaline karistus",
-          tags: ["rahaline", "trahv", "päevamäär", "tingimisi"],
-          text: "Mõista süüdistatavale KarS\u00a0§\u00a073 lg\u00a01 alusel tingimisi rahaline karistus [X]\u00a0päevamäära ulatuses katseajaga [Y]\u00a0aastat.",
-        },
-        {
-          id: 15,
-          category: "Rahaline karistus",
-          tags: ["rahaline", "tähtaeg", "tasumine"],
-          text: "Kohustada süüdistatavat tasuma rahaline karistus [X]\u00a0kuu jooksul kohtuotsuse jõustumisest.",
-        },
-
-        // ── Menetluskulud ─────────────────────────────────────────────────────────
-        {
-          id: 16,
-          category: "Menetluskulud",
-          tags: ["menetlus", "kulud", "riigilõiv"],
-          text: "Mõista süüdistatavalt riigi tuludesse menetluskulud [X]\u00a0eurot.",
-        },
-        {
-          id: 17,
-          category: "Menetluskulud",
-          tags: ["menetlus", "kulud", "riigilõiv", "kaitsja"],
-          text: "Jätta riigi õigusabi kulude hüvitamise nõue lahendamata, kuna kaitsja on jätnud KrMS\u00a0§\u00a0175 lg\u00a02 kohase taotluse esitamata.",
-        },
-        {
-          id: 18,
-          category: "Menetluskulud",
-          tags: ["menetlus", "kulud", "vabastus"],
-          text: "Vabastada süüdistatav menetluskulude hüvitamisest KrMS\u00a0§\u00a0181 lg\u00a01 alusel, arvestades tema varalist seisundit.",
-        },
-      ];
-
       // ── Build indexes ─────────────────────────────────────────────────────────────
       const ALL_CATEGORIES = [...new Set(SNIPPETS.map((s) => s.category))];
       const ALL_TAGS = [...new Set(SNIPPETS.flatMap((s) => s.tags))].sort();
@@ -520,7 +395,7 @@
               : "";
 
             card.innerHTML = `
-        <div class="snippet-body">${escHtml(s.text)}</div>
+        <div class="snippet-body">${renderText(s.text)}</div>
         ${commentHtml}
         <div class="snippet-footer">
           <div class="snippet-tags">${tagsHtml}</div>
@@ -582,10 +457,7 @@
 
       // Renders text for display: escapes HTML, then wraps superscript chars in <sup>
       function renderText(s) {
-        return escHtml(s).replace(
-          SUP_RE.source ? new RegExp(SUP_RE.source, "g") : SUP_RE,
-          (ch) => `<sup>${SUP_MAP[ch]}</sup>`,
-        );
+        return escHtml(s).replace(SUP_RE, (ch) => `<sup>${SUP_MAP[ch]}</sup>`);
       }
 
       function escHtml(s) {
