@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="et">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mallid — Tööriistad</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css"
+    />
+    <link rel="stylesheet" href="noir.css" />
+    <style>
+      /* ── Filter bar ── */
+      .filter-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 28px;
+        align-items: flex-start;
+      }
+
+      .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .filter-group-label {
+        font-size: 10px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--dim);
+      }
+
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .tag-btn {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        padding: 4px 10px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        cursor: pointer;
+        transition:
+          background 0.1s,
+          color 0.1s,
+          border-color 0.1s;
+        white-space: nowrap;
+      }
+      .tag-btn:hover {
+        background: var(--lift);
+        color: var(--text);
+        border-color: var(--line);
+      }
+      .tag-btn.active {
+        background: var(--lift);
+        color: var(--amber);
+        border-color: var(--amber);
+      }
+
+      .filter-sep {
+        width: 1px;
+        background: var(--border);
+        align-self: stretch;
+        margin: 0 4px;
+        flex-shrink: 0;
+      }
+
+      /* ── Results count ── */
+      .results-meta {
+        font-size: 12px;
+        color: var(--dim);
+        letter-spacing: 0.06em;
+        margin-bottom: 20px;
+      }
+      .results-meta span {
+        color: var(--muted);
+      }
+
+      /* ── Category section ── */
+      .cat-section {
+        margin-bottom: 32px;
+      }
+      .cat-section.hidden {
+        display: none;
+      }
+
+      .cat-header {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--border);
+      }
+      .cat-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text);
+        letter-spacing: 0.04em;
+      }
+      .cat-count {
+        font-size: 11px;
+        color: var(--dim);
+        letter-spacing: 0.06em;
+      }
+
+      /* ── Snippet card ── */
+      .snippet-card {
+        border: 1px solid var(--border);
+        background: var(--surface);
+        margin-bottom: 10px;
+        transition: border-color 0.12s;
+      }
+      .snippet-card:last-child {
+        margin-bottom: 0;
+      }
+      .snippet-card:hover {
+        border-color: var(--line);
+      }
+      .snippet-card.hidden {
+        display: none;
+      }
+
+      .snippet-body {
+        padding: 14px 16px;
+        font-size: 13px;
+        color: var(--text);
+        line-height: 1.75;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .snippet-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 16px;
+        border-top: 1px solid var(--border);
+        background: var(--deep);
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .snippet-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+      }
+      .snippet-tag {
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        color: var(--dim);
+        background: var(--lift);
+        border: 1px solid var(--border);
+        padding: 2px 7px;
+      }
+
+      .copy-btn {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--muted);
+        background: none;
+        border: 1px solid var(--border);
+        padding: 4px 12px;
+        cursor: pointer;
+        letter-spacing: 0.06em;
+        transition:
+          background 0.12s,
+          color 0.12s,
+          border-color 0.12s;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .copy-btn:hover {
+        background: var(--lift);
+        color: var(--text);
+        border-color: var(--line);
+      }
+      .copy-btn.copied {
+        color: var(--amber);
+        border-color: var(--amber);
+      }
+      /* ── Comment ── */
+      .snippet-comment {
+        padding: 10px 16px 12px;
+        border-top: 1px solid var(--border);
+        font-size: 12px;
+        color: var(--dim);
+        line-height: 1.65;
+        display: flex;
+        gap: 8px;
+        align-items: baseline;
+      }
+      .comment-label {
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--dim);
+        opacity: 0.6;
+        flex-shrink: 0;
+      }
+
+      /* ── Empty state ── */
+      .empty-state {
+        padding: 48px 0;
+        text-align: center;
+        color: var(--dim);
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    <div class="app-shell">
+      <nav class="sidebar" id="sidebar"></nav>
+
+      <div class="page-content">
+        <div class="topbar">
+          <div class="header-chrome"></div>
+          <div class="header-main">
+            <button
+              class="sidebar-toggle"
+              id="sidebar-toggle"
+              aria-label="Ava menüü"
+            >
+              ☰
+            </button>
+            <div class="title-block">
+              <h1>Mallid</h1>
+              <div class="subtitle">
+                <span class="subtitle-label"
+                  >Juriidilised tekstikatked kopeerimisvalmis</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <main>
+          <div class="filter-bar" id="filter-bar">
+            <!-- populated by JS -->
+          </div>
+          <div class="results-meta" id="results-meta"></div>
+          <div id="snippet-list">
+            <!-- populated by JS -->
+          </div>
+        </main>
+
+        <footer></footer>
+      </div>
+    </div>
+
+    <script src="mallid-andmed.js"></script>
+    <script src="nav.js"></script>
+    <script>
+      // ── Snippet data ──────────────────────────────────────────────────────────────
+      // Text uses \u00a0 for non-breaking spaces where legally significant.
+      // Categories map directly to legal provisions or sentence types.
+      // Tags cross-cut categories for filtering.
+
+      const SNIPPETS = [
+        // ── KarS § 73 katseaeg ────────────────────────────────────────────────────
+        {
+          id: 1,
+          category: "KarS\u00a0§\u00a073 katseaeg",
+          tags: ["katseaeg", "tingimisi", "kohustus"],
+          text: "Mõista süüdistatavale KarS\u00a0§\u00a073 lg\u00a01 alusel tingimisi karistus katseajaga [X]\u00a0aastat.",
+        },
+        {
+          id: 2,
+          category: "KarS\u00a0§\u00a073 katseaeg",
+          tags: ["katseaeg", "tingimisi", "kohustus", "allkirjastamine"],
+          text: "Panna süüdistatavale KarS\u00a0§\u00a073 lg\u00a03 alusel katseaja kestel kohustus allkirjastada kriminaalhoolduse eeskirjad ja täita neid.",
+        },
+        {
+          id: 3,
+          category: "KarS\u00a0§\u00a073 katseaeg",
+          tags: ["katseaeg", "tingimisi", "keeld", "alkohol"],
+          text: "Panna süüdistatavale katseaja kestel kohustus hoiduda alkoholi ja muude joovastava toimega ainete tarvitamisest.",
+        },
+        {
+          id: 4,
+          category: "KarS\u00a0§\u00a073 katseaeg",
+          tags: ["katseaeg", "tingimisi", "keeld", "lahkumine"],
+          text: "Keelata süüdistataval katseaja kestel Eesti Vabariigi territooriumilt lahkumine ilma kriminaalhooldusametniku loata.",
+        },
+        {
+          id: 5,
+          category: "KarS\u00a0§\u00a073 katseaeg",
+          tags: ["katseaeg", "tingimisi", "kohustus", "aruandlus"],
+          text: "Panna süüdistatavale katseaja kestel kohustus ilmuda kriminaalhooldusametniku juurde tema poolt määratud ajal ja kohas.",
+        },
+
+        // ── KarS § 74 katseaeg ────────────────────────────────────────────────────
+        {
+          id: 6,
+          category: "KarS\u00a0§\u00a074 katseaeg",
+          tags: ["katseaeg", "tingimisi", "osaline", "vangistus"],
+          text: "Mõista süüdistatavale KarS\u00a0§\u00a074 lg\u00a01 alusel [X]\u00a0aastat [Y]\u00a0kuud vangistust, millest [Z]\u00a0kuud mõista reaalselt ja ülejäänud osa tingimisi katseajaga [N]\u00a0aastat.",
+        },
+        {
+          id: 7,
+          category: "KarS\u00a0§\u00a074 katseaeg",
+          tags: ["katseaeg", "tingimisi", "osaline", "kohustus"],
+          text: "Panna süüdistatavale KarS\u00a0§\u00a074 lg\u00a03 alusel tingimisi osa katseaja kestel kohustus allkirjastada kriminaalhoolduse eeskirjad ja täita neid.",
+        },
+        {
+          id: 8,
+          category: "KarS\u00a0§\u00a074 katseaeg",
+          tags: ["katseaeg", "tingimisi", "osaline", "keeld", "alkohol"],
+          text: "Panna süüdistatavale katseaja kestel kohustus hoiduda alkoholi ja narkootiliste ainete tarvitamisest ning alluda vastavale kontrollile.",
+        },
+
+        // ── Reaalne vangistus ─────────────────────────────────────────────────────
+        {
+          id: 9,
+          category: "Reaalne vangistus",
+          tags: ["vangistus", "reaalne", "tähtaeg"],
+          text: "Mõista süüdistatavale karistuseks [X]\u00a0aastat [Y]\u00a0kuud vangistust.",
+        },
+        {
+          id: 10,
+          category: "Reaalne vangistus",
+          tags: ["vangistus", "reaalne", "tähtaeg", "eelvangistus"],
+          text: "Lugeda süüdistatava vahi all viibitud aeg [KP.KK.AAAA]–[KP.KK.AAAA] karistusaega arvatuks.",
+        },
+        {
+          id: 11,
+          category: "Reaalne vangistus",
+          tags: ["vangistus", "reaalne", "liitkaristus"],
+          text: "Liita KarS\u00a0§\u00a065 lg\u00a01 alusel käesoleva kohtuotsusega mõistetud karistus süüdistatavale [kohtuotsus] alusel mõistetud karistusega ning mõista lõplikuks karistuseks [X]\u00a0aastat [Y]\u00a0kuud vangistust.",
+        },
+        {
+          id: 12,
+          category: "Reaalne vangistus",
+          tags: ["vangistus", "reaalne", "tähtaeg", "algus"],
+          text: "Karistuse kandmist alustada kohtuotsuse jõustumisest.",
+        },
+
+        // ── Rahaline karistus ─────────────────────────────────────────────────────
+        {
+          id: 13,
+          category: "Rahaline karistus",
+          tags: ["rahaline", "trahv", "päevamäär"],
+          text: "Mõista süüdistatavale karistuseks [X]\u00a0päevamäära suurune rahaline karistus, arvestades päevamääraks [Y]\u00a0eurot, kokku [Z]\u00a0eurot.",
+        },
+        {
+          id: 14,
+          category: "Rahaline karistus",
+          tags: ["rahaline", "trahv", "päevamäär", "tingimisi"],
+          text: "Mõista süüdistatavale KarS\u00a0§\u00a073 lg\u00a01 alusel tingimisi rahaline karistus [X]\u00a0päevamäära ulatuses katseajaga [Y]\u00a0aastat.",
+        },
+        {
+          id: 15,
+          category: "Rahaline karistus",
+          tags: ["rahaline", "tähtaeg", "tasumine"],
+          text: "Kohustada süüdistatavat tasuma rahaline karistus [X]\u00a0kuu jooksul kohtuotsuse jõustumisest.",
+        },
+
+        // ── Menetluskulud ─────────────────────────────────────────────────────────
+        {
+          id: 16,
+          category: "Menetluskulud",
+          tags: ["menetlus", "kulud", "riigilõiv"],
+          text: "Mõista süüdistatavalt riigi tuludesse menetluskulud [X]\u00a0eurot.",
+        },
+        {
+          id: 17,
+          category: "Menetluskulud",
+          tags: ["menetlus", "kulud", "riigilõiv", "kaitsja"],
+          text: "Jätta riigi õigusabi kulude hüvitamise nõue lahendamata, kuna kaitsja on jätnud KrMS\u00a0§\u00a0175 lg\u00a02 kohase taotluse esitamata.",
+        },
+        {
+          id: 18,
+          category: "Menetluskulud",
+          tags: ["menetlus", "kulud", "vabastus"],
+          text: "Vabastada süüdistatav menetluskulude hüvitamisest KrMS\u00a0§\u00a0181 lg\u00a01 alusel, arvestades tema varalist seisundit.",
+        },
+      ];
+
+      // ── Build indexes ─────────────────────────────────────────────────────────────
+      const ALL_CATEGORIES = [...new Set(SNIPPETS.map((s) => s.category))];
+      const ALL_TAGS = [...new Set(SNIPPETS.flatMap((s) => s.tags))].sort();
+
+      // ── State ─────────────────────────────────────────────────────────────────────
+      let activeCategory = null; // null = all
+      let activeTags = new Set();
+
+      // ── Filter logic ──────────────────────────────────────────────────────────────
+      function filteredSnippets() {
+        return SNIPPETS.filter((s) => {
+          if (activeCategory && s.category !== activeCategory) return false;
+          if (
+            activeTags.size > 0 &&
+            ![...activeTags].every((t) => s.tags.includes(t))
+          )
+            return false;
+          return true;
+        });
+      }
+
+      // ── Render filter bar ─────────────────────────────────────────────────────────
+      function renderFilters() {
+        const bar = document.getElementById("filter-bar");
+
+        // Categories
+        const catGroup = document.createElement("div");
+        catGroup.className = "filter-group";
+        catGroup.innerHTML = '<div class="filter-group-label">Kategooria</div>';
+        const catRow = document.createElement("div");
+        catRow.className = "tag-row";
+
+        // "Kõik" button
+        const allBtn = document.createElement("button");
+        allBtn.className =
+          "tag-btn" + (activeCategory === null ? " active" : "");
+        allBtn.textContent = "Kõik";
+        allBtn.addEventListener("click", () => {
+          activeCategory = null;
+          renderAll();
+        });
+        catRow.appendChild(allBtn);
+
+        ALL_CATEGORIES.forEach((cat) => {
+          const btn = document.createElement("button");
+          btn.className = "tag-btn" + (activeCategory === cat ? " active" : "");
+          btn.textContent = cat;
+          btn.addEventListener("click", () => {
+            activeCategory = activeCategory === cat ? null : cat;
+            renderAll();
+          });
+          catRow.appendChild(btn);
+        });
+        catGroup.appendChild(catRow);
+        bar.appendChild(catGroup);
+
+        // Separator
+        const sep = document.createElement("div");
+        sep.className = "filter-sep";
+        bar.appendChild(sep);
+
+        // Tags
+        const tagGroup = document.createElement("div");
+        tagGroup.className = "filter-group";
+        tagGroup.innerHTML = '<div class="filter-group-label">Silt</div>';
+        const tagRow = document.createElement("div");
+        tagRow.className = "tag-row";
+
+        ALL_TAGS.forEach((tag) => {
+          const btn = document.createElement("button");
+          btn.className = "tag-btn" + (activeTags.has(tag) ? " active" : "");
+          btn.textContent = tag;
+          btn.dataset.tag = tag;
+          btn.addEventListener("click", () => {
+            if (activeTags.has(tag)) activeTags.delete(tag);
+            else activeTags.add(tag);
+            renderAll();
+          });
+          tagRow.appendChild(btn);
+        });
+        tagGroup.appendChild(tagRow);
+        bar.appendChild(tagGroup);
+      }
+
+      // ── Render snippets ───────────────────────────────────────────────────────────
+      function renderSnippets() {
+        const list = document.getElementById("snippet-list");
+        const meta = document.getElementById("results-meta");
+        const visible = filteredSnippets();
+
+        list.innerHTML = "";
+
+        if (visible.length === 0) {
+          list.innerHTML =
+            '<div class="empty-state">// ühtegi malli ei leitud</div>';
+          meta.innerHTML = "";
+          return;
+        }
+
+        // Group by category preserving order
+        const byCat = {};
+        visible.forEach((s) => {
+          if (!byCat[s.category]) byCat[s.category] = [];
+          byCat[s.category].push(s);
+        });
+
+        const catCount = Object.keys(byCat).length;
+        meta.innerHTML = `<span>${visible.length}</span> mall${visible.length === 1 ? "" : "i"} · <span>${catCount}</span> kategooria${catCount === 1 ? "s" : "s"}`;
+
+        Object.entries(byCat).forEach(([cat, snippets]) => {
+          const section = document.createElement("div");
+          section.className = "cat-section";
+
+          section.innerHTML = `
+      <div class="cat-header">
+        <span class="cat-title">${cat}</span>
+        <span class="cat-count">${snippets.length} malli</span>
+      </div>`;
+
+          snippets.forEach((s) => {
+            const card = document.createElement("div");
+            card.className = "snippet-card";
+            card.dataset.id = s.id;
+
+            const tagsHtml = s.tags
+              .map((t) => `<span class="snippet-tag">${t}</span>`)
+              .join("");
+
+            const commentHtml = s.comment
+              ? `<div class="snippet-comment"><span class="comment-label">// huom</span>${renderText(s.comment)}</div>`
+              : "";
+
+            card.innerHTML = `
+        <div class="snippet-body">${escHtml(s.text)}</div>
+        ${commentHtml}
+        <div class="snippet-footer">
+          <div class="snippet-tags">${tagsHtml}</div>
+          <button class="copy-btn" data-id="${s.id}">Kopeeri</button>
+        </div>`;
+
+            card
+              .querySelector(".copy-btn")
+              .addEventListener("click", function () {
+                copySnippet(s.id, this);
+              });
+
+            section.appendChild(card);
+          });
+
+          list.appendChild(section);
+        });
+      }
+
+      function renderAll() {
+        // Re-render filter bar in place (update active states)
+        const bar = document.getElementById("filter-bar");
+        bar.innerHTML = "";
+        renderFilters();
+        renderSnippets();
+      }
+
+      // ── Copy ──────────────────────────────────────────────────────────────────────
+      function copySnippet(id, btn) {
+        const s = SNIPPETS.find((x) => x.id === id);
+        if (!s) return;
+        // Copy plain text — non-breaking spaces (\u00a0) are preserved by clipboard API
+        navigator.clipboard.writeText(s.text).then(() => {
+          btn.classList.add("copied");
+          const orig = btn.textContent;
+          btn.textContent = "Kopeeritud \u2713";
+          setTimeout(() => {
+            btn.textContent = orig;
+            btn.classList.remove("copied");
+          }, 1800);
+        });
+      }
+
+      // ── Utilities ─────────────────────────────────────────────────────────────────
+      // Map of Unicode superscript characters to their base digits (for display only)
+      const SUP_MAP = {
+        "¹": "1",
+        "²": "2",
+        "³": "3",
+        "⁴": "4",
+        "⁵": "5",
+        "⁶": "6",
+        "⁷": "7",
+        "⁸": "8",
+        "⁹": "9",
+        "⁰": "0",
+      };
+      const SUP_RE = /[¹²³⁴-⁹⁰]/g;
+
+      // Renders text for display: escapes HTML, then wraps superscript chars in <sup>
+      function renderText(s) {
+        return escHtml(s).replace(
+          SUP_RE.source ? new RegExp(SUP_RE.source, "g") : SUP_RE,
+          (ch) => `<sup>${SUP_MAP[ch]}</sup>`,
+        );
+      }
+
+      function escHtml(s) {
+        return s
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+      }
+
+      // ── Bootstrap ─────────────────────────────────────────────────────────────────
+      document
+        .querySelectorAll(".footer-year")
+        .forEach((el) => (el.textContent = new Date().getFullYear()));
+      renderFilters();
+      renderSnippets();
+    </script>
+  </body>
+</html>
