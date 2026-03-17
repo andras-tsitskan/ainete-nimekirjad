@@ -259,9 +259,11 @@
       </div>
     </div>
 
-    <script src="mallid-andmed.js"></script>
     <script src="nav.js"></script>
-    <script>
+    <script type="module">
+      // ── Load snippet data ─────────────────────────────────────────────────────────
+      const SNIPPETS = await fetch("mallid-andmed.json").then((r) => r.json());
+
       // ── Build indexes ─────────────────────────────────────────────────────────────
       const ALL_CATEGORIES = [...new Set(SNIPPETS.map((s) => s.category))];
       const ALL_TAGS = [...new Set(SNIPPETS.flatMap((s) => s.tags))].sort();
@@ -391,7 +393,7 @@
               .join("");
 
             const commentHtml = s.comment
-              ? `<div class="snippet-comment"><span class="comment-label">// huom</span>${renderText(s.comment)}</div>`
+              ? `<div class="snippet-comment"><span class="comment-label">// märkus</span>${renderText(s.comment)}</div>`
               : "";
 
             card.innerHTML = `
@@ -427,8 +429,12 @@
       function copySnippet(id, btn) {
         const s = SNIPPETS.find((x) => x.id === id);
         if (!s) return;
-        // Copy plain text — non-breaking spaces (\u00a0) are preserved by clipboard API
-        navigator.clipboard.writeText(s.text).then(() => {
+
+        // HTML version: <sup> tags so Word applies real superscript formatting.
+        // Plain text version: Unicode superscripts as fallback for plain-text targets.
+        const fullHtml = renderText(s.text).replace(/\n/g, "<br>");
+
+        const confirmed = () => {
           btn.classList.add("copied");
           const orig = btn.textContent;
           btn.textContent = "Kopeeritud \u2713";
@@ -436,7 +442,25 @@
             btn.textContent = orig;
             btn.classList.remove("copied");
           }, 1800);
-        });
+        };
+
+        // Use clipboard.write() with both HTML and plain-text representations
+        if (navigator.clipboard && window.ClipboardItem) {
+          navigator.clipboard
+            .write([
+              new ClipboardItem({
+                "text/html": new Blob([fullHtml], { type: "text/html" }),
+                "text/plain": new Blob([s.text], { type: "text/plain" }),
+              }),
+            ])
+            .then(confirmed)
+            .catch(() => {
+              // Fallback if write() is blocked (e.g. non-HTTPS)
+              navigator.clipboard.writeText(s.text).then(confirmed);
+            });
+        } else {
+          navigator.clipboard.writeText(s.text).then(confirmed);
+        }
       }
 
       // ── Utilities ─────────────────────────────────────────────────────────────────
@@ -457,7 +481,7 @@
 
       // Renders text for display: escapes HTML, then wraps superscript chars in <sup>
       function renderText(s) {
-        return escHtml(s).replace(SUP_RE, (ch) => `<sup>${SUP_MAP[ch]}</sup>`);
+        return escHtml(s).replace(SUP_RE, (ch) => `<sup>${SUP_MAP[ch]}<\/sup>`);
       }
 
       function escHtml(s) {

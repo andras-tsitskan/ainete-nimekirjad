@@ -20,7 +20,7 @@
 // Example: 'KarS\u00a0§\u00a073 lg\u00b9 alusel' → 'KarS § 73 lg¹ alusel'
 // ─────────────────────────────────────────────────────────────────────────────
 
-const SNIPPETS = [
+export const SNIPPETS = [
   // ── KarS § 73 katseaeg ────────────────────────────────────────────────────
   {
     id: 1,
