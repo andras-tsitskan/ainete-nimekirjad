@@ -2,11 +2,14 @@ name: Update drug list data
 
 on:
   schedule:
-    - cron: "0 6 * * *" # Iga paev kell 06.00 UTC
-  workflow_dispatch: # Lubab ka kasitsi kaivitamise GitHub UI-st
+    - cron: "0 6 * * *"
+  workflow_dispatch:
 
 permissions:
-  contents: write # Lubab actions[bot]-il faile commitida ja pushida
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   scrape:
@@ -20,6 +23,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: "pip"
 
       - name: Install dependencies
         run: pip install pdfplumber
@@ -27,10 +31,119 @@ jobs:
       - name: Run scraper
         run: python scrape.py
 
-      - name: Commit updated data.json
+      - name: Normalize JSON
+        run: |
+          python - << 'EOF'
+          import json
+          with open("data.json") as f:
+              data = json.load(f)
+          with open("data.json", "w") as f:
+              json.dump(data, f, indent=2, sort_keys=True)
+          EOF
+
+      - name: Generate changelog and diff
+        id: diff
+        run: |
+          python - << 'EOF'
+          import json, subprocess, datetime
+
+          def extract_names(data):
+              result = set()
+              if isinstance(data, list):
+                  for item in data:
+                      if isinstance(item, dict):
+                          # try common keys
+                          for key in ["name", "substance", "title"]:
+                              if key in item:
+                                  result.add(str(item[key]))
+                                  break
+                          else:
+                              result.add(json.dumps(item, sort_keys=True))
+                      else:
+                          result.add(str(item))
+              return result
+
+          def get_old():
+              try:
+                  content = subprocess.check_output(
+                      ["git", "show", "HEAD:data.json"],
+                      text=True
+                  )
+                  return json.loads(content)
+              except:
+                  return []
+
+          old = extract_names(get_old())
+          new = extract_names(json.load(open("data.json")))
+
+          added = sorted(new - old)
+          removed = sorted(old - new)
+
+          summary = f"+{len(added)} / -{len(removed)}"
+
+          # Write summary
+          with open("diff.txt", "w") as f:
+              f.write(summary)
+
+          # Generate markdown changelog
+          today = datetime.date.today().isoformat()
+
+          lines = []
+          lines.append(f"## Changes ({today})\n")
+
+          if added:
+              lines.append("### ➕ Added")
+              for a in added:
+                  lines.append(f"- {a}")
+              lines.append("")
+
+          if removed:
+              lines.append("### ➖ Removed")
+              for r in removed:
+                  lines.append(f"- {r}")
+              lines.append("")
+
+          if not added and not removed:
+              lines.append("No changes.\n")
+
+          with open("changelog.md", "w") as f:
+              f.write("\n".join(lines))
+
+          print(summary)
+          EOF
+
+      - name: Commit updated data.json (only if changed)
+        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if git diff --quiet data.json; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes"
+            exit 0
+          fi
+
+          SUMMARY=$(cat diff.txt)
+
           git add data.json
-          git diff --staged --quiet || git commit -m "chore: update data.json [skip ci]"
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git commit -m "chore: update data.json (${SUMMARY}) [skip ci]"
+          git push
+
+          echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Show alert in UI
+        if: steps.commit.outputs.changed == 'true'
+        run: |
+          echo "🚨 Drug list updated!"
+          echo "Summary: $(cat diff.txt)"
+          echo ""
+          echo "Changes:"
+          cat changelog.md
+
+      - name: Upload changelog artifact
+        if: steps.commit.outputs.changed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: changelog
+          path: changelog.md
