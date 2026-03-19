@@ -2,11 +2,11 @@ name: Update drug list data
 
 on:
   schedule:
-    - cron: '0 6 * * *'  # Iga paev kell 06.00 UTC
-  workflow_dispatch:       # Lubab ka kasitsi kaivitamise GitHub UI-st
+    - cron: "0 6 * * *" # Iga paev kell 06.00 UTC
+  workflow_dispatch: # Lubab ka kasitsi kaivitamise GitHub UI-st
 
 permissions:
-  contents: write  # Lubab actions[bot]-il faile commitida ja pushida
+  contents: write # Lubab actions[bot]-il faile commitida ja pushida
 
 jobs:
   scrape:
@@ -19,7 +19,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install dependencies
         run: pip install pdfplumber
