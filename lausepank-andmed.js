@@ -10,7 +10,7 @@
 //   comment   — optional string, explanation of phrasing or context
 //
 // Special characters in text:
-//   Non-breaking space : \u00a0  (or paste   directly)
+//   Non-breaking space : \u00a0  (or paste directly)
 //   Superscript 1      : \u00b9  ¹
 //   Superscript 2      : \u00b2  ²
 //   Superscript 3      : \u00b3  ³
