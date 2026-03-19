@@ -1,366 +1,504 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="et">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rehkendaja — testid</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css">
-<link rel="stylesheet" href="noir.css">
-<style>
-main { max-width: 860px; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rehkendaja — testid</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css"
+    />
+    <link rel="stylesheet" href="noir.css" />
+    <style>
+      main {
+        max-width: 860px;
+      }
 
-.suite {
-  margin-bottom: 32px;
-}
-.suite-title {
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--dim);
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 8px;
-  margin-bottom: 12px;
-}
+      .suite {
+        margin-bottom: 32px;
+      }
+      .suite-title {
+        font-size: 11px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--dim);
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 8px;
+        margin-bottom: 12px;
+      }
 
-.test {
-  display: grid;
-  grid-template-columns: 18px 1fr auto;
-  align-items: baseline;
-  gap: 10px;
-  padding: 6px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 13px;
-  line-height: 1.5;
-}
-.test:last-child { border-bottom: none; }
+      .test {
+        display: grid;
+        grid-template-columns: 18px 1fr auto;
+        align-items: baseline;
+        gap: 10px;
+        padding: 6px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .test:last-child {
+        border-bottom: none;
+      }
 
-.test-icon { font-size: 12px; }
-.pass .test-icon { color: var(--amber); }
-.fail .test-icon { color: var(--red); }
+      .test-icon {
+        font-size: 12px;
+      }
+      .pass .test-icon {
+        color: var(--amber);
+      }
+      .fail .test-icon {
+        color: var(--red);
+      }
 
-.test-name { color: var(--text); }
-.fail .test-name { color: var(--red); }
+      .test-name {
+        color: var(--text);
+      }
+      .fail .test-name {
+        color: var(--red);
+      }
 
-.test-detail {
-  font-size: 11px;
-  color: var(--dim);
-  text-align: right;
-  white-space: nowrap;
-}
-.fail .test-detail { color: var(--red); }
+      .test-detail {
+        font-size: 11px;
+        color: var(--dim);
+        text-align: right;
+        white-space: nowrap;
+      }
+      .fail .test-detail {
+        color: var(--red);
+      }
 
-.test-extra {
-  grid-column: 2 / -1;
-  font-size: 11px;
-  color: var(--dim);
-  margin-top: 2px;
-  padding-bottom: 4px;
-}
+      .test-extra {
+        grid-column: 2 / -1;
+        font-size: 11px;
+        color: var(--dim);
+        margin-top: 2px;
+        padding-bottom: 4px;
+      }
 
-.summary {
-  display: flex;
-  gap: 28px;
-  padding: 16px 0 8px 0;
-  font-size: 13px;
-  border-top: 1px solid var(--border);
-  margin-top: 8px;
-}
-.summary-pass { color: var(--amber); font-weight: 700; }
-.summary-fail { color: var(--red);   font-weight: 700; }
-.summary-total { color: var(--muted); }
-</style>
-</head>
-<body>
-<div class="sidebar-overlay" id="sidebar-overlay"></div>
-<div class="app-shell">
+      .summary {
+        display: flex;
+        gap: 28px;
+        padding: 16px 0 8px 0;
+        font-size: 13px;
+        border-top: 1px solid var(--border);
+        margin-top: 8px;
+      }
+      .summary-pass {
+        color: var(--amber);
+        font-weight: 700;
+      }
+      .summary-fail {
+        color: var(--red);
+        font-weight: 700;
+      }
+      .summary-total {
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    <div class="app-shell">
+      <nav class="sidebar" id="sidebar"></nav>
 
-  <nav class="sidebar" id="sidebar"></nav>
-
-  <div class="page-content">
-    <div class="topbar">
-      <div class="header-chrome"></div>
-      <div class="header-main">
-        <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Ava menüü">☰</button>
-        <div class="title-block">
-          <h1>Rehkendaja testid</h1>
-          <div class="subtitle">
-            <span class="subtitle-label">rehkendaja-core.js — automaattestid</span>
+      <div class="page-content">
+        <div class="topbar">
+          <div class="header-chrome"></div>
+          <div class="header-main">
+            <button
+              class="sidebar-toggle"
+              id="sidebar-toggle"
+              aria-label="Ava menüü"
+            >
+              ☰
+            </button>
+            <div class="title-block">
+              <h1>Rehkendaja testid</h1>
+              <div class="subtitle">
+                <span class="subtitle-label"
+                  >rehkendaja-core.js — automaattestid</span
+                >
+              </div>
+            </div>
           </div>
         </div>
+
+        <main id="output">
+          <p style="color: var(--muted); font-size: 13px">
+            // testid käivituvad…
+          </p>
+        </main>
+
+        <footer></footer>
       </div>
     </div>
 
-    <main id="output">
-      <p style="color:var(--muted);font-size:13px">// testid käivituvad…</p>
-    </main>
-
-    <footer></footer>
-  </div>
-</div>
-
-<script src="rehkendaja-core.js"></script>
-<script src="nav.js"></script>
-<script>
-// ── Sidebar ───────────────────────────────────────────────────────────────────
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('sidebar-overlay');
-const togBtn  = document.getElementById('sidebar-toggle');
-togBtn.addEventListener('click', () =>
-  sidebar.classList.contains('open')
-    ? (sidebar.classList.remove('open'), overlay.classList.remove('visible'))
-    : (sidebar.classList.add('open'),    overlay.classList.add('visible'))
-);
-overlay.addEventListener('click', () => {
-  sidebar.classList.remove('open'); overlay.classList.remove('visible');
-});
-document.querySelectorAll('.footer-year').forEach(el => el.textContent = new Date().getFullYear());
-
-// ── Test harness ──────────────────────────────────────────────────────────────
-const suites = [];
-let currentSuite = null;
-
-function suite(name, fn) {
-  currentSuite = { name, tests: [] };
-  suites.push(currentSuite);
-  fn();
-}
-
-// expect(actual).toEqual(expected)
-// expect(actual).toBeCloseTo(expected, decimalPlaces)
-// expect(actual).toBeNull()
-function expect(actual, label) {
-  return {
-    toEqual(expected) {
-      const pass = JSON.stringify(actual) === JSON.stringify(expected);
-      currentSuite.tests.push({
-        pass,
-        label: label || '',
-        got:      pass ? null : JSON.stringify(actual),
-        expected: pass ? null : JSON.stringify(expected),
+    <script src="rehkendaja-core.js"></script>
+    <script src="nav.js"></script>
+    <script>
+      // ── Sidebar ───────────────────────────────────────────────────────────────────
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("sidebar-overlay");
+      const togBtn = document.getElementById("sidebar-toggle");
+      togBtn.addEventListener("click", () =>
+        sidebar.classList.contains("open")
+          ? (sidebar.classList.remove("open"),
+            overlay.classList.remove("visible"))
+          : (sidebar.classList.add("open"), overlay.classList.add("visible")),
+      );
+      overlay.addEventListener("click", () => {
+        sidebar.classList.remove("open");
+        overlay.classList.remove("visible");
       });
-    },
-    toBeCloseTo(expected, dp = 6) {
-      const factor = Math.pow(10, dp);
-      const pass = Math.round(actual * factor) === Math.round(expected * factor);
-      currentSuite.tests.push({
-        pass,
-        label: label || '',
-        got:      pass ? null : actual,
-        expected: pass ? null : expected,
+      document
+        .querySelectorAll(".footer-year")
+        .forEach((el) => (el.textContent = new Date().getFullYear()));
+
+      // ── Test harness ──────────────────────────────────────────────────────────────
+      const suites = [];
+      let currentSuite = null;
+
+      function suite(name, fn) {
+        currentSuite = { name, tests: [] };
+        suites.push(currentSuite);
+        fn();
+      }
+
+      // expect(actual).toEqual(expected)
+      // expect(actual).toBeCloseTo(expected, decimalPlaces)
+      // expect(actual).toBeNull()
+      function expect(actual, label) {
+        return {
+          toEqual(expected) {
+            const pass = JSON.stringify(actual) === JSON.stringify(expected);
+            currentSuite.tests.push({
+              pass,
+              label: label || "",
+              got: pass ? null : JSON.stringify(actual),
+              expected: pass ? null : JSON.stringify(expected),
+            });
+          },
+          toBeCloseTo(expected, dp = 6) {
+            const factor = Math.pow(10, dp);
+            const pass =
+              Math.round(actual * factor) === Math.round(expected * factor);
+            currentSuite.tests.push({
+              pass,
+              label: label || "",
+              got: pass ? null : actual,
+              expected: pass ? null : expected,
+            });
+          },
+          toBeNull() {
+            const pass = actual === null;
+            currentSuite.tests.push({
+              pass,
+              label: label || "",
+              got: pass ? null : JSON.stringify(actual),
+              expected: pass ? null : "null",
+            });
+          },
+        };
+      }
+
+      // ── Helper: extract amounts in a given mode from a string ─────────────────────
+      function detect(text, m) {
+        mode = m;
+        return extractAmounts(text);
+      }
+      function amounts(text, m) {
+        return detect(text, m).map((x) => x.amount);
+      }
+      function sum(text, m) {
+        return detect(text, m).reduce((a, x) => a + x.amount, 0);
+      }
+
+      // ═════════════════════════════════════════════════════════════════════════════
+      // SUITES
+      // ═════════════════════════════════════════════════════════════════════════════
+
+      // ── parseAmount ───────────────────────────────────────────────────────────────
+      suite("parseAmount — number normalisation", () => {
+        expect(parseAmount("1234"), "integer").toEqual(1234);
+        expect(parseAmount("1234,56"), "comma decimal").toEqual(1234.56);
+        expect(parseAmount("1234.56"), "dot decimal").toEqual(1234.56);
+        expect(
+          parseAmount("1 234,56"),
+          "space thousands, comma decimal",
+        ).toEqual(1234.56);
+        expect(parseAmount("1.234,56"), "dot thousands, comma decimal").toEqual(
+          1234.56,
+        );
+        expect(parseAmount("1,234.56"), "comma thousands, dot decimal").toEqual(
+          1234.56,
+        );
+        expect(parseAmount("0,0002"), "small decimal").toBeCloseTo(0.0002, 6);
+        expect(parseAmount("0.003"), "small dot decimal").toBeCloseTo(0.003, 6);
+        expect(
+          parseAmount("1 000,001"),
+          "large with many decimals",
+        ).toBeCloseTo(1000.001, 6);
+        expect(parseAmount("abc"), "non-numeric → null").toBeNull();
+        expect(parseAmount(""), "empty → null").toBeNull();
       });
-    },
-    toBeNull() {
-      const pass = actual === null;
-      currentSuite.tests.push({
-        pass,
-        label: label || '',
-        got:      pass ? null : JSON.stringify(actual),
-        expected: pass ? null : 'null',
+
+      // ── countDecimals ─────────────────────────────────────────────────────────────
+      suite("countDecimals", () => {
+        expect(countDecimals("42"), "integer").toEqual(0);
+        expect(countDecimals("1,56"), "comma 2dp").toEqual(2);
+        expect(countDecimals("1.56"), "dot 2dp").toEqual(2);
+        expect(
+          countDecimals("1.234,56"),
+          "dot-thousands comma-decimal",
+        ).toEqual(2);
+        expect(countDecimals("0,0002"), "4dp").toEqual(4);
+        expect(countDecimals("1 000,001"), "3dp with space").toEqual(3);
       });
-    },
-  };
-}
 
-// ── Helper: extract amounts in a given mode from a string ─────────────────────
-function detect(text, m) {
-  mode = m;
-  return extractAmounts(text);
-}
-function amounts(text, m) {
-  return detect(text, m).map(x => x.amount);
-}
-function sum(text, m) {
-  return detect(text, m).reduce((a, x) => a + x.amount, 0);
-}
+      // ── EURO_RE extraction ────────────────────────────────────────────────────────
+      suite("Euro — detection", () => {
+        expect(amounts("1 234,56 €", "eur"), "number then €").toEqual([
+          1234.56,
+        ]);
+        expect(amounts("€ 1234.56", "eur"), "€ then number").toEqual([1234.56]);
+        expect(amounts("EUR 500", "eur"), "EUR prefix").toEqual([500]);
+        expect(amounts("75,00 eurot", "eur"), "eurot suffix").toEqual([75]);
+        expect(amounts("1.234,56 EUR", "eur"), "dot-thousands EUR").toEqual([
+          1234.56,
+        ]);
+        expect(amounts("€350", "eur"), "€ no space").toEqual([350]);
+        expect(amounts("89.50 €", "eur"), "dot decimal €").toEqual([89.5]);
+        expect(amounts("1 euro", "eur"), "single euro").toEqual([1]);
+        expect(amounts("ei ole siin raha", "eur"), "no match").toEqual([]);
+        expect(
+          amounts("5g ja 10 grammi", "eur"),
+          "grams not matched in eur mode",
+        ).toEqual([]);
+      });
 
-// ═════════════════════════════════════════════════════════════════════════════
-// SUITES
-// ═════════════════════════════════════════════════════════════════════════════
+      suite("Euro — sum precision", () => {
+        // Sentence-ending periods after numbers cause greedy over-matching ([\d\s.,]* consumes ". ").
+        // This test uses realistic court-text phrasing where amounts are followed by words.
+        const text =
+          "1 234,56 € ning 89.50 € kulud, EUR 500 ja 75,00 eurot ning €350 ja 1.234,56 EUR";
+        expect(sum(text, "eur"), "integration sum").toBeCloseTo(3483.62, 2);
+        expect(detect(text, "eur").length, "count").toEqual(6);
+      });
 
-// ── parseAmount ───────────────────────────────────────────────────────────────
-suite('parseAmount — number normalisation', () => {
-  expect(parseAmount('1234'),       'integer').toEqual(1234);
-  expect(parseAmount('1234,56'),    'comma decimal').toEqual(1234.56);
-  expect(parseAmount('1234.56'),    'dot decimal').toEqual(1234.56);
-  expect(parseAmount('1 234,56'),   'space thousands, comma decimal').toEqual(1234.56);
-  expect(parseAmount('1.234,56'),   'dot thousands, comma decimal').toEqual(1234.56);
-  expect(parseAmount('1,234.56'),   'comma thousands, dot decimal').toEqual(1234.56);
-  expect(parseAmount('0,0002'),     'small decimal').toBeCloseTo(0.0002, 6);
-  expect(parseAmount('0.003'),      'small dot decimal').toBeCloseTo(0.003, 6);
-  expect(parseAmount('1 000,001'),  'large with many decimals').toBeCloseTo(1000.001, 6);
-  expect(parseAmount('abc'),        'non-numeric → null').toBeNull();
-  expect(parseAmount(''),           'empty → null').toBeNull();
-});
+      suite("Euro — should NOT detect", () => {
+        expect(
+          amounts("0,0002g fentanüüli", "eur"),
+          "gram suffix not euro",
+        ).toEqual([]);
+        expect(
+          amounts("-50 €", "eur"),
+          "negative sign ignored — 50 detected",
+        ).toEqual([50]);
+        expect(amounts("nr 1-23/456", "eur"), "case number not euro").toEqual(
+          [],
+        );
+      });
 
-// ── countDecimals ─────────────────────────────────────────────────────────────
-suite('countDecimals', () => {
-  expect(countDecimals('42'),       'integer').toEqual(0);
-  expect(countDecimals('1,56'),     'comma 2dp').toEqual(2);
-  expect(countDecimals('1.56'),     'dot 2dp').toEqual(2);
-  expect(countDecimals('1.234,56'), 'dot-thousands comma-decimal').toEqual(2);
-  expect(countDecimals('0,0002'),   '4dp').toEqual(4);
-  expect(countDecimals('1 000,001'),'3dp with space').toEqual(3);
-});
+      // ── GRAM_RE extraction ────────────────────────────────────────────────────────
+      suite("Gram — detection", () => {
+        expect(amounts("0,5g", "g"), "no space").toEqual([0.5]);
+        expect(amounts("1.2g", "g"), "dot decimal").toEqual([1.2]);
+        expect(amounts("12 grammi", "g"), "grammi").toEqual([12]);
+        expect(amounts("1 gramm", "g"), "gramm singular").toEqual([1]);
+        expect(amounts("0,0002g", "g"), "very small").toBeCloseTo(0.0002, 6);
+        expect(amounts("0.003g", "g"), "dot tiny").toBeCloseTo(0.003, 6);
+        expect(
+          amounts("1 000,001g", "g"),
+          "space-thousands comma-decimal",
+        ).toBeCloseTo(1000.001, 6);
+        expect(amounts("3.14g", "g"), "pi grams").toBeCloseTo(3.14, 6);
+        expect(amounts("7g,", "g"), "comma follows").toEqual([7]);
+        expect(amounts("2 500g pulbrit", "g"), "space thousands").toEqual([
+          2500,
+        ]);
+        expect(amounts("100 €", "g"), "euro not gram").toEqual([]);
+      });
 
-// ── EURO_RE extraction ────────────────────────────────────────────────────────
-suite('Euro — detection', () => {
-  expect(amounts('1 234,56 €', 'eur'),       'number then €').toEqual([1234.56]);
-  expect(amounts('€ 1234.56', 'eur'),        '€ then number').toEqual([1234.56]);
-  expect(amounts('EUR 500', 'eur'),          'EUR prefix').toEqual([500]);
-  expect(amounts('75,00 eurot', 'eur'),      'eurot suffix').toEqual([75]);
-  expect(amounts('1.234,56 EUR', 'eur'),     'dot-thousands EUR').toEqual([1234.56]);
-  expect(amounts('€350', 'eur'),             '€ no space').toEqual([350]);
-  expect(amounts('89.50 €', 'eur'),          'dot decimal €').toEqual([89.50]);
-  expect(amounts('1 euro', 'eur'),           'single euro').toEqual([1]);
-  expect(amounts('ei ole siin raha', 'eur'), 'no match').toEqual([]);
-  expect(amounts('5g ja 10 grammi', 'eur'),  'grams not matched in eur mode').toEqual([]);
-});
+      suite("Gram — sum precision", () => {
+        const text =
+          "0,5g heroiini. 1.2g kokaiini. 12 grammi amfetamiini. 0,0002g fentanüüli. 1 000,001g. 3.14g. 7g, 0.003g ja 2 500g.";
+        expect(sum(text, "g"), "integration sum").toBeCloseTo(3523.8442, 4);
+        expect(detect(text, "g").length, "count").toEqual(9);
+      });
 
-suite('Euro — sum precision', () => {
-  // Sentence-ending periods after numbers cause greedy over-matching ([\d\s.,]* consumes ". ").
-  // This test uses realistic court-text phrasing where amounts are followed by words.
-  const text = '1 234,56 € ning 89.50 € kulud, EUR 500 ja 75,00 eurot ning €350 ja 1.234,56 EUR';
-  expect(sum(text, 'eur'), 'integration sum').toBeCloseTo(3483.62, 2);
-  expect(detect(text, 'eur').length, 'count').toEqual(6);
-});
+      suite("Gram — should NOT detect", () => {
+        expect(amounts("g 1.5", "g"), "unit before number").toEqual([]);
+        expect(amounts("1 234,56 €", "g"), "euro not gram").toEqual([]);
+        expect(
+          amounts("programm on hea", "g"),
+          'gramm inside word "programm"',
+        ).toEqual([]);
+      });
 
-suite('Euro — should NOT detect', () => {
-  expect(amounts('0,0002g fentanüüli', 'eur'), 'gram suffix not euro').toEqual([]);
-  expect(amounts('-50 €', 'eur'),              'negative sign ignored — 50 detected').toEqual([50]);
-  expect(amounts('nr 1-23/456', 'eur'),        'case number not euro').toEqual([]);
-});
+      // ── NUM_RE extraction ─────────────────────────────────────────────────────────
+      suite("Kõik arvud — detection", () => {
+        expect(amounts("42", "n"), "plain integer").toEqual([42]);
+        expect(amounts("3,14", "n"), "decimal comma").toBeCloseTo(3.14, 6);
+        expect(amounts("1 000", "n"), "space thousands").toEqual([1000]);
+        expect(amounts("0,0002", "n"), "small decimal").toBeCloseTo(0.0002, 6);
+        expect(
+          amounts("0,0002g", "n"),
+          "number before unit letter",
+        ).toBeCloseTo(0.0002, 6);
+      });
 
-// ── GRAM_RE extraction ────────────────────────────────────────────────────────
-suite('Gram — detection', () => {
-  expect(amounts('0,5g', 'g'),        'no space').toEqual([0.5]);
-  expect(amounts('1.2g', 'g'),        'dot decimal').toEqual([1.2]);
-  expect(amounts('12 grammi', 'g'),   'grammi').toEqual([12]);
-  expect(amounts('1 gramm', 'g'),     'gramm singular').toEqual([1]);
-  expect(amounts('0,0002g', 'g'),     'very small').toBeCloseTo(0.0002, 6);
-  expect(amounts('0.003g', 'g'),      'dot tiny').toBeCloseTo(0.003, 6);
-  expect(amounts('1 000,001g', 'g'),  'space-thousands comma-decimal').toBeCloseTo(1000.001, 6);
-  expect(amounts('3.14g', 'g'),       'pi grams').toBeCloseTo(3.14, 6);
-  expect(amounts('7g,', 'g'),         'comma follows').toEqual([7]);
-  expect(amounts('2 500g pulbrit', 'g'), 'space thousands').toEqual([2500]);
-  expect(amounts('100 €', 'g'),       'euro not gram').toEqual([]);
-});
+      suite("Kõik arvud — should NOT double-detect from ranges", () => {
+        // "1-23" — hyphen separates, so 1 and 23 may each match; that is acceptable
+        // but "1-23/456" should not produce merged garbage numbers
+        const res = detect("nr 1-23/456", "n").map((x) => x.amount);
+        // Each individual number is fine; just check no absurd values like 123456
+        expect(res.every((v) => v <= 1000)).toEqual(
+          true,
+          "no merged garbage from case numbers",
+        );
+      });
 
-suite('Gram — sum precision', () => {
-  const text = '0,5g heroiini. 1.2g kokaiini. 12 grammi amfetamiini. 0,0002g fentanüüli. 1 000,001g. 3.14g. 7g, 0.003g ja 2 500g.';
-  expect(sum(text, 'g'), 'integration sum').toBeCloseTo(3523.8442, 4);
-  expect(detect(text, 'g').length, 'count').toEqual(9);
-});
+      // ── formatValue ───────────────────────────────────────────────────────────────
+      suite("formatValue — eur", () => {
+        mode = "eur";
+        const loc = (n, d) =>
+          n.toLocaleString("et-EE", {
+            minimumFractionDigits: d,
+            maximumFractionDigits: d,
+          });
+        expect(formatValue(1234.56, 2), "1234.56 formatted").toEqual(
+          loc(1234.56, 2) + " €",
+        );
+        expect(formatValue(500, 0), "500 gets 2dp").toEqual(loc(500, 2) + " €");
+        expect(formatValue(0, 0), "zero").toEqual(loc(0, 2) + " €");
+        expect(formatValue(1234.56, 2).endsWith("€"), "ends with €").toEqual(
+          true,
+        );
+        expect(
+          formatValue(1234.56, 2).includes(","),
+          "uses comma decimal",
+        ).toEqual(true);
+      });
 
-suite('Gram — should NOT detect', () => {
-  expect(amounts('g 1.5', 'g'),              'unit before number').toEqual([]);
-  expect(amounts('1 234,56 €', 'g'),         'euro not gram').toEqual([]);
-  expect(amounts('programm on hea', 'g'),    'gramm inside word "programm"').toEqual([]);
-});
+      suite("formatValue — g", () => {
+        mode = "g";
+        const loc = (n, d) =>
+          n.toLocaleString("et-EE", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: d,
+          });
+        expect(formatValue(0.5, 1), "0.5g").toEqual(loc(0.5, 1) + " g");
+        expect(formatValue(0.0002, 4), "0.0002g 4dp").toEqual(
+          loc(0.0002, 4) + " g",
+        );
+        expect(formatValue(12, 0), "integer grams").toEqual(loc(12, 0) + " g");
+        expect(formatValue(0.5, 1).endsWith("g"), "ends with g").toEqual(true);
+        expect(
+          formatValue(1000.001, 3).includes(","),
+          "comma decimal in thousands",
+        ).toEqual(true);
+      });
 
-// ── NUM_RE extraction ─────────────────────────────────────────────────────────
-suite('Kõik arvud — detection', () => {
-  expect(amounts('42', 'n'),          'plain integer').toEqual([42]);
-  expect(amounts('3,14', 'n'),        'decimal comma').toBeCloseTo(3.14, 6);
-  expect(amounts('1 000', 'n'),       'space thousands').toEqual([1000]);
-  expect(amounts('0,0002', 'n'),      'small decimal').toBeCloseTo(0.0002, 6);
-  expect(amounts('0,0002g', 'n'),     'number before unit letter').toBeCloseTo(0.0002, 6);
-});
+      suite("formatValue — n", () => {
+        mode = "n";
+        const loc = (n, d) =>
+          n.toLocaleString("et-EE", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: d,
+          });
+        expect(formatValue(42, 0), "integer, no unit").toEqual(loc(42, 0));
+        expect(formatValue(3.14, 2), "decimal, no unit").toEqual(loc(3.14, 2));
+        expect(
+          formatValue(42, 0).endsWith("€") || formatValue(42, 0).endsWith("g"),
+          "no unit appended",
+        ).toEqual(false);
+      });
 
-suite('Kõik arvud — should NOT double-detect from ranges', () => {
-  // "1-23" — hyphen separates, so 1 and 23 may each match; that is acceptable
-  // but "1-23/456" should not produce merged garbage numbers
-  const res = detect('nr 1-23/456', 'n').map(x => x.amount);
-  // Each individual number is fine; just check no absurd values like 123456
-  expect(res.every(v => v <= 1000)).toEqual(true, 'no merged garbage from case numbers');
-});
+      // ── Decimal tracking ──────────────────────────────────────────────────────────
+      suite("Decimal precision — sum uses maxDecimals of inputs", () => {
+        mode = "g";
+        const res = detect("1g ja 0,0002g", "g");
+        const maxDec = res.reduce((m, x) => Math.max(m, x.decimals), 0);
+        expect(maxDec, "maxDec from 0,0002 is 4").toEqual(4);
+        const total = res.reduce((a, x) => a + x.amount, 0);
+        const expected =
+          (1.0002).toLocaleString("et-EE", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 4,
+          }) + " g";
+        expect(formatValue(total, maxDec), "sum formatted to 4dp").toEqual(
+          expected,
+        );
+      });
 
-// ── formatValue ───────────────────────────────────────────────────────────────
-suite('formatValue — eur', () => {
-  mode = 'eur';
-  const loc = (n, d) => n.toLocaleString('et-EE', { minimumFractionDigits: d, maximumFractionDigits: d });
-  expect(formatValue(1234.56, 2), '1234.56 formatted').toEqual(loc(1234.56, 2) + ' €');
-  expect(formatValue(500, 0),    '500 gets 2dp').toEqual(loc(500, 2) + ' €');
-  expect(formatValue(0, 0),      'zero').toEqual(loc(0, 2) + ' €');
-  expect(formatValue(1234.56, 2).endsWith('€'), 'ends with €').toEqual(true);
-  expect(formatValue(1234.56, 2).includes(','),  'uses comma decimal').toEqual(true);
-});
+      // ═════════════════════════════════════════════════════════════════════════════
+      // RENDER
+      // ═════════════════════════════════════════════════════════════════════════════
+      const output = document.getElementById("output");
+      output.innerHTML = "";
 
-suite('formatValue — g', () => {
-  mode = 'g';
-  const loc = (n, d) => n.toLocaleString('et-EE', { minimumFractionDigits: 0, maximumFractionDigits: d });
-  expect(formatValue(0.5,    1), '0.5g').toEqual(loc(0.5,    1) + ' g');
-  expect(formatValue(0.0002, 4), '0.0002g 4dp').toEqual(loc(0.0002, 4) + ' g');
-  expect(formatValue(12,     0), 'integer grams').toEqual(loc(12, 0) + ' g');
-  expect(formatValue(0.5, 1).endsWith('g'),      'ends with g').toEqual(true);
-  expect(formatValue(1000.001, 3).includes(','),  'comma decimal in thousands').toEqual(true);
-});
+      let totalPass = 0,
+        totalFail = 0;
 
-suite('formatValue — n', () => {
-  mode = 'n';
-  const loc = (n, d) => n.toLocaleString('et-EE', { minimumFractionDigits: 0, maximumFractionDigits: d });
-  expect(formatValue(42,   0), 'integer, no unit').toEqual(loc(42, 0));
-  expect(formatValue(3.14, 2), 'decimal, no unit').toEqual(loc(3.14, 2));
-  expect(formatValue(42, 0).endsWith('€') || formatValue(42, 0).endsWith('g'), 'no unit appended').toEqual(false);
-});
+      for (const s of suites) {
+        const pass = s.tests.filter((t) => t.pass).length;
+        const fail = s.tests.filter((t) => !t.pass).length;
+        totalPass += pass;
+        totalFail += fail;
 
-// ── Decimal tracking ──────────────────────────────────────────────────────────
-suite('Decimal precision — sum uses maxDecimals of inputs', () => {
-  mode = 'g';
-  const res = detect('1g ja 0,0002g', 'g');
-  const maxDec = res.reduce((m, x) => Math.max(m, x.decimals), 0);
-  expect(maxDec, 'maxDec from 0,0002 is 4').toEqual(4);
-  const total = res.reduce((a, x) => a + x.amount, 0);
-  const expected = (1.0002).toLocaleString('et-EE', { minimumFractionDigits: 0, maximumFractionDigits: 4 }) + ' g';
-  expect(formatValue(total, maxDec), 'sum formatted to 4dp').toEqual(expected);
-});
+        const div = document.createElement("div");
+        div.className = "suite";
 
-// ═════════════════════════════════════════════════════════════════════════════
-// RENDER
-// ═════════════════════════════════════════════════════════════════════════════
-const output = document.getElementById('output');
-output.innerHTML = '';
+        div.innerHTML =
+          '<div class="suite-title">// ' +
+          s.name +
+          ' <span style="color:var(--' +
+          (fail ? "red" : "amber") +
+          ')">' +
+          pass +
+          "/" +
+          s.tests.length +
+          "</span></div>";
 
-let totalPass = 0, totalFail = 0;
+        for (const t of s.tests) {
+          const row = document.createElement("div");
+          row.className = "test " + (t.pass ? "pass" : "fail");
+          row.innerHTML =
+            '<span class="test-icon">' +
+            (t.pass ? "✓" : "✗") +
+            "</span>" +
+            '<span class="test-name">' +
+            (t.label || "(silt puudub)") +
+            "</span>" +
+            '<span class="test-detail">' +
+            (t.pass ? "" : "got " + t.got) +
+            "</span>";
+          if (!t.pass) {
+            const extra = document.createElement("div");
+            extra.className = "test-extra";
+            extra.textContent = "oodati: " + t.expected;
+            row.appendChild(extra);
+          }
+          div.appendChild(row);
+        }
+        output.appendChild(div);
+      }
 
-for (const s of suites) {
-  const pass = s.tests.filter(t => t.pass).length;
-  const fail = s.tests.filter(t => !t.pass).length;
-  totalPass += pass;
-  totalFail += fail;
-
-  const div = document.createElement('div');
-  div.className = 'suite';
-
-  div.innerHTML = '<div class="suite-title">// ' + s.name +
-    ' <span style="color:var(--' + (fail ? 'red' : 'amber') + ')">' +
-    pass + '/' + s.tests.length + '</span></div>';
-
-  for (const t of s.tests) {
-    const row = document.createElement('div');
-    row.className = 'test ' + (t.pass ? 'pass' : 'fail');
-    row.innerHTML =
-      '<span class="test-icon">' + (t.pass ? '✓' : '✗') + '</span>' +
-      '<span class="test-name">' + (t.label || '(silt puudub)') + '</span>' +
-      '<span class="test-detail">' + (t.pass ? '' : 'got ' + t.got) + '</span>';
-    if (!t.pass) {
-      const extra = document.createElement('div');
-      extra.className = 'test-extra';
-      extra.textContent = 'oodati: ' + t.expected;
-      row.appendChild(extra);
-    }
-    div.appendChild(row);
-  }
-  output.appendChild(div);
-}
-
-// Summary
-const sumDiv = document.createElement('div');
-sumDiv.className = 'summary';
-sumDiv.innerHTML =
-  '<span class="summary-pass">✓ ' + totalPass + ' läbis</span>' +
-  (totalFail ? '<span class="summary-fail">✗ ' + totalFail + ' ebaõnnestus</span>' : '') +
-  '<span class="summary-total">' + (totalPass + totalFail) + ' testi kokku</span>';
-output.appendChild(sumDiv);
-</script>
-</body>
+      // Summary
+      const sumDiv = document.createElement("div");
+      sumDiv.className = "summary";
+      sumDiv.innerHTML =
+        '<span class="summary-pass">✓ ' +
+        totalPass +
+        " läbis</span>" +
+        (totalFail
+          ? '<span class="summary-fail">✗ ' + totalFail + " ebaõnnestus</span>"
+          : "") +
+        '<span class="summary-total">' +
+        (totalPass + totalFail) +
+        " testi kokku</span>";
+      output.appendChild(sumDiv);
+    </script>
+  </body>
 </html>
