@@ -85,7 +85,7 @@
 
       /* ── Category section ── */
       .cat-section {
-        margin-bottom: 32px;
+        margin-bottom: 40px;
       }
       .cat-section.hidden {
         display: none;
@@ -93,17 +93,19 @@
 
       .cat-header {
         display: flex;
-        align-items: baseline;
+        align-items: center;
         gap: 12px;
-        margin-bottom: 12px;
-        padding-bottom: 8px;
+        margin-bottom: 14px;
+        padding: 8px 0 10px 12px;
         border-bottom: 1px solid var(--border);
+        border-left: 3px solid var(--amber);
       }
       .cat-title {
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 700;
         color: var(--text);
-        letter-spacing: 0.04em;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
       }
       .cat-count {
         font-size: 11px;
@@ -113,70 +115,62 @@
 
       /* ── Snippet card ── */
       .snippet-card {
+        position: relative;
         border: 1px solid var(--border);
+        border-left: 3px solid var(--border);
         background: var(--surface);
         margin-bottom: 10px;
-        transition: border-color 0.12s;
+        transition:
+          border-color 0.15s,
+          border-left-color 0.15s;
       }
       .snippet-card:last-child {
         margin-bottom: 0;
       }
       .snippet-card:hover {
         border-color: var(--line);
+        border-left-color: var(--amber);
       }
       .snippet-card.hidden {
         display: none;
       }
 
       .snippet-body {
-        padding: 14px 16px;
-        font-size: 13px;
+        padding: 16px 56px 16px 18px; /* right padding leaves room for copy btn */
+        font-size: 14px;
         color: var(--text);
-        line-height: 1.75;
+        line-height: 1.85;
         white-space: pre-wrap;
         word-break: break-word;
       }
 
-      .snippet-footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 8px 16px;
-        border-top: 1px solid var(--border);
-        background: var(--deep);
-        gap: 12px;
-        flex-wrap: wrap;
-      }
-
-      .snippet-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
-      }
-      .snippet-tag {
+      /* Copy button — top-right corner of card */
+      .copy-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-family: var(--mono);
         font-size: 10px;
         letter-spacing: 0.1em;
         color: var(--dim);
-        background: var(--lift);
+        background: var(--deep);
         border: 1px solid var(--border);
-        padding: 2px 7px;
-      }
-
-      .copy-btn {
-        font-family: var(--mono);
-        font-size: 11px;
-        color: var(--muted);
-        background: none;
-        border: 1px solid var(--border);
-        padding: 4px 12px;
+        padding: 4px 9px;
         cursor: pointer;
-        letter-spacing: 0.06em;
         transition:
           background 0.12s,
           color 0.12s,
           border-color 0.12s;
         white-space: nowrap;
-        flex-shrink: 0;
+        opacity: 0;
+        transition:
+          opacity 0.15s,
+          color 0.12s,
+          border-color 0.12s,
+          background 0.12s;
+      }
+      .snippet-card:hover .copy-btn {
+        opacity: 1;
       }
       .copy-btn:hover {
         background: var(--lift);
@@ -184,13 +178,48 @@
         border-color: var(--line);
       }
       .copy-btn.copied {
+        opacity: 1;
         color: var(--amber);
         border-color: var(--amber);
+        background: var(--deep);
       }
+
+      /* Footer — tags only, no copy button */
+      .snippet-footer {
+        display: flex;
+        align-items: center;
+        padding: 7px 18px 8px;
+        border-top: 1px solid var(--border);
+        background: var(--deep);
+        gap: 5px;
+        flex-wrap: wrap;
+      }
+
+      .snippet-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+      .snippet-tag {
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        color: var(--dim);
+        opacity: 0.7;
+        background: none;
+        border: none;
+        padding: 0;
+      }
+      .snippet-tag + .snippet-tag::before {
+        content: "·";
+        margin-right: 4px;
+        opacity: 0.4;
+      }
+
       /* ── Comment ── */
       .snippet-comment {
-        padding: 10px 16px 12px;
+        padding: 9px 18px 10px;
         border-top: 1px solid var(--border);
+        background: var(--deep);
         font-size: 12px;
         color: var(--dim);
         line-height: 1.65;
@@ -203,7 +232,7 @@
         letter-spacing: 0.12em;
         text-transform: uppercase;
         color: var(--dim);
-        opacity: 0.6;
+        opacity: 0.45;
         flex-shrink: 0;
       }
 
@@ -591,11 +620,11 @@
               : "";
 
             card.innerHTML = `
+        <button class="copy-btn" data-id="${s.id}">Kopeeri</button>
         <div class="snippet-body">${renderText(s.text)}</div>
         ${commentHtml}
         <div class="snippet-footer">
           <div class="snippet-tags">${tagsHtml}</div>
-          <button class="copy-btn" data-id="${s.id}">Kopeeri</button>
         </div>`;
 
             card
