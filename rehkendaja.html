@@ -438,10 +438,14 @@
 
       function buildHighlightHtml(text, matches) {
         if (!matches.length) return escHtml(text);
-        let html = "",
-          cursor = 0;
+
+        let html = "";
+        let cursor = 0;
+
         matches.forEach((m, i) => {
-          if (m.index > cursor) html += escHtml(text.slice(cursor, m.index));
+          if (m.index > cursor) {
+            html += escHtml(text.slice(cursor, m.index));
+          }
           const cls = excluded.has(i) ? ' class="excluded"' : "";
           html +=
             "<mark" +
@@ -453,8 +457,13 @@
             "</mark>";
           cursor = m.index + m.matchLen;
         });
-        if (cursor < text.length) html += escHtml(text.slice(cursor));
-        return html;
+
+        if (cursor < text.length) {
+          html += escHtml(text.slice(cursor));
+        }
+
+        // trailing span prevents layout quirks when last char is inside <mark>
+        return html + "<span></span>";
       }
 
       function toggleExclude(idx) {
@@ -463,27 +472,12 @@
         renderResults();
       }
 
-      // Click on textarea — toggle the match under the cursor on a plain click.
-      // We track mousedown position so that drag-selects are never misread as clicks.
-      let _mousedownSel = null;
-      inputEl.addEventListener("mousedown", () => {
-        _mousedownSel = null;
-        // Read selection after the browser has placed the caret
-        requestAnimationFrame(() => {
-          _mousedownSel = inputEl.selectionStart;
-        });
-      });
-      inputEl.addEventListener("click", () => {
-        // Only act when the cursor didn't move between mousedown and click
-        // (i.e. no text was selected by dragging)
-        if (inputEl.selectionStart !== inputEl.selectionEnd) return;
-        if (_mousedownSel !== null && inputEl.selectionStart !== _mousedownSel)
-          return;
-        const pos = inputEl.selectionStart;
-        const hit = lastFound.findIndex(
-          (m) => pos >= m.index && pos < m.index + m.matchLen,
-        );
-        if (hit !== -1) toggleExclude(hit);
+      // Click on highlight layer — toggle the match under the cursor
+      highlightEl.addEventListener("click", (e) => {
+        const mark = e.target.closest("mark");
+        if (!mark) return;
+        const idx = Number(mark.dataset.idx);
+        if (!Number.isNaN(idx)) toggleExclude(idx);
       });
 
       // ── Render ──────────────────────────────────────────────────────────────────
@@ -508,7 +502,7 @@
         const hasText = !!text.trim();
 
         // Rebuild highlight with current excluded state
-        highlightEl.innerHTML = buildHighlightHtml(text + " ", lastFound);
+        highlightEl.innerHTML = buildHighlightHtml(text, lastFound);
         highlightEl.scrollTop = inputEl.scrollTop;
 
         // Reset button visibility
@@ -557,10 +551,16 @@
         }
       }
 
-      inputEl.addEventListener("input", update);
+      // Debounced input handler
+      let updateTimer = null;
+      inputEl.addEventListener("input", () => {
+        clearTimeout(updateTimer);
+        updateTimer = setTimeout(update, 80);
+      });
 
       // ── Copy buttons ────────────────────────────────────────────────────────────
       function copyText(btn, text) {
+        if (btn.classList.contains("copied")) return;
         navigator.clipboard.writeText(text).then(() => {
           btn.classList.add("copied");
           const orig = btn.textContent;
