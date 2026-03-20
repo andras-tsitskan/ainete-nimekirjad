@@ -87,7 +87,9 @@
       .cat-section {
         margin-bottom: 40px;
       }
-      .cat-section.hidden { display: none; }
+      .cat-section.hidden {
+        display: none;
+      }
 
       .cat-header {
         display: flex;
@@ -118,14 +120,20 @@
         border-left: 3px solid var(--border);
         background: var(--surface);
         margin-bottom: 10px;
-        transition: border-color 0.15s, border-left-color 0.15s;
+        transition:
+          border-color 0.15s,
+          border-left-color 0.15s;
       }
-      .snippet-card:last-child { margin-bottom: 0; }
+      .snippet-card:last-child {
+        margin-bottom: 0;
+      }
       .snippet-card:hover {
         border-color: var(--line);
         border-left-color: var(--amber);
       }
-      .snippet-card.hidden { display: none; }
+      .snippet-card.hidden {
+        display: none;
+      }
 
       .snippet-body {
         padding: 16px 56px 16px 18px; /* right padding leaves room for copy btn */
@@ -149,12 +157,21 @@
         border: 1px solid var(--border);
         padding: 4px 9px;
         cursor: pointer;
-        transition: background 0.12s, color 0.12s, border-color 0.12s;
+        transition:
+          background 0.12s,
+          color 0.12s,
+          border-color 0.12s;
         white-space: nowrap;
         opacity: 0;
-        transition: opacity 0.15s, color 0.12s, border-color 0.12s, background 0.12s;
+        transition:
+          opacity 0.15s,
+          color 0.12s,
+          border-color 0.12s,
+          background 0.12s;
       }
-      .snippet-card:hover .copy-btn { opacity: 1; }
+      .snippet-card:hover .copy-btn {
+        opacity: 1;
+      }
       .copy-btn:hover {
         background: var(--lift);
         color: var(--text);
@@ -193,7 +210,7 @@
         padding: 0;
       }
       .snippet-tag + .snippet-tag::before {
-        content: '·';
+        content: "·";
         margin-right: 4px;
         opacity: 0.4;
       }
@@ -219,7 +236,6 @@
         flex-shrink: 0;
       }
 
-
       /* ── Password screen ── */
       #pw-screen {
         display: flex;
@@ -229,8 +245,12 @@
         min-height: 60vh;
         gap: 16px;
       }
-      #pw-screen.hidden { display: none; }
-      #main-content.hidden { display: none; }
+      #pw-screen.hidden {
+        display: none;
+      }
+      #main-content.hidden {
+        display: none;
+      }
 
       .pw-box {
         border: 1px solid var(--border);
@@ -266,8 +286,12 @@
         transition: border-color 0.15s;
         box-sizing: border-box;
       }
-      #pw-field:focus { border-color: var(--line); }
-      #pw-field.err   { border-color: var(--red); }
+      #pw-field:focus {
+        border-color: var(--line);
+      }
+      #pw-field.err {
+        border-color: var(--red);
+      }
       #pw-submit {
         font-family: var(--mono);
         font-size: 12px;
@@ -277,10 +301,16 @@
         border: 1px solid var(--border);
         color: var(--text);
         cursor: pointer;
-        transition: background 0.12s, border-color 0.12s, color 0.12s;
+        transition:
+          background 0.12s,
+          border-color 0.12s,
+          color 0.12s;
         align-self: flex-start;
       }
-      #pw-submit:hover { border-color: var(--amber); color: var(--amber); }
+      #pw-submit:hover {
+        border-color: var(--amber);
+        color: var(--amber);
+      }
       #pw-error {
         font-size: 12px;
         color: var(--red);
@@ -337,7 +367,12 @@
           <div class="pw-box">
             <div class="pw-box-header">// Mallid — sisene parooliga</div>
             <div class="pw-box-body">
-              <input type="password" id="pw-field" placeholder="parool…" autocomplete="current-password">
+              <input
+                type="password"
+                id="pw-field"
+                placeholder="parool…"
+                autocomplete="current-password"
+              />
               <div id="pw-error"></div>
               <div id="pw-working">// Dekrüpteeritakse…</div>
               <button id="pw-submit">Sisene</button>
@@ -367,92 +402,119 @@
       const _dec = new TextDecoder();
 
       function fromBase64(b64) {
-        return Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+        return Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
       }
 
       async function deriveKey(password, salt) {
         const km = await crypto.subtle.importKey(
-          'raw', _enc.encode(password), 'PBKDF2', false, ['deriveKey']
+          "raw",
+          _enc.encode(password),
+          "PBKDF2",
+          false,
+          ["deriveKey"],
         );
         return crypto.subtle.deriveKey(
-          { name: 'PBKDF2', salt, iterations: 300000, hash: 'SHA-256' },
+          { name: "PBKDF2", salt, iterations: 300000, hash: "SHA-256" },
           km,
-          { name: 'AES-GCM', length: 256 },
+          { name: "AES-GCM", length: 256 },
           false,
-          ['decrypt']
+          ["decrypt"],
         );
       }
 
       async function decryptData(password) {
-        const resp = await fetch('lausepank-andmed.enc');
-        if (!resp.ok) throw new Error('Fail lausepank-andmed.enc ei leitud (HTTP ' + resp.status + ')');
+        const resp = await fetch("lausepank-andmed.enc");
+        if (!resp.ok)
+          throw new Error(
+            "Fail lausepank-andmed.enc ei leitud (HTTP " + resp.status + ")",
+          );
         const envelope = await resp.json();
         const salt = fromBase64(envelope.salt);
-        const iv   = fromBase64(envelope.iv);
+        const iv = fromBase64(envelope.iv);
         const data = fromBase64(envelope.data);
-        const key  = await deriveKey(password, salt);
+        const key = await deriveKey(password, salt);
         // Will throw if password is wrong
-        const plaintext = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, data);
+        const plaintext = await crypto.subtle.decrypt(
+          { name: "AES-GCM", iv },
+          key,
+          data,
+        );
         return JSON.parse(_dec.decode(plaintext));
       }
 
       // ── Session cache ────────────────────────────────────────────────────────────
       // Decrypted JSON is stored in sessionStorage for the duration of the tab session.
       // sessionStorage is tab-scoped and never written to disk — cleared on tab close.
-      const SESSION_KEY = 'lausepank_snippets';
+      const SESSION_KEY = "lausepank_snippets";
 
       function saveToSession(snippets) {
-        try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(snippets)); } catch {}
+        try {
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(snippets));
+        } catch {}
       }
       function loadFromSession() {
         try {
           const raw = sessionStorage.getItem(SESSION_KEY);
           return raw ? JSON.parse(raw) : null;
-        } catch { return null; }
+        } catch {
+          return null;
+        }
       }
 
       // ── Password screen ───────────────────────────────────────────────────────────
-      const pwScreen    = document.getElementById('pw-screen');
-      const mainContent = document.getElementById('main-content');
-      const pwField     = document.getElementById('pw-field');
-      const pwSubmit    = document.getElementById('pw-submit');
-      const pwError     = document.getElementById('pw-error');
-      const pwWorking   = document.getElementById('pw-working');
+      const pwScreen = document.getElementById("pw-screen");
+      const mainContent = document.getElementById("main-content");
+      const pwField = document.getElementById("pw-field");
+      const pwSubmit = document.getElementById("pw-submit");
+      const pwError = document.getElementById("pw-error");
+      const pwWorking = document.getElementById("pw-working");
 
       let SNIPPETS = [];
 
       function showContent(snippets) {
         SNIPPETS = snippets;
-        pwScreen.classList.add('hidden');
-        mainContent.classList.remove('hidden');
+        pwScreen.classList.add("hidden");
+        mainContent.classList.remove("hidden");
         renderFilters();
         renderSnippets();
       }
 
       async function tryUnlock() {
         const pw = pwField.value;
-        if (!pw) { pwError.textContent = '// Parool on tühi.'; return; }
-        pwError.textContent = '';
-        pwField.classList.remove('err');
+        if (!pw) {
+          pwError.textContent = "// Parool on tühi.";
+          return;
+        }
+        pwError.textContent = "";
+        pwField.classList.remove("err");
         pwSubmit.disabled = true;
-        pwWorking.style.display = '';
+        pwWorking.style.display = "";
 
         try {
           const snippets = await decryptData(pw);
           saveToSession(snippets);
           showContent(snippets);
         } catch {
-          pwField.classList.add('err');
-          pwError.textContent = '// Vale parool.';
+          pwField.classList.add("err");
+          pwError.textContent = "// Vale parool.";
           pwField.select();
         } finally {
           pwSubmit.disabled = false;
-          pwWorking.style.display = 'none';
+          pwWorking.style.display = "none";
         }
       }
 
-      pwSubmit.addEventListener('click', tryUnlock);
-      pwField.addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
+      pwSubmit.addEventListener("click", tryUnlock);
+      pwField.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") tryUnlock();
+      });
+
+      // ── Build indexes ─────────────────────────────────────────────────────────────
+      // ALL_CATEGORIES and ALL_TAGS computed at render time from decrypted SNIPPETS
+
+      // ── State ─────────────────────────────────────────────────────────────────────
+      let activeCategory = null; // null = all
+      let activeTags = new Set();
 
       // ── Auto-unlock from session cache ────────────────────────────────────────────
       const cached = loadFromSession();
@@ -461,13 +523,6 @@
       } else {
         pwField.focus();
       }
-
-      // ── Build indexes ─────────────────────────────────────────────────────────────
-      // ALL_CATEGORIES and ALL_TAGS computed at render time from decrypted SNIPPETS
-
-      // ── State ─────────────────────────────────────────────────────────────────────
-      let activeCategory = null; // null = all
-      let activeTags = new Set();
 
       // ── Filter logic ──────────────────────────────────────────────────────────────
       function filteredSnippets() {
@@ -484,8 +539,8 @@
 
       // ── Render filter bar ─────────────────────────────────────────────────────────
       function renderFilters() {
-        const ALL_CATEGORIES = [...new Set(SNIPPETS.map(s => s.category))];
-        const ALL_TAGS = [...new Set(SNIPPETS.flatMap(s => s.tags))].sort();
+        const ALL_CATEGORIES = [...new Set(SNIPPETS.map((s) => s.category))];
+        const ALL_TAGS = [...new Set(SNIPPETS.flatMap((s) => s.tags))].sort();
 
         const bar = document.getElementById("filter-bar");
 
