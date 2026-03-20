@@ -136,7 +136,7 @@
       }
 
       .snippet-body {
-        padding: 16px 56px 16px 18px; /* right padding leaves room for copy btn */
+        padding: 16px 56px 16px 18px;
         font-size: 14px;
         color: var(--text);
         line-height: 1.85;
@@ -157,10 +157,6 @@
         border: 1px solid var(--border);
         padding: 4px 9px;
         cursor: pointer;
-        transition:
-          background 0.12s,
-          color 0.12s,
-          border-color 0.12s;
         white-space: nowrap;
         opacity: 0;
         transition:
@@ -354,9 +350,9 @@
             <div class="title-block">
               <h1>Lausepank</h1>
               <div class="subtitle">
-                <span class="subtitle-label"
-                  >Juriidilised tekstikatked kopeerimisvalmis</span
-                >
+                <span class="subtitle-label">
+                  Juriidilised tekstikatked kopeerimisvalmis
+                </span>
               </div>
             </div>
           </div>
@@ -382,13 +378,9 @@
 
         <!-- Main content — hidden until decrypted -->
         <main id="main-content" class="hidden">
-          <div class="filter-bar" id="filter-bar">
-            <!-- populated by JS -->
-          </div>
+          <div class="filter-bar" id="filter-bar"></div>
           <div class="results-meta" id="results-meta"></div>
-          <div id="snippet-list">
-            <!-- populated by JS -->
-          </div>
+          <div id="snippet-list"></div>
         </main>
 
         <footer></footer>
@@ -424,16 +416,16 @@
 
       async function decryptData(password) {
         const resp = await fetch("lausepank-andmed.enc");
-        if (!resp.ok)
+        if (!resp.ok) {
           throw new Error(
             "Fail lausepank-andmed.enc ei leitud (HTTP " + resp.status + ")",
           );
+        }
         const envelope = await resp.json();
         const salt = fromBase64(envelope.salt);
         const iv = fromBase64(envelope.iv);
         const data = fromBase64(envelope.data);
         const key = await deriveKey(password, salt);
-        // Will throw if password is wrong
         const plaintext = await crypto.subtle.decrypt(
           { name: "AES-GCM", iv },
           key,
@@ -443,15 +435,16 @@
       }
 
       // ── Session cache ────────────────────────────────────────────────────────────
-      // Decrypted JSON is stored in sessionStorage for the duration of the tab session.
-      // sessionStorage is tab-scoped and never written to disk — cleared on tab close.
       const SESSION_KEY = "lausepank_snippets";
 
       function saveToSession(snippets) {
         try {
           sessionStorage.setItem(SESSION_KEY, JSON.stringify(snippets));
-        } catch {}
+        } catch {
+          /* ignore */
+        }
       }
+
       function loadFromSession() {
         try {
           const raw = sessionStorage.getItem(SESSION_KEY);
@@ -461,7 +454,7 @@
         }
       }
 
-      // ── Password screen ───────────────────────────────────────────────────────────
+      // ── Password screen elements ────────────────────────────────────────────────
       const pwScreen = document.getElementById("pw-screen");
       const mainContent = document.getElementById("main-content");
       const pwField = document.getElementById("pw-field");
@@ -469,14 +462,238 @@
       const pwError = document.getElementById("pw-error");
       const pwWorking = document.getElementById("pw-working");
 
+      // ── State ───────────────────────────────────────────────────────────────────
       let SNIPPETS = [];
+      let activeCategory = null; // null = all
+      let activeTags = new Set();
 
+      // ── Utilities ───────────────────────────────────────────────────────────────
+      const SUP_MAP = {
+        "¹": "1",
+        "²": "2",
+        "³": "3",
+        "⁴": "4",
+        "⁵": "5",
+        "⁶": "6",
+        "⁷": "7",
+        "⁸": "8",
+        "⁹": "9",
+        "⁰": "0",
+      };
+      const SUP_RE = /[¹²³⁴-⁹⁰]/g;
+
+      function escHtml(s) {
+        return s
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+      }
+
+      function renderText(s) {
+        return escHtml(s).replace(SUP_RE, (ch) => `<sup>${SUP_MAP[ch]}<\/sup>`);
+      }
+
+      // ── Filter logic ────────────────────────────────────────────────────────────
+      function filteredSnippets() {
+        return SNIPPETS.filter((s) => {
+          if (activeCategory && s.category !== activeCategory) return false;
+          if (
+            activeTags.size > 0 &&
+            ![...activeTags].every((t) => s.tags.includes(t))
+          ) {
+            return false;
+          }
+          return true;
+        });
+      }
+
+      // ── Render filter bar ───────────────────────────────────────────────────────
+      function renderFilters() {
+        const ALL_CATEGORIES = [...new Set(SNIPPETS.map((s) => s.category))];
+        const ALL_TAGS = [...new Set(SNIPPETS.flatMap((s) => s.tags))].sort();
+
+        const bar = document.getElementById("filter-bar");
+        bar.innerHTML = "";
+
+        // Categories
+        const catGroup = document.createElement("div");
+        catGroup.className = "filter-group";
+        catGroup.innerHTML = '<div class="filter-group-label">Kategooria</div>';
+        const catRow = document.createElement("div");
+        catRow.className = "tag-row";
+
+        const allBtn = document.createElement("button");
+        allBtn.className =
+          "tag-btn" + (activeCategory === null ? " active" : "");
+        allBtn.textContent = "Kõik";
+        allBtn.addEventListener("click", () => {
+          activeCategory = null;
+          renderAll();
+        });
+        catRow.appendChild(allBtn);
+
+        ALL_CATEGORIES.forEach((cat) => {
+          const btn = document.createElement("button");
+          btn.className = "tag-btn" + (activeCategory === cat ? " active" : "");
+          btn.textContent = cat;
+          btn.addEventListener("click", () => {
+            activeCategory = activeCategory === cat ? null : cat;
+            renderAll();
+          });
+          catRow.appendChild(btn);
+        });
+
+        catGroup.appendChild(catRow);
+        bar.appendChild(catGroup);
+
+        const sep = document.createElement("div");
+        sep.className = "filter-sep";
+        bar.appendChild(sep);
+
+        // Tags
+        const tagGroup = document.createElement("div");
+        tagGroup.className = "filter-group";
+        tagGroup.innerHTML = '<div class="filter-group-label">Silt</div>';
+        const tagRow = document.createElement("div");
+        tagRow.className = "tag-row";
+
+        ALL_TAGS.forEach((tag) => {
+          const btn = document.createElement("button");
+          btn.className = "tag-btn" + (activeTags.has(tag) ? " active" : "");
+          btn.textContent = tag;
+          btn.dataset.tag = tag;
+          btn.addEventListener("click", () => {
+            if (activeTags.has(tag)) {
+              activeTags.delete(tag);
+            } else {
+              activeTags.add(tag);
+            }
+            renderAll();
+          });
+          tagRow.appendChild(btn);
+        });
+
+        tagGroup.appendChild(tagRow);
+        bar.appendChild(tagGroup);
+      }
+
+      // ── Render snippets ─────────────────────────────────────────────────────────
+      function renderSnippets() {
+        const list = document.getElementById("snippet-list");
+        const meta = document.getElementById("results-meta");
+        const visible = filteredSnippets();
+
+        list.innerHTML = "";
+
+        if (visible.length === 0) {
+          list.innerHTML =
+            '<div class="empty-state">// ühtegi malli ei leitud</div>';
+          meta.innerHTML = "";
+          return;
+        }
+
+        const byCat = {};
+        visible.forEach((s) => {
+          if (!byCat[s.category]) byCat[s.category] = [];
+          byCat[s.category].push(s);
+        });
+
+        const catCount = Object.keys(byCat).length;
+        meta.innerHTML = `<span>${visible.length}</span> mall${
+          visible.length === 1 ? "" : "i"
+        } · <span>${catCount}</span> kategooria${catCount === 1 ? "s" : "s"}`;
+
+        Object.entries(byCat).forEach(([cat, snippets]) => {
+          const section = document.createElement("div");
+          section.className = "cat-section";
+
+          section.innerHTML = `
+            <div class="cat-header">
+              <span class="cat-title">${cat}</span>
+              <span class="cat-count">${snippets.length} malli</span>
+            </div>`;
+
+          snippets.forEach((s) => {
+            const card = document.createElement("div");
+            card.className = "snippet-card";
+            card.dataset.id = s.id;
+
+            const tagsHtml = s.tags
+              .map((t) => `<span class="snippet-tag">${t}</span>`)
+              .join("");
+
+            const commentHtml = s.comment
+              ? `<div class="snippet-comment"><span class="comment-label">// märkus</span>${renderText(
+                  s.comment,
+                )}</div>`
+              : "";
+
+            card.innerHTML = `
+              <button class="copy-btn" data-id="${s.id}">Kopeeri</button>
+              <div class="snippet-body">${renderText(s.text)}</div>
+              ${commentHtml}
+              <div class="snippet-footer">
+                <div class="snippet-tags">${tagsHtml}</div>
+              </div>`;
+
+            card
+              .querySelector(".copy-btn")
+              .addEventListener("click", function () {
+                copySnippet(s.id, this);
+              });
+
+            section.appendChild(card);
+          });
+
+          list.appendChild(section);
+        });
+      }
+
+      function renderAll() {
+        renderFilters();
+        renderSnippets();
+      }
+
+      // ── Copy ────────────────────────────────────────────────────────────────────
+      function copySnippet(id, btn) {
+        const s = SNIPPETS.find((x) => x.id === id);
+        if (!s) return;
+
+        const fullHtml = renderText(s.text).replace(/\n/g, "<br>");
+
+        const confirmed = () => {
+          btn.classList.add("copied");
+          const orig = btn.textContent;
+          btn.textContent = "Kopeeritud \u2713";
+          setTimeout(() => {
+            btn.textContent = orig;
+            btn.classList.remove("copied");
+          }, 1800);
+        };
+
+        if (navigator.clipboard && window.ClipboardItem) {
+          navigator.clipboard
+            .write([
+              new ClipboardItem({
+                "text/html": new Blob([fullHtml], { type: "text/html" }),
+                "text/plain": new Blob([s.text], { type: "text/plain" }),
+              }),
+            ])
+            .then(confirmed)
+            .catch(() => {
+              navigator.clipboard.writeText(s.text).then(confirmed);
+            });
+        } else {
+          navigator.clipboard.writeText(s.text).then(confirmed);
+        }
+      }
+
+      // ── Unlock flow ─────────────────────────────────────────────────────────────
       function showContent(snippets) {
         SNIPPETS = snippets;
         pwScreen.classList.add("hidden");
         mainContent.classList.remove("hidden");
-        renderFilters();
-        renderSnippets();
+        renderAll();
       }
 
       async function tryUnlock() {
@@ -509,14 +726,7 @@
         if (e.key === "Enter") tryUnlock();
       });
 
-      // ── Build indexes ─────────────────────────────────────────────────────────────
-      // ALL_CATEGORIES and ALL_TAGS computed at render time from decrypted SNIPPETS
-
-      // ── State ─────────────────────────────────────────────────────────────────────
-      let activeCategory = null; // null = all
-      let activeTags = new Set();
-
-      // ── Auto-unlock from session cache ────────────────────────────────────────────
+      // ── Auto-unlock from session cache ──────────────────────────────────────────
       const cached = loadFromSession();
       if (cached) {
         showContent(cached);
@@ -524,234 +734,10 @@
         pwField.focus();
       }
 
-      // ── Filter logic ──────────────────────────────────────────────────────────────
-      function filteredSnippets() {
-        return SNIPPETS.filter((s) => {
-          if (activeCategory && s.category !== activeCategory) return false;
-          if (
-            activeTags.size > 0 &&
-            ![...activeTags].every((t) => s.tags.includes(t))
-          )
-            return false;
-          return true;
-        });
-      }
-
-      // ── Render filter bar ─────────────────────────────────────────────────────────
-      function renderFilters() {
-        const ALL_CATEGORIES = [...new Set(SNIPPETS.map((s) => s.category))];
-        const ALL_TAGS = [...new Set(SNIPPETS.flatMap((s) => s.tags))].sort();
-
-        const bar = document.getElementById("filter-bar");
-
-        // Categories
-        const catGroup = document.createElement("div");
-        catGroup.className = "filter-group";
-        catGroup.innerHTML = '<div class="filter-group-label">Kategooria</div>';
-        const catRow = document.createElement("div");
-        catRow.className = "tag-row";
-
-        // "Kõik" button
-        const allBtn = document.createElement("button");
-        allBtn.className =
-          "tag-btn" + (activeCategory === null ? " active" : "");
-        allBtn.textContent = "Kõik";
-        allBtn.addEventListener("click", () => {
-          activeCategory = null;
-          renderAll();
-        });
-        catRow.appendChild(allBtn);
-
-        ALL_CATEGORIES.forEach((cat) => {
-          const btn = document.createElement("button");
-          btn.className = "tag-btn" + (activeCategory === cat ? " active" : "");
-          btn.textContent = cat;
-          btn.addEventListener("click", () => {
-            activeCategory = activeCategory === cat ? null : cat;
-            renderAll();
-          });
-          catRow.appendChild(btn);
-        });
-        catGroup.appendChild(catRow);
-        bar.appendChild(catGroup);
-
-        // Separator
-        const sep = document.createElement("div");
-        sep.className = "filter-sep";
-        bar.appendChild(sep);
-
-        // Tags
-        const tagGroup = document.createElement("div");
-        tagGroup.className = "filter-group";
-        tagGroup.innerHTML = '<div class="filter-group-label">Silt</div>';
-        const tagRow = document.createElement("div");
-        tagRow.className = "tag-row";
-
-        ALL_TAGS.forEach((tag) => {
-          const btn = document.createElement("button");
-          btn.className = "tag-btn" + (activeTags.has(tag) ? " active" : "");
-          btn.textContent = tag;
-          btn.dataset.tag = tag;
-          btn.addEventListener("click", () => {
-            if (activeTags.has(tag)) activeTags.delete(tag);
-            else activeTags.add(tag);
-            renderAll();
-          });
-          tagRow.appendChild(btn);
-        });
-        tagGroup.appendChild(tagRow);
-        bar.appendChild(tagGroup);
-      }
-
-      // ── Render snippets ───────────────────────────────────────────────────────────
-      function renderSnippets() {
-        const list = document.getElementById("snippet-list");
-        const meta = document.getElementById("results-meta");
-        const visible = filteredSnippets();
-
-        list.innerHTML = "";
-
-        if (visible.length === 0) {
-          list.innerHTML =
-            '<div class="empty-state">// ühtegi malli ei leitud</div>';
-          meta.innerHTML = "";
-          return;
-        }
-
-        // Group by category preserving order
-        const byCat = {};
-        visible.forEach((s) => {
-          if (!byCat[s.category]) byCat[s.category] = [];
-          byCat[s.category].push(s);
-        });
-
-        const catCount = Object.keys(byCat).length;
-        meta.innerHTML = `<span>${visible.length}</span> mall${visible.length === 1 ? "" : "i"} · <span>${catCount}</span> kategooria${catCount === 1 ? "s" : "s"}`;
-
-        Object.entries(byCat).forEach(([cat, snippets]) => {
-          const section = document.createElement("div");
-          section.className = "cat-section";
-
-          section.innerHTML = `
-      <div class="cat-header">
-        <span class="cat-title">${cat}</span>
-        <span class="cat-count">${snippets.length} malli</span>
-      </div>`;
-
-          snippets.forEach((s) => {
-            const card = document.createElement("div");
-            card.className = "snippet-card";
-            card.dataset.id = s.id;
-
-            const tagsHtml = s.tags
-              .map((t) => `<span class="snippet-tag">${t}</span>`)
-              .join("");
-
-            const commentHtml = s.comment
-              ? `<div class="snippet-comment"><span class="comment-label">// märkus</span>${renderText(s.comment)}</div>`
-              : "";
-
-            card.innerHTML = `
-        <button class="copy-btn" data-id="${s.id}">Kopeeri</button>
-        <div class="snippet-body">${renderText(s.text)}</div>
-        ${commentHtml}
-        <div class="snippet-footer">
-          <div class="snippet-tags">${tagsHtml}</div>
-        </div>`;
-
-            card
-              .querySelector(".copy-btn")
-              .addEventListener("click", function () {
-                copySnippet(s.id, this);
-              });
-
-            section.appendChild(card);
-          });
-
-          list.appendChild(section);
-        });
-      }
-
-      function renderAll() {
-        // Re-render filter bar in place (update active states)
-        const bar = document.getElementById("filter-bar");
-        bar.innerHTML = "";
-        renderFilters();
-        renderSnippets();
-      }
-
-      // ── Copy ──────────────────────────────────────────────────────────────────────
-      function copySnippet(id, btn) {
-        const s = SNIPPETS.find((x) => x.id === id);
-        if (!s) return;
-
-        // HTML version: <sup> tags so Word applies real superscript formatting.
-        // Plain text version: Unicode superscripts as fallback for plain-text targets.
-        const fullHtml = renderText(s.text).replace(/\n/g, "<br>");
-
-        const confirmed = () => {
-          btn.classList.add("copied");
-          const orig = btn.textContent;
-          btn.textContent = "Kopeeritud \u2713";
-          setTimeout(() => {
-            btn.textContent = orig;
-            btn.classList.remove("copied");
-          }, 1800);
-        };
-
-        // Use clipboard.write() with both HTML and plain-text representations
-        if (navigator.clipboard && window.ClipboardItem) {
-          navigator.clipboard
-            .write([
-              new ClipboardItem({
-                "text/html": new Blob([fullHtml], { type: "text/html" }),
-                "text/plain": new Blob([s.text], { type: "text/plain" }),
-              }),
-            ])
-            .then(confirmed)
-            .catch(() => {
-              // Fallback if write() is blocked (e.g. non-HTTPS)
-              navigator.clipboard.writeText(s.text).then(confirmed);
-            });
-        } else {
-          navigator.clipboard.writeText(s.text).then(confirmed);
-        }
-      }
-
-      // ── Utilities ─────────────────────────────────────────────────────────────────
-      // Map of Unicode superscript characters to their base digits (for display only)
-      const SUP_MAP = {
-        "¹": "1",
-        "²": "2",
-        "³": "3",
-        "⁴": "4",
-        "⁵": "5",
-        "⁶": "6",
-        "⁷": "7",
-        "⁸": "8",
-        "⁹": "9",
-        "⁰": "0",
-      };
-      const SUP_RE = /[¹²³⁴-⁹⁰]/g;
-
-      // Renders text for display: escapes HTML, then wraps superscript chars in <sup>
-      function renderText(s) {
-        return escHtml(s).replace(SUP_RE, (ch) => `<sup>${SUP_MAP[ch]}<\/sup>`);
-      }
-
-      function escHtml(s) {
-        return s
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;");
-      }
-
-      // ── Bootstrap ─────────────────────────────────────────────────────────────────
+      // ── Bootstrap ───────────────────────────────────────────────────────────────
       document
         .querySelectorAll(".footer-year")
         .forEach((el) => (el.textContent = new Date().getFullYear()));
-      renderFilters();
-      renderSnippets();
     </script>
   </body>
 </html>
