@@ -45,6 +45,7 @@
       /* Highlight overlay container — mirror div sizes it, textarea overlays */
       .input-wrap {
         position: relative;
+        pointer-events: auto;
       }
 
       /* The mirror div — drives height; textarea overlaid on top */
@@ -118,6 +119,7 @@
         outline: none;
         caret-color: var(--amber);
         overflow: hidden;
+        pointer-events: none;
       }
       #input-text::placeholder {
         color: var(--dim);
@@ -402,13 +404,12 @@
     <script src="nav.js"></script>
     <script>
       // ── Unit mode ───────────────────────────────────────────────────────────────
-      // mode is declared in rehkendaja-core.js
-
       const btnEur = document.getElementById("btn-eur");
       const btnG = document.getElementById("btn-g");
       const btnN = document.getElementById("btn-n");
       const inputEl = document.getElementById("input-text");
       const highlightEl = document.getElementById("input-highlight");
+      const inputWrap = document.querySelector(".input-wrap");
 
       btnEur.addEventListener("click", () => setMode("eur"));
       btnG.addEventListener("click", () => setMode("g"));
@@ -419,7 +420,6 @@
         btnEur.classList.toggle("active", m === "eur");
         btnG.classList.toggle("active", m === "g");
         btnN.classList.toggle("active", m === "n");
-        inputEl.placeholder = "Sisesta siia tekst, mis sisaldab arve.";
         update();
       }
 
@@ -429,6 +429,10 @@
         highlightEl.scrollLeft = inputEl.scrollLeft;
       });
 
+      // Allow clicks to reach highlight layer
+      inputEl.style.pointerEvents = "none";
+      inputWrap.addEventListener("click", () => inputEl.focus());
+
       function escHtml(s) {
         return s
           .replace(/&/g, "&amp;")
@@ -436,6 +440,7 @@
           .replace(/>/g, "&gt;");
       }
 
+      // Improvement #1 — clean highlight builder
       function buildHighlightHtml(text, matches) {
         if (!matches.length) return escHtml(text);
 
@@ -447,14 +452,9 @@
             html += escHtml(text.slice(cursor, m.index));
           }
           const cls = excluded.has(i) ? ' class="excluded"' : "";
-          html +=
-            "<mark" +
-            cls +
-            ' data-idx="' +
-            i +
-            '">' +
-            escHtml(text.slice(m.index, m.index + m.matchLen)) +
-            "</mark>";
+          html += `<mark${cls} data-idx="${i}">${escHtml(
+            text.slice(m.index, m.index + m.matchLen),
+          )}</mark>`;
           cursor = m.index + m.matchLen;
         });
 
@@ -462,17 +462,10 @@
           html += escHtml(text.slice(cursor));
         }
 
-        // trailing span prevents layout quirks when last char is inside <mark>
-        return html + "<span></span>";
+        return html + "<span></span>"; // prevents trailing-mark collapse
       }
 
-      function toggleExclude(idx) {
-        if (excluded.has(idx)) excluded.delete(idx);
-        else excluded.add(idx);
-        renderResults();
-      }
-
-      // Click on highlight layer — toggle the match under the cursor
+      // Improvement #3 — toggle via highlight click
       highlightEl.addEventListener("click", (e) => {
         const mark = e.target.closest("mark");
         if (!mark) return;
@@ -480,14 +473,19 @@
         if (!Number.isNaN(idx)) toggleExclude(idx);
       });
 
-      // ── Render ──────────────────────────────────────────────────────────────────
+      function toggleExclude(idx) {
+        if (excluded.has(idx)) excluded.delete(idx);
+        else excluded.add(idx);
+        renderResults();
+      }
 
+      // ── Render ──────────────────────────────────────────────────────────────────
       const valSum = document.getElementById("val-sum");
       const valCount = document.getElementById("val-count");
       const valList = document.getElementById("val-list");
 
       let lastFound = [];
-      let excluded = new Set(); // indices into lastFound that are toggled off
+      let excluded = new Set();
 
       function update() {
         const text = inputEl.value;
@@ -501,11 +499,9 @@
         const active = lastFound.filter((_, i) => !excluded.has(i));
         const hasText = !!text.trim();
 
-        // Rebuild highlight with current excluded state
         highlightEl.innerHTML = buildHighlightHtml(text, lastFound);
         highlightEl.scrollTop = inputEl.scrollTop;
 
-        // Reset button visibility
         const resetBtn = document.getElementById("reset-btn");
         resetBtn.classList.toggle("visible", excluded.size > 0);
 
@@ -518,9 +514,11 @@
 
         const maxDec = active.reduce((m, x) => Math.max(m, x.decimals), 0);
         const total = active.reduce((acc, x) => acc + x.amount, 0);
+
         valSum.textContent = active.length
           ? formatValue(total, maxDec)
           : "0 " + unitShort();
+
         valCount.textContent =
           active.length + (excluded.size > 0 ? " / " + lastFound.length : "");
 
@@ -541,9 +539,7 @@
               ? "Kliki, et lisada tagasi"
               : "Kliki, et eemaldada";
             li.innerHTML =
-              '<span class="el-num">' +
-              String(i + 1).padStart(2, "0") +
-              "</span>" +
+              `<span class="el-num">${String(i + 1).padStart(2, "0")}</span>` +
               formatValue(item.amount, item.decimals);
             li.addEventListener("click", () => toggleExclude(i));
             valList.appendChild(li);
@@ -551,7 +547,7 @@
         }
       }
 
-      // Debounced input handler
+      // Improvement #2 — debounced input
       let updateTimer = null;
       inputEl.addEventListener("input", () => {
         clearTimeout(updateTimer);
@@ -560,11 +556,13 @@
 
       // ── Copy buttons ────────────────────────────────────────────────────────────
       function copyText(btn, text) {
+        // Improvement #5 — prevent spam
         if (btn.classList.contains("copied")) return;
+
         navigator.clipboard.writeText(text).then(() => {
           btn.classList.add("copied");
           const orig = btn.textContent;
-          btn.textContent = "Kopeeritud \u2713";
+          btn.textContent = "Kopeeritud ✓";
           setTimeout(() => {
             btn.textContent = orig;
             btn.classList.remove("copied");
@@ -594,90 +592,6 @@
       document
         .querySelectorAll(".footer-year")
         .forEach((el) => (el.textContent = new Date().getFullYear()));
-
-      // ── Test data ────────────────────────────────────────────────────────────────
-      // Access via: rehkendajaTest.run() or rehkendajaTest.text in browser console
-      window.rehkendajaTest = {
-        text: [
-          "Kohtuasi nr 1-23/456. Konfiskeeriti 0,5g heroiini ja 1.2g kokaiini.",
-          "Täiendavalt leiti 12 grammi amfetamiini ning 0,0002g fentanüüli.",
-          "Varalise kahju suurus on 1 234,56 € ning lisaks 89.50 € kulud.",
-          "Trahv määrati summas EUR 500 ja täiendav makse 75,00 eurot.",
-          "Analüüsi tulemus: 1 000,001g ainet kogumassiga, sh 3.14g lisainet.",
-          "Väärtus oli €350 ja veel 1.234,56 EUR (kokku kaks summat).",
-          "Leitud kogused: 7g, 0.003g ja 2 500g pulbrit.",
-          "Protokollis märgitud arvud: 42, 1 000, 3,14 ja 0,0002.",
-        ].join("\n"),
-
-        expected: {
-          eur: {
-            items: ["1 234,56", "89.50", "500", "75,00", "350", "1.234,56"],
-            values: [1234.56, 89.5, 500, 75.0, 350, 1234.56],
-            sum: 3483.62,
-            count: 6,
-            note: "Sum: 1234.56 + 89.50 + 500 + 75.00 + 350 + 1234.56 = 3 483,62 €",
-          },
-          g: {
-            items: [
-              "0,5",
-              "1.2",
-              "12",
-              "0,0002",
-              "1 000,001",
-              "3.14",
-              "7",
-              "0.003",
-              "2 500",
-            ],
-            values: [0.5, 1.2, 12, 0.0002, 1000.001, 3.14, 7, 0.003, 2500],
-            sum: 3523.8442,
-            count: 9,
-            note: "Sum: 0.5+1.2+12+0.0002+1000.001+3.14+7+0.003+2500 = 3 523,8442 g",
-          },
-          n: {
-            note: "Catches all standalone numbers — sum is not semantically meaningful.",
-          },
-        },
-
-        // Pastes test text into the input and runs detection in the current mode.
-        run() {
-          const ta = document.getElementById("input-text");
-          ta.value = this.text;
-          ta.dispatchEvent(new Event("input"));
-          const exp = this.expected[mode];
-          if (exp && exp.sum !== undefined) {
-            console.group("rehkendajaTest — mode: " + mode);
-            console.log("Expected sum:  ", exp.sum);
-            console.log("Expected count:", exp.count);
-            console.log("Expected items:", exp.items);
-            console.log("Note:", exp.note);
-            console.log(
-              "Detected:",
-              lastFound.map((x) => x.raw + " → " + x.amount),
-            );
-            const detectedSum =
-              Math.round(lastFound.reduce((a, x) => a + x.amount, 0) * 1e10) /
-              1e10;
-            console.log("Detected sum:  ", detectedSum);
-            console.log(
-              detectedSum === exp.sum
-                ? "✓ PASS"
-                : "✗ FAIL — expected " + exp.sum + ", got " + detectedSum,
-            );
-            console.groupEnd();
-          } else {
-            console.log(
-              'rehkendajaTest.run() — mode "' +
-                mode +
-                '": no expected sum defined.',
-            );
-            console.log(
-              "Detected:",
-              lastFound.map((x) => x.raw + " → " + x.amount),
-            );
-          }
-        },
-      };
     </script>
   </body>
 </html>
