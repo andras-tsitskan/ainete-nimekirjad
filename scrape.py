@@ -214,10 +214,14 @@ def _process_row(row, current_list, result):
     if et_cell == "" and en_cell != "":
         if result[current_list]:
             result[current_list][-1][1] = (result[current_list][-1][1] + " " + en_cell).strip()
+        else:
+            print(f"  HOIATUS: ingliskeelne jätk ilma eelneva kirjeta (nimekiri {current_list}): {en_cell!r}")
         return current_list
     if en_cell == "" and et_cell != "":
         if result[current_list]:
             result[current_list][-1][0] = (result[current_list][-1][0] + " " + et_cell).strip()
+        else:
+            print(f"  HOIATUS: eestikeelne jätk ilma eelneva kirjeta (nimekiri {current_list}): {et_cell!r}")
         return current_list
 
     if len(et_cell) > 2 and len(en_cell) > 2:
