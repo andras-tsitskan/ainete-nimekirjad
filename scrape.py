@@ -268,6 +268,12 @@ def extract_rows_from_pdf(pdf_bytes):
 
 # ── Puhastamine ───────────────────────────────────────────────────────────────
 
+# Known PDF parsing errors where both columns contain the Estonian name.
+# Key: et name (lowercase). Value: correct English name.
+_EN_CORRECTIONS = {
+    "dilämmastikoksiid (n2o)": "Nitrous oxide (N2O)",
+}
+
 def clean_results(result):
     cleaned = {}
     for list_num, rows in result.items():
@@ -277,6 +283,10 @@ def clean_results(result):
             key = row[0].lower().strip()
             if key and key not in seen:
                 seen.add(key)
+                # Fix rows where en == et (PDF column bleed-through)
+                if row[1].lower().strip() == key and key in _EN_CORRECTIONS:
+                    print(f"  Parandan ingliskeelset nimetust: {row[0]!r}")
+                    row = [row[0], _EN_CORRECTIONS[key]]
                 unique.append(row)
         unique.sort(key=lambda r: r[0].lower())
         cleaned[list_num] = unique
