@@ -52,10 +52,10 @@ jobs:
                   for item in data:
                       if isinstance(item, dict):
                           # try common keys
-                          for key in ["name", "substance", "title"]:
+                          for key in ["et", "name", "substance", "title"]:
                               if key in item:
-                                  result.add(str(item[key]))
-                                  break
+                                result.add(str(item[key]))
+                                break
                           else:
                               result.add(json.dumps(item, sort_keys=True))
                       else:
