@@ -187,7 +187,12 @@ def _detect_list_header(text):
 def _clean_cell(text):
     if text is None:
         return ""
-    return re.sub(r"\s+", " ", str(text)).strip()
+    # Pattern 1: hyphen used as soft line-break — drop \n, keep hyphen
+    text = re.sub(r'-\n', '-', str(text))
+    # Pattern 2: all other line breaks — replace with a single space
+    text = re.sub(r'\n', ' ', text)
+    # Collapse any remaining multiple spaces
+    return re.sub(r' {2,}', ' ', text).strip()
 
 
 def _process_row(row, current_list, result):
