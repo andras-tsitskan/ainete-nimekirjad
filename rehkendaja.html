@@ -431,7 +431,26 @@
 
       // Allow clicks to reach highlight layer
       inputEl.style.pointerEvents = "none";
-      inputWrap.addEventListener("click", () => inputEl.focus());
+      
+      inputWrap.addEventListener("click", (e) => {
+        inputEl.focus();
+        const pos = caretPositionAt(e.clientX, e.clientY);
+        if (pos !== null) {
+          inputEl.setSelectionRange(pos, pos);
+        }
+      });
+
+    function caretPositionAt(x, y) {
+      if (document.caretPositionFromPoint) {
+        const cp = document.caretPositionFromPoint(x, y);
+        return cp ? cp.offset : null;
+      }
+      if (document.caretRangeFromPoint) {
+        const range = document.caretRangeFromPoint(x, y);
+        return range ? range.startOffset : null;
+      }
+      return null;
+    }
 
       function escHtml(s) {
         return s
