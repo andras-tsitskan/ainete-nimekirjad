@@ -430,27 +430,18 @@
       });
 
       // Allow clicks to reach highlight layer
-      inputEl.style.pointerEvents = "none";
-      
-      inputWrap.addEventListener("click", (e) => {
-        inputEl.focus();
-        const pos = caretPositionAt(e.clientX, e.clientY);
-        if (pos !== null) {
-          inputEl.setSelectionRange(pos, pos);
-        }
-      });
+      inputEl.style.pointerEvents = "auto";
 
-    function caretPositionAt(x, y) {
-      if (document.caretPositionFromPoint) {
-        const cp = document.caretPositionFromPoint(x, y);
-        return cp ? cp.offset : null;
-      }
-      if (document.caretRangeFromPoint) {
-        const range = document.caretRangeFromPoint(x, y);
-        return range ? range.startOffset : null;
-      }
-      return null;
-    }
+      inputEl.addEventListener("click", (e) => {
+        const cp = document.caretPositionFromPoint?.(e.clientX, e.clientY)
+          ?? document.caretRangeFromPoint?.(e.clientX, e.clientY);
+        if (!cp) return;
+        const offset = cp.offset ?? cp.startOffset;
+        const hit = lastFound.findIndex(
+          (m) => offset >= m.index && offset < m.index + m.matchLen
+      );
+      if (hit !== -1) toggleExclude(hit);
+    });
 
       function escHtml(s) {
         return s
