@@ -462,7 +462,7 @@
           html += escHtml(text.slice(cursor));
         }
 
-        return html + "<span></span>"; // prevents trailing-mark collapse
+        return html + (text.endsWith("\n") ? " " : "") + "<span></span>"; // prevents trailing-mark collapse
       }
 
       // Improvement #3 — toggle via highlight click
