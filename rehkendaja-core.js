@@ -21,16 +21,11 @@ const G_RE =
 const N_RE =
   /(?<!\d)(?!(?:\d{1,2}[.\-/]\d{1,2}[.\-/]\d{2,4}))(?!(?:\d{4}[.\-/]\d{1,2}[.\-/]\d{1,2}))(?!(?:\d{1,2}:\d{2}))(?!(?:\d+-\d+\/\d+))(?<num>[0-9][0-9 .,\u00A0]*[0-9])/gi;
 
-// DATE — highlight only
-const DATE_RE =
-  /\b(?:\d{1,2}[.\-/]\d{1,2}[.\-/]\d{2,4}|\d{4}[.\-/]\d{1,2}[.\-/]\d{1,2}|\d{1,2}:\d{2}(?::\d{2})?)\b/g;
-
 function activeRe() {
   let re;
   if (mode === "eur") re = EURO_RE;
   else if (mode === "g") re = G_RE;
   else if (mode === "n") re = N_RE;
-  else if (mode === "date") re = DATE_RE;
   else re = N_RE;
 
   re.lastIndex = 0;
@@ -72,18 +67,6 @@ function extractAmounts(text) {
   let match;
 
   while ((match = re.exec(text)) !== null) {
-    // DATE MODE — highlight only
-    if (mode === "date") {
-      results.push({
-        raw: match[0],
-        amount: null,
-        decimals: 0,
-        index: match.index,
-        matchLen: match[0].length,
-      });
-      continue;
-    }
-
     // EUR / G / N modes
     const rawNum = match.groups?.num;
     if (!rawNum) continue;
@@ -119,7 +102,6 @@ function _formatNumber(n, decimals) {
 }
 
 function formatValue(n, decimals) {
-  if (mode === "date") return n;
   const s = _formatNumber(n, decimals);
   if (mode === "eur") return s + " €";
   if (mode === "g") return s + " g";
