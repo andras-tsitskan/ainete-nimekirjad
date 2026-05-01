@@ -11,15 +11,15 @@ let mode = "eur";
 
 // EURO — full expression highlight
 const EURO_RE =
-  /(?<!\d)(?:€\s*(?<num>[0-9][0-9 .,\u00A0]*[0-9])|(?<num>[0-9][0-9 .,\u00A0]*[0-9])\s*€|(?<num>[0-9][0-9 .,\u00A0]*[0-9])\s*(?<word>eur|euro|eurot)\b|(?<word>eur|euro|eurot)\s*(?<num>[0-9][0-9 .,\u00A0]*[0-9]))/gi;
+  /(?<!\d)(?:€\s*(?<num>[0-9](?:[0-9 .,\u00A0]*[0-9])?)|(?<num>[0-9](?:[0-9 .,\u00A0]*[0-9])?)\s*€|(?<num>[0-9](?:[0-9 .,\u00A0]*[0-9])?)\s*(?<word>eur|euro|eurot)\b|(?<word>eur|euro|eurot)\s*(?<num>[0-9](?:[0-9 .,\u00A0]*[0-9])?))/gi;
 
 // GRAM — full expression highlight
 const G_RE =
-  /(?<!\d)(?:(?<num>[0-9][0-9 .,\u00A0]*[0-9])\s*(?<unit>g\.?|gramm(?:i|ides)?|grammi|gramm|gram)\b|(?<unit>g\.?|gramm(?:i|ides)?|grammi|gramm|gram)\b\s*(?<num>[0-9][0-9 .,\u00A0]*[0-9]))/gi;
+  /(?<!\d)(?:(?<num>[0-9](?:[0-9 .,\u00A0]*[0-9])?)\s*(?<unit>g\.?|gramm(?:i|ides)?|grammi|gramm|gram)\b|(?<unit>gramm(?:i|ides)?|grammi|gramm|gram)\b\s*(?<num>[0-9](?:[0-9 .,\u00A0]*[0-9])?))/gi;
 
 // NUM — standalone numbers (excluding dates/times/case numbers)
 const N_RE =
-  /(?<!\d)(?!(?:\d{1,2}[.\-/]\d{1,2}[.\-/]\d{2,4}))(?!(?:\d{4}[.\-/]\d{1,2}[.\-/]\d{1,2}))(?!(?:\d{1,2}:\d{2}))(?!(?:\d+-\d+\/\d+))(?<num>[0-9][0-9 .,\u00A0]*[0-9])/gi;
+  /(?<!\d)(?<![.\-/:])(?!(?:\d{1,2}[.\-/]\d{1,2}[.\-/]\d{2,4}))(?!(?:\d{4}[.\-/]\d{1,2}[.\-/]\d{1,2}))(?!(?:\d{1,2}:\d{2}))(?!(?:\d+-\d+\/\d+))(?<num>[0-9](?:[0-9 .,\u00A0]*[0-9])?)/gi;
 
 function activeRe() {
   let re;
