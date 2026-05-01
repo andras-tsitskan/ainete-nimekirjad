@@ -432,6 +432,53 @@
         );
       });
 
+      // ── Date removal — regressions ────────────────────────────────────────────────
+      suite("Kuupäeva eemaldamine — kolm põhirežiimi töötavad", () => {
+        expect(
+          detect("kokku 12,50 €", "eur").length,
+          "eur: üks tulemus",
+        ).toEqual(1);
+        expect(
+          amounts("kokku 12,50 €", "eur")[0],
+          "eur: summa 12.5",
+        ).toBeCloseTo(12.5, 6);
+        expect(detect("kaalub 300 g", "g").length, "g: üks tulemus").toEqual(1);
+        expect(amounts("kaalub 300 g", "g")[0], "g: summa 300").toEqual(300);
+        expect(detect("leidsin 7 asja", "n").length, "n: üks tulemus").toEqual(
+          1,
+        );
+        expect(amounts("leidsin 7 asja", "n")[0], "n: summa 7").toEqual(7);
+      });
+
+      suite(
+        "Kuupäeva eemaldamine — kuupäevad ei tuvastata üheski režiimis",
+        () => {
+          const dateText = "kuupäev 12.03.2024 ja 14:30";
+          expect(
+            detect(dateText, "eur").length,
+            "eur: kuupäev ei sobi",
+          ).toEqual(0);
+          expect(detect(dateText, "g").length, "g: kuupäev ei sobi").toEqual(0);
+          expect(detect(dateText, "n").length, "n: kuupäev ei sobi").toEqual(0);
+        },
+      );
+
+      suite("Kuupäeva eemaldamine — DATE_RE on kustutatud", () => {
+        expect(typeof DATE_RE, "DATE_RE on undefined").toEqual("undefined");
+      });
+
+      suite(
+        'Kuupäeva eemaldamine — formatValue režiimis "date" tagastab stringi',
+        () => {
+          mode = "date";
+          expect(
+            typeof formatValue(42, 0),
+            "formatValue tagastab stringi, mitte arvu",
+          ).toEqual("string");
+          mode = "n"; // restore
+        },
+      );
+
       // ═════════════════════════════════════════════════════════════════════════════
       // RENDER
       // ═════════════════════════════════════════════════════════════════════════════
